@@ -1,27 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   pps.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/18 17:06:19 by ksorokol         ###   ########.fr       */
+/*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
+/*   Updated: 2024/11/18 16:30:43 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "minishell.h"
 
-# include "libft.h"
-# include <stdlib.h>
-# include <unistd.h>
-# include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-
-# define PPS "skash>"
-
-void	print_primary_prompt_string(void);
-
-#endif
+void	print_primary_prompt_string(void)
+{
+	write (1, "skash:", 6);
+}
