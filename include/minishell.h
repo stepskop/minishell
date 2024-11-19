@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/18 17:06:19 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/19 19:56:21 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,17 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-# define PPS "skash>"
+# define PPS "sksh>"
 
-void	print_primary_prompt_string(void);
+typedef struct s_counters_quotes
+{
+	unsigned int	single_quote;
+	unsigned int	double_quote;
+}	t_counters_quotes;
+
+size_t	sh_strlen(const char *s);
+int		sh_check_eol(char *cmmnd);
+int		sh_backslash(char **line);
+char	*sh_strjoin(char *s1, char *s2);
 
 #endif
