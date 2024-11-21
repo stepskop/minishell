@@ -32,5 +32,5 @@ void	sigact(int sig, siginfo_t *info, void *context)
 	info->si_pid += 0;
 	(void)context;
 	if (sig == SIGINT)
-		;
+	{};
 }
