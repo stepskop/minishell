@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/20 17:12:37 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/21 00:10:13 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	main(int argc, char *argv[])
 
 	if (argc > 1)
 		argv[0] = argv[0];
-	// sig_init ();
+	sig_init ();
 	while (1)
 	{
 		cmmnd[1] = NULL;
@@ -38,6 +38,7 @@ int	main(int argc, char *argv[])
 		free (cmmnd[1]);
 		// free (cmmnd[0]);
 	}
+	rl_clear_history ();
 	return (EXIT_SUCCESS);
 }
 

@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/20 17:12:15 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/20 23:19:06 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <signal.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 
@@ -36,6 +35,7 @@ size_t	sh_strlen(const char *s);
 int		sh_check_eol(char *cmmnd);
 int		sh_backslash(char **line);
 char	*sh_strjoin(char *s1, char *s2);
+void	sh_ppfree(char	**pp);
 
 // execve.c
 int		sh_execve(char *cmmnd);
@@ -46,3 +46,14 @@ char	**sh_app_args(char *cmmnd);
 void	sigact(int sig, siginfo_t *info, void *context);
 void	sig_init(void);
 #endif
+
+// valgrind
+// --fair-sched=yes
+// --trace-children=yes
+// --tool=memcheck
+// --leak-check=full
+// --show-leak-kinds=all
+// --tool=helgrind
+// --tool=drd
+// --read-var-info=yes
+// --show-reachable=yes

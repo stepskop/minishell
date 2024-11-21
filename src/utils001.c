@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/20 12:06:33 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/20 23:59:28 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,4 +99,17 @@ char	*sh_strjoin(char *s1, char *s2)
 	free (s1);
 	free (s2);
 	return (result);
+}
+
+void	sh_ppfree(char	**pp)
+{
+	char	**pp_;
+
+	pp_ = pp;
+	while (*pp_)
+	{
+		free (*pp_);
+		pp_++;
+	}
+	free (pp);
 }
