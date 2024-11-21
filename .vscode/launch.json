@@ -39,7 +39,7 @@
 				}
 			],
 			// "preLaunchTask": "C/C++: gcc build subproject",
-			"preLaunchTask":"make & clean project",
+			"preLaunchTask":"make project",
 			"miDebuggerPath": "/usr/bin/gdb"
 		}
 	]

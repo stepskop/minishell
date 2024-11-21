@@ -32,7 +32,7 @@ HEADERS = $(addprefix -I, $(INCLUDE_DIR))
 #NAME = minishell
 NAME = sksh
 
-CCFLAGS = -Wall -Werror -Wextra
+CCFLAGS = -g -Wall -Werror -Wextra
 
 CC = cc
 
