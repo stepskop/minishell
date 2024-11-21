@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/21 00:10:13 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/21 14:27:53 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,10 @@ int	main(int argc, char *argv[])
 {
 	char	*cmmnd[2];
 
-	if (argc > 1)
-		argv[0] = argv[0];
+	(void)argc;
+	(void)argv;
 	sig_init ();
+	kill (getpid(), SIGCHLD);
 	while (1)
 	{
 		cmmnd[1] = NULL;

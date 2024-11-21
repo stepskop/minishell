@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/20 23:19:06 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/21 13:44:27 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,10 @@ char	**sh_semicolon(char *cmmnd);
 char	**sh_app_args(char *cmmnd);
 
 // signal.c
-void	sigact(int sig, siginfo_t *info, void *context);
 void	sig_init(void);
+void	sigact(int sig, siginfo_t *info, void *context);
+void	catcher(int signum);
+
 #endif
 
 // valgrind

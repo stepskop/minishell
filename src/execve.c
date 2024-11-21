@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 15:34:17 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/21 00:29:46 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/21 14:19:32 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	sh_execve(char *cmmnd)
 			exit (EXIT_SUCCESS);
 		}
 		sh_ppfree (cmmnds_args[2]);
+		// wait(&rp);
 		waitpid (pid, &rp, 0);
 		cmmnds_args[1]++;
 	}
