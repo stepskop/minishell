@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 15:34:17 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/21 14:19:32 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/22 15:11:45 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,11 @@ int	sh_execve(char *cmmnd)
 			free (cmmnd);
 			sh_ppfree (cmmnds_args[0]);
 			if (execve (cmmnds_args[2][0], cmmnds_args[2], NULL) == -1)
-				write (1, "Something is wrong!\n", 20);
+				write (1, "Something is wrong! (execve)\n", 29);
 			sh_ppfree (cmmnds_args[2]);
 			exit (EXIT_SUCCESS);
 		}
 		sh_ppfree (cmmnds_args[2]);
-		// wait(&rp);
 		waitpid (pid, &rp, 0);
 		cmmnds_args[1]++;
 	}

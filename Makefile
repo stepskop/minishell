@@ -3,8 +3,8 @@
 #PIPES_SRC = pipes.c
 
 # Commands, built-in stuff
-#BUILTINS_DIR = builtins/
-#BUILTINS_SRC = builtins.c
+BUILTINS_DIR = builtins/
+BUILTINS_SRC = pwd.c
 
 # Signals
 SIGNALS_DIR = signals/
@@ -12,12 +12,13 @@ SIGNALS_SRC = signal.c
 
 # Utilites
 UTILS_DIR = utils/
-UTILS_SRC = execve.c utils001.c
+UTILS_SRC = execve.c utils001.c path.c
 
 SRC_DIR = ./src/
-SRCS = $(addprefix $(UTILS_DIR), $(UTILS_SRC)) \
-	   $(addprefix $(SIGNALS_DIR), $(SIGNALS_SRC)) \
-	   $(MAIN)
+SRCS = 	$(addprefix $(BUILTINS_DIR), $(BUILTINS_SRC)) \
+		$(addprefix $(UTILS_DIR), $(UTILS_SRC)) \
+		$(addprefix $(SIGNALS_DIR), $(SIGNALS_SRC)) \
+		$(MAIN)
 
 MAIN = minishell.c
 
@@ -29,8 +30,8 @@ INCLUDES = $(addprefix $(INCLUDE_DIR), $(INCLUDE_SRC))
 
 HEADERS = $(addprefix -I, $(INCLUDE_DIR))
 
-#NAME = minishell
-NAME = sksh
+NAME = minishell
+# NAME = sksh
 
 CCFLAGS = -g -Wall -Werror -Wextra
 
@@ -52,6 +53,7 @@ $(NAME): $(OBJ_DIR) $(OBJS) $(LIBFT)
 
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
+	mkdir -p $(OBJ_DIR)$(BUILTINS_DIR)
 	mkdir -p $(OBJ_DIR)$(UTILS_DIR)
 	mkdir -p $(OBJ_DIR)$(SIGNALS_DIR)
 

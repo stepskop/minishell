@@ -28,13 +28,21 @@
 				{
 					// https://sourceware.org/gdb/onlinedocs/gdb/Forks.html
 					"description": "Fork follows Child process",
-					"text": "set follow-fork-mode child",
+					// "text": "set follow-fork-mode child",
+					"text": "set follow-fork-mode parent",
 					"ignoreFailures": true
 				},
+				// {
+				// 	// https://sourceware.org/gdb/onlinedocs/gdb/Forks.html
+				// 	"description": "Fork will keep the other process attached to debugger",
+				// 	// "text": "set detach-on-fork off",
+				// 	"text": "set detach-on-fork on",
+				// 	"ignoreFailures": true
+				// },
 				{
 					// https://sourceware.org/gdb/onlinedocs/gdb/Forks.html
-					"description": "Fork will keep the other process attached to debugger",
-					"text": "set detach-on-fork off",
+					"description": "GDB will retain control of all forked processes (including nested forks)",
+					"text": "show detach-on-fork",
 					"ignoreFailures": true
 				}
 			],
