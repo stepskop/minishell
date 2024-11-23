@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/22 16:31:29 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/23 14:35:58 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*sh_strcat(char *s1, char *s2)
 	if (!result)
 		return (NULL);
 	ft_memcpy (result, s1, ft_strlen (s1));
-	ft_memcpy (result[ft_strlen (s1)], s1, ft_strlen (s2));
+	ft_memcpy (&result[ft_strlen (s1)], s2, ft_strlen (s2));
 	result[len - 1] = '\0';
 	return (result);
 }

@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 12:24:25 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/22 16:24:04 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/23 14:55:36 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,18 +58,26 @@ char	*get_sh_pps(void)
 	return (str[0]);
 }
 
-char	*get_command(char *cmmnd)
+char	*get_ext_command(char *cmmnd)
 {
-	char	*str[2];
+	char	*result;
 	char	**pathes[2];
 
-	str[0] = getenv ("PATH");
-	pathes[0] = ft_split (str[0], ':');
+	if (access(cmmnd, F_OK) == 0)
+		return (ft_strdup (cmmnd));
+	result = getenv ("PATH");
+	pathes[0] = ft_split (result, ':');
 	pathes[1] = pathes[0];
-	while (pathes[1])
+	while (*pathes[1])
 	{
-		
+		if ((*pathes[1])[ft_strlen (*pathes[1]) - 2] != '/')
+			*pathes[1] = sh_strcat(*pathes[1], "/");
+		result = sh_strcat(*pathes[1], cmmnd);
+		if (access(result, F_OK) == 0)
+			return (sh_ppfree (pathes[0]), result);
+		free (result);
 		pathes[1]++;
 	}
+	sh_ppfree (pathes[0]);
 	return (NULL);
 }

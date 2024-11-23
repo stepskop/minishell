@@ -12,7 +12,7 @@ SIGNALS_SRC = signal.c
 
 # Utilites
 UTILS_DIR = utils/
-UTILS_SRC = execve.c utils001.c path.c
+UTILS_SRC = execve.c utils001.c utils002.c path.c
 
 SRC_DIR = ./src/
 SRCS = 	$(addprefix $(BUILTINS_DIR), $(BUILTINS_SRC)) \

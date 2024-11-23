@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/22 15:06:18 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/23 14:28:40 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	_loop_(void)
 		else if (!ft_strcmp (cmmnd[0], "pwd"))
 			pwd ();
 		else
-			sh_execve (cmmnd[1]);
+			sh_run (cmmnd[1]);
 		free (cmmnd[1]);
 		// free (cmmnd[0]);
 	}
@@ -56,7 +56,7 @@ char	*get_command(char **cmmnd)
 	char	*line[2];
 	int		i;
 
-	line[1] = NULL; // getcwd() - add path
+	line[1] = NULL;
 	while (1)
 	{
 		if (line[1])

@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/22 16:31:51 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/23 14:27:55 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,11 @@ void	sh_ppfree(char	**pp);
 char	*sh_strcat(char *s1, char *s2);
 
 // execve.c
-int		sh_execve(char *cmmnd);
+int		sh_run(char *cmmnd);
 char	**sh_semicolon(char *cmmnd);
 char	**sh_app_args(char *cmmnd);
+void	sp_print_cnf(char *cmmnd);
+int		sh_execve(char **argv, char **envp);
 
 // signal.c
 void	sig_init(void);
@@ -55,6 +57,7 @@ void	sigact(int sig, siginfo_t *info, void *context);
 // path.c
 char	*get_sh_path(int absolute_path);
 char	*get_sh_pps(void);
+char	*get_ext_command(char *cmmnd);
 
 // cd.c
 void	pwd(void);

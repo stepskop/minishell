@@ -6,13 +6,13 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 15:34:17 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/22 15:11:45 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/23 14:27:45 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	sh_execve(char *cmmnd)
+int	sh_run(char *cmmnd)
 {
 	char	**cmmnds_args[3];
 	int		rp;
@@ -29,8 +29,8 @@ int	sh_execve(char *cmmnd)
 			rl_clear_history ();
 			free (cmmnd);
 			sh_ppfree (cmmnds_args[0]);
-			if (execve (cmmnds_args[2][0], cmmnds_args[2], NULL) == -1)
-				write (1, "Something is wrong! (execve)\n", 29);
+			if (sh_execve (cmmnds_args[2], NULL) == -1)
+				sp_print_cnf (cmmnds_args[2][0]);
 			sh_ppfree (cmmnds_args[2]);
 			exit (EXIT_SUCCESS);
 		}
@@ -51,13 +51,18 @@ char	**sh_app_args(char *cmmnd)
 	return (ft_split (cmmnd, ' '));
 }
 
-// char	*get_path(char	*app)
-// {
-// 	char *env_path;
-// 	char **pathes;
+void	sp_print_cnf(char *cmmnd)
+{
+	write (1, cmmnd, ft_strlen (cmmnd));
+	write (1, ": command not found\n", 20);
+}
 
-// 	env_path = getenv("PATH");
-// 	pathes = ft_split (env_path, ':');
-// 	// while 
-// 	return (NULL);
-// }
+int	sh_execve(char **argv, char **envp)
+{
+	char	*cmmnd;
+
+	cmmnd = get_ext_command (argv[0]);
+	if (cmmnd)
+		return (execve (cmmnd, argv, envp));
+	return (-1);
+}
