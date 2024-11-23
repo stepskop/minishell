@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 12:24:25 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/23 14:55:36 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/23 15:51:51 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,26 +58,31 @@ char	*get_sh_pps(void)
 	return (str[0]);
 }
 
-char	*get_ext_command(char *cmmnd)
+char	*get_cmd(char *cmd)
 {
-	char	*result;
-	char	**pathes[2];
+	char	*res;
+	char	*path;
+	char	**bin_dirs;
+	char	*dir_slash;
+	int		i;
 
-	if (access(cmmnd, F_OK) == 0)
-		return (ft_strdup (cmmnd));
-	result = getenv ("PATH");
-	pathes[0] = ft_split (result, ':');
-	pathes[1] = pathes[0];
-	while (*pathes[1])
+	path = getenv("PATH");
+	if (!path)
+		return (NULL);
+	bin_dirs = ft_split(path, ':');
+	i = -1;
+	while (bin_dirs[++i])
 	{
-		if ((*pathes[1])[ft_strlen (*pathes[1]) - 2] != '/')
-			*pathes[1] = sh_strcat(*pathes[1], "/");
-		result = sh_strcat(*pathes[1], cmmnd);
-		if (access(result, F_OK) == 0)
-			return (sh_ppfree (pathes[0]), result);
-		free (result);
-		pathes[1]++;
+		dir_slash = ft_strjoin(bin_dirs[i], "/");
+		if (!dir_slash)
+			return (sh_ppfree(bin_dirs), NULL);
+		res = ft_strjoin(dir_slash, cmd);
+		free(dir_slash);
+		if (!res)
+			return (sh_ppfree(bin_dirs), NULL);
+		if (access(res, F_OK | X_OK) == 0)
+			return (sh_ppfree(bin_dirs), res);
+		free(res);
 	}
-	sh_ppfree (pathes[0]);
-	return (NULL);
+	return (sh_ppfree(bin_dirs), NULL);
 }

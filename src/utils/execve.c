@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 15:34:17 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/23 14:27:45 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/23 15:53:10 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	sh_execve(char **argv, char **envp)
 {
 	char	*cmmnd;
 
-	cmmnd = get_ext_command (argv[0]);
+	cmmnd = get_cmd (argv[0]);
 	if (cmmnd)
 		return (execve (cmmnd, argv, envp));
 	return (-1);

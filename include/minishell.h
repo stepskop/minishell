@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/23 14:27:55 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/23 15:52:46 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	sigact(int sig, siginfo_t *info, void *context);
 // path.c
 char	*get_sh_path(int absolute_path);
 char	*get_sh_pps(void);
-char	*get_ext_command(char *cmmnd);
+char	*get_cmd(char *cmd);
 
 // cd.c
 void	pwd(void);
