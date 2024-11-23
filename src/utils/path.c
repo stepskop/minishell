@@ -58,18 +58,31 @@ char	*get_sh_pps(void)
 	return (str[0]);
 }
 
-char	*get_command(char *cmmnd)
+char	*get_cmd(char *cmd)
 {
-	char	*str[2];
-	char	**pathes[2];
+	char	*res;
+	char	*path;
+	char	**bin_dirs;
+	char	*dir_slash;
+	int		i;
 
-	str[0] = getenv ("PATH");
-	pathes[0] = ft_split (str[0], ':');
-	pathes[1] = pathes[0];
-	while (pathes[1])
+	path = getenv("PATH");
+	if (!path)
+		return (NULL);
+	bin_dirs = ft_split(path, ':');
+	i = -1;
+	while (bin_dirs[++i])
 	{
-		
-		pathes[1]++;
+		dir_slash = ft_strjoin(bin_dirs[i], "/");
+		if (!dir_slash)
+			return (sh_ppfree(bin_dirs), NULL);
+		res = ft_strjoin(dir_slash, cmd);
+		free(dir_slash);
+		if (!res)
+			return (sh_ppfree(bin_dirs), NULL);
+		if (access(res, F_OK | X_OK) == 0)
+			return (sh_ppfree(bin_dirs), res);
+		free(res);
 	}
-	return (NULL);
+	return (sh_ppfree(bin_dirs), NULL);
 }

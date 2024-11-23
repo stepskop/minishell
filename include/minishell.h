@@ -55,6 +55,7 @@ void	sigact(int sig, siginfo_t *info, void *context);
 // path.c
 char	*get_sh_path(int absolute_path);
 char	*get_sh_pps(void);
+char	*get_cmd(char *cmd);
 
 // cd.c
 void	pwd(void);
