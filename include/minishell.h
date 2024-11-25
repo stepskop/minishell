@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/23 15:52:46 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/25 01:57:31 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <limits.h>
+# include <dirent.h>
 
 # define PPS "sksh:"
 
@@ -48,7 +49,7 @@ int		sh_run(char *cmmnd);
 char	**sh_semicolon(char *cmmnd);
 char	**sh_app_args(char *cmmnd);
 void	sp_print_cnf(char *cmmnd);
-int		sh_execve(char **argv, char **envp);
+void	sh_execve(char **argv, char **envp, char **f_cmmnds, char *f_cmmnd);
 
 // signal.c
 void	sig_init(void);
@@ -59,8 +60,15 @@ char	*get_sh_path(int absolute_path);
 char	*get_sh_pps(void);
 char	*get_cmd(char *cmd);
 
-// cd.c
+// run_builtins.c
+int		run_builtins(char **argv);
+
+// pwd.c
 void	pwd(void);
+
+// cd.c
+void	cd(char **argv);
+char	*sh_check_path(char *path);
 
 #endif
 

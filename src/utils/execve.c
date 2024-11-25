@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 15:34:17 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/23 15:53:10 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/25 01:59:06 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,27 +15,23 @@
 int	sh_run(char *cmmnd)
 {
 	char	**cmmnds_args[3];
-	int		rp;
-	pid_t	pid;
 
 	cmmnds_args[0] = sh_semicolon (cmmnd);
 	cmmnds_args[1] = cmmnds_args[0];
 	while (*cmmnds_args[1])
 	{
 		cmmnds_args[2] = sh_app_args (*cmmnds_args[1]);
-		pid = fork ();
-		if (pid == 0)
-		{
-			rl_clear_history ();
-			free (cmmnd);
-			sh_ppfree (cmmnds_args[0]);
-			if (sh_execve (cmmnds_args[2], NULL) == -1)
-				sp_print_cnf (cmmnds_args[2][0]);
-			sh_ppfree (cmmnds_args[2]);
-			exit (EXIT_SUCCESS);
-		}
+		if (!ft_strncmp (cmmnds_args[2][0], "echo", 4)
+			|| !ft_strncmp (cmmnds_args[2][0], "cd", 2)
+			|| !ft_strncmp (cmmnds_args[2][0], "pwd", 3)
+			|| !ft_strncmp (cmmnds_args[2][0], "export", 6)
+			|| !ft_strncmp (cmmnds_args[2][0], "unset", 5)
+			|| !ft_strncmp (cmmnds_args[2][0], "env", 3)
+			|| !ft_strncmp (cmmnds_args[2][0], "exit", 4))
+			run_builtins (cmmnds_args[2]);
+		else
+			sh_execve (cmmnds_args[2], NULL, cmmnds_args[0], cmmnd);
 		sh_ppfree (cmmnds_args[2]);
-		waitpid (pid, &rp, 0);
 		cmmnds_args[1]++;
 	}
 	return (sh_ppfree (cmmnds_args[0]), EXIT_SUCCESS);
@@ -57,12 +53,26 @@ void	sp_print_cnf(char *cmmnd)
 	write (1, ": command not found\n", 20);
 }
 
-int	sh_execve(char **argv, char **envp)
+void	sh_execve(char **argv, char **envp, char **f_cmmnds, char *f_cmmnd)
 {
 	char	*cmmnd;
+	pid_t	pid;
+	int		rp;
 
-	cmmnd = get_cmd (argv[0]);
-	if (cmmnd)
-		return (execve (cmmnd, argv, envp));
-	return (-1);
+	pid = fork ();
+	if (pid == 0)
+	{
+		rl_clear_history ();
+		sh_ppfree (f_cmmnds);
+		free (f_cmmnd);
+		rp = EXIT_SUCCESS;
+		cmmnd = get_cmd (argv[0]);
+		if (cmmnd)
+			rp = execve (cmmnd, argv, envp);
+		else
+			sp_print_cnf (argv[0]);
+		sh_ppfree (argv);
+		exit (rp);
+	}
+	waitpid (pid, &rp, 0);
 }

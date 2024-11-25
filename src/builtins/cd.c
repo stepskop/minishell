@@ -6,25 +6,35 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 15:11:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/23 17:28:05 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/25 02:38:30 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	pwd(char *arg)
+void	cd(char **argv)
 {
-	char	*str;
+	DIR		*dir;
+	char	*home;
 
-	if (!ft_strncmp (arg, "./", ft_strlen (arg))
-		|| !ft_strncmp (arg, ".", ft_strlen (arg)))
+	if (argv[1] && argv[2])
+	{
+		write (1, "cd: too many arguments\n", 23);
 		return ;
-	str = get_sh_path (1);
-}
-
-char	*sh_check_path(char *path)
-{
-	char	*result;
-
-	return (result);
+	}
+	home = getenv ("HOME");
+	if (!argv[1] || !ft_strncmp (argv[1], "~", ft_strlen (argv[1])))
+	{
+		chdir (home);
+		return ;
+	}
+	if (!ft_strncmp (argv[1], "./", ft_strlen (argv[1]))
+		|| !ft_strncmp (argv[1], ".", ft_strlen (argv[1])))
+		return ;
+	dir = opendir (argv[1]);
+	if (dir == NULL)
+		perror (argv[1]);
+	else
+		chdir (argv[1]);
+	free (dir);
 }

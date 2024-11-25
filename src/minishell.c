@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/23 14:28:40 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/25 02:38:30 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int	main(int argc, char *argv[])
 	(void)argc;
 	(void)argv;
 	sig_init ();
-	// kill (getpid(), SIGTERM);
 	_loop_ ();
 	rl_clear_history ();
 	return (EXIT_SUCCESS);
@@ -36,18 +35,8 @@ void	_loop_(void)
 		rl_on_new_line ();
 		cmmnd[0] = get_command (&cmmnd[1]);
 		add_history (cmmnd[1]);
-		if (!ft_strcmp (cmmnd[0], "exit"))
-		{
-			free (cmmnd[1]);
-			// free (cmmnd[0]);
-			break ;
-		}
-		else if (!ft_strcmp (cmmnd[0], "pwd"))
-			pwd ();
-		else
-			sh_run (cmmnd[1]);
+		sh_run (cmmnd[1]);
 		free (cmmnd[1]);
-		// free (cmmnd[0]);
 	}
 }
 
@@ -68,9 +57,10 @@ char	*get_command(char **cmmnd)
 		if (!i)
 		{
 			if (sh_check_eol (*cmmnd))
-				return (*cmmnd);
+				return (free (line[1]), *cmmnd);
 			*cmmnd = sh_strjoin (*cmmnd, ft_strdup ("\n"));
 		}
+		free (line[1]);
 		line[1] = ">";
 	}
 	return (*cmmnd);
