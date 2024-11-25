@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/25 19:48:50 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/25 23:05:13 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,22 +45,24 @@ char	*get_command(char **cmmnd)
 	char	*line[2];
 	int		i;
 
-	line[1] = NULL;
+	line[1] = get_sh_pps ();
 	while (1)
 	{
-		if (line[1] && ft_strcmp (line[1], ">"))
-			free (line[1]);
-		line[1] = get_sh_pps ();
 		line[0] = readline(line[1]);
 		i = sh_backslash (&line[0]);
 		*cmmnd = sh_strjoin (*cmmnd, line[0]);
 		if (!i)
 		{
 			if (sh_check_eol (*cmmnd))
-				return (free (line[1]), *cmmnd);
+			{
+				if (line[1] && ft_strcmp (line[1], ">"))
+					free (line[1]);
+				return (*cmmnd);
+			}
 			*cmmnd = sh_strjoin (*cmmnd, ft_strdup ("\n"));
 		}
-		free (line[1]);
+		if (line[1] && ft_strcmp (line[1], ">"))
+			free (line[1]);
 		line[1] = ">";
 	}
 	return (*cmmnd);

@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/20 23:59:28 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/25 22:55:37 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ int	sh_check_eol(char *cmmnd)
 	idx = 0;
 	while (cmmnd[idx])
 	{
-		if (cmmnd[idx] == '\'')
+		if (cmmnd[idx] == '\'' && !(double_quote % 2))
 			single_quote++;
-		if (cmmnd[idx] == '"')
+		if (cmmnd[idx] == '"' && !(single_quote % 2))
 			double_quote++;
 		idx++;
 	}
