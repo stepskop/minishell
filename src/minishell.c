@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/25 02:38:30 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/25 19:48:50 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*get_command(char **cmmnd)
 	line[1] = NULL;
 	while (1)
 	{
-		if (line[1])
+		if (line[1] && ft_strcmp (line[1], ">"))
 			free (line[1]);
 		line[1] = get_sh_pps ();
 		line[0] = readline(line[1]);

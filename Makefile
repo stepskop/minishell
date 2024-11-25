@@ -4,7 +4,7 @@
 
 # Commands, built-in stuff
 BUILTINS_DIR = builtins/
-BUILTINS_SRC = pwd.c cd.c run_builtins.c
+BUILTINS_SRC = echo.c pwd.c cd.c run_builtins.c
 
 # Signals
 SIGNALS_DIR = signals/
@@ -12,7 +12,7 @@ SIGNALS_SRC = signal.c
 
 # Utilites
 UTILS_DIR = utils/
-UTILS_SRC = execve.c utils001.c utils002.c path.c
+UTILS_SRC = execve.c path.c sh_spit_q.c utils001.c utils002.c
 
 SRC_DIR = ./src/
 SRCS = 	$(addprefix $(BUILTINS_DIR), $(BUILTINS_SRC)) \

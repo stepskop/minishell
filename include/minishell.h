@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/25 01:57:31 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/25 19:26:57 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <sys/wait.h>
 # include <limits.h>
 # include <dirent.h>
+# include <errno.h>
 
 # define PPS "sksh:"
 
@@ -44,6 +45,12 @@ void	sh_ppfree(char	**pp);
 // utils002.c
 char	*sh_strcat(char *s1, char *s2);
 
+// sh_spit_q.c
+char	**sh_spit_q(char *str, char c);
+char	*sh_spit_map(char *str, char c);
+int		sh_spit_couont(char *map, size_t len);
+char	*sh_spit_element(char *map, size_t len, int elem);
+
 // execve.c
 int		sh_run(char *cmmnd);
 char	**sh_semicolon(char *cmmnd);
@@ -63,12 +70,15 @@ char	*get_cmd(char *cmd);
 // run_builtins.c
 int		run_builtins(char **argv);
 
+// echo.c
+void	echo(char **argv);
+
 // pwd.c
 void	pwd(void);
 
 // cd.c
 void	cd(char **argv);
-char	*sh_check_path(char *path);
+char	*cd_home(char **argv);
 
 #endif
 

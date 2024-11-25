@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 23:53:25 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/25 00:59:59 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/25 15:20:42 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@ int	run_builtins(char **argv)
 		sh_ppfree (argv);
 		exit (EXIT_SUCCESS);
 	}
+	else if (!ft_strcmp (argv[0], "echo")
+		|| !ft_strncmp (argv[0], "echo ", 5))
+		echo (argv);
 	else if (!ft_strcmp (argv[0], "pwd")
 		|| !ft_strncmp (argv[0], "pwd ", 4))
 		pwd ();
