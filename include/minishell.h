@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/25 19:26:57 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/26 14:57:32 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,9 @@ char	*sh_spit_element(char *map, size_t len, int elem);
 
 // execve.c
 int		sh_run(char *cmmnd);
-char	**sh_semicolon(char *cmmnd);
-char	**sh_app_args(char *cmmnd);
 void	sp_print_cnf(char *cmmnd);
 void	sh_execve(char **argv, char **envp, char **f_cmmnds, char *f_cmmnd);
+int		cmmdn_running(int f);
 
 // signal.c
 void	sig_init(void);
@@ -72,6 +71,8 @@ int		run_builtins(char **argv);
 
 // echo.c
 void	echo(char **argv);
+void	echo_write(char *arg);
+size_t	echo_dollar(char *dollar);
 
 // pwd.c
 void	pwd(void);
