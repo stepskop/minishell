@@ -20,7 +20,7 @@ PATH_SRC = path.c
 
 # Utilites
 UTILS_DIR = utils/
-UTILS_SRC = sh_spit_q.c utils001.c utils002.c
+UTILS_SRC = sh_split_q.c utils001.c utils002.c
 
 SRC_DIR = ./src/
 SRCS = 	$(addprefix $(BUILTINS_DIR), $(BUILTINS_SRC)) \

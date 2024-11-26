@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 15:34:17 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/25 18:20:38 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/26 17:35:22 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ int	sh_run(char *cmmnd)
 {
 	char	**cmmnds_args[3];
 
-	cmmnds_args[0] = sh_spit_q (cmmnd, ';');
+	cmmnds_args[0] = sh_split_q (cmmnd, ';');
 	cmmnds_args[1] = cmmnds_args[0];
 	while (*cmmnds_args[1])
 	{
-		cmmnds_args[2] = sh_spit_q (*cmmnds_args[1], ' ');
+		cmmnds_args[2] = sh_split_q (*cmmnds_args[1], ' ');
 		if (!ft_strncmp (cmmnds_args[2][0], "echo", 4)
 			|| !ft_strncmp (cmmnds_args[2][0], "cd", 2)
 			|| !ft_strncmp (cmmnds_args[2][0], "pwd", 3)

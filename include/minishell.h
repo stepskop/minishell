@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/26 14:57:32 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/26 17:35:07 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,11 @@ void	sh_ppfree(char	**pp);
 // utils002.c
 char	*sh_strcat(char *s1, char *s2);
 
-// sh_spit_q.c
-char	**sh_spit_q(char *str, char c);
-char	*sh_spit_map(char *str, char c);
-int		sh_spit_couont(char *map, size_t len);
-char	*sh_spit_element(char *map, size_t len, int elem);
+// sh_split_q.c
+char	**sh_split_q(char *str, char c);
+char	*sh_split_map(char *str, char c);
+int		sh_split_couont(char *map, size_t len);
+char	*sh_split_element(char *map, size_t len, int elem);
 
 // execve.c
 int		sh_run(char *cmmnd);
