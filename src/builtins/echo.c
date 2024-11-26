@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 15:11:55 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/26 15:16:15 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/26 18:50:26 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,26 +61,48 @@ void	echo_write(char *arg)
 
 size_t	echo_dollar(char *dollar)
 {
-	char	**split;
+	char	*env_name;
 	size_t	len;
 	char	*env_var;
 
-	split = ft_split (dollar, ' ');
-	len = 1;
-	if (split && *split)
+	env_name = echo_get_env_name(dollar);
+	len = 0;
+	if (env_name)
 	{
-		len = ft_strlen (*split);
-		if (len > 1)
+		len = ft_strlen (env_name);
+		if (len > 0)
 		{
-			env_var = getenv(&(*split)[1]);
+			env_var = getenv(env_name);
 			if (env_var)
 				write (1, env_var, ft_strlen (env_var));
 			else
-				len = 1;
+				len = 0;
 		}
 	}
-	if (len == 1)
+	if (len == 0)
 		write (1, "$", 1);
-	sh_ppfree (split);
-	return (len - 1);
+	free (env_name);
+	return (len);
+}
+
+char	*echo_get_env_name(char *dollar)
+{
+	size_t	idx;
+	char	*env_name;
+
+	idx = 1;
+	if (!(ft_isalpha (dollar[idx]) || dollar[idx] == '_'))
+		return (NULL);
+	while (dollar[idx])
+		if (!(ft_isdigit (dollar[idx]) || ft_isalpha (dollar[idx])
+				|| dollar[idx] == '_'))
+			break ;
+	else
+		idx++;
+	env_name = (char *) malloc ((idx) * sizeof (char));
+	if (!env_name)
+		return (NULL);
+	ft_memcpy (env_name, &dollar[1], idx - 1);
+	env_name[idx - 1] = '\0';
+	return (env_name);
 }

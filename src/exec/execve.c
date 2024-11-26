@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 15:34:17 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/26 17:35:22 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/26 18:05:26 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,37 +36,6 @@ int	sh_run(char *cmmnd)
 	}
 	return (sh_ppfree (cmmnds_args[0]), EXIT_SUCCESS);
 }
-
-char	**sh_split(char *cmmnd, char c)
-{
-	return (ft_split (cmmnd, c));
-}
-
-// char	*get_first_str(char *cmmnd, char c)
-// {
-// 	char	*cmmnd_[2];
-// 	char	**ppstr;
-// 	size_t	i[3];
-
-// 	cmmnd_[0] = cmmnd;
-// 	cmmnd_[1] = cmmnd_[0];
-// 	i[0] = 0;
-// 	i[1] = 0;
-// 	while (*cmmnd_[1])
-// 	{
-// 		if (*cmmnd_[1] == '"')
-// 			i[0] != i[0];
-// 		if (!i[0] && (*(cmmnd_[1] + 1) == c || *(cmmnd_[1] + 1) == '\0'))
-// 			if (i[1] > 0)
-// 			{
-// 				cmmnd_[0] = cmmnd_[1];
-// 				i[1] = 0;
-// 			}
-// 		else if (i[0] || *(cmmnd_[1]) != c)
-// 			i[1]++;
-// 		cmmnd_[1]++;
-// 	}
-// }
 
 void	sp_print_cnf(char *cmmnd)
 {
