@@ -6,11 +6,17 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 12:24:25 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/23 15:51:51 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/26 15:51:01 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "minishell.h"
+#include <linux/limits.h>
+#include <readline/readline.h>
+#include <stdio.h>
+#include <time.h>
+#include <unistd.h>
 
 char	*get_sh_path(int absolute_path)
 {
@@ -56,33 +62,4 @@ char	*get_sh_pps(void)
 	str[0][len - 2] = ' ';
 	str[0][len - 1] = '\0';
 	return (str[0]);
-}
-
-char	*get_cmd(char *cmd)
-{
-	char	*res;
-	char	*path;
-	char	**bin_dirs;
-	char	*dir_slash;
-	int		i;
-
-	path = getenv("PATH");
-	if (!path)
-		return (NULL);
-	bin_dirs = ft_split(path, ':');
-	i = -1;
-	while (bin_dirs[++i])
-	{
-		dir_slash = ft_strjoin(bin_dirs[i], "/");
-		if (!dir_slash)
-			return (sh_ppfree(bin_dirs), NULL);
-		res = ft_strjoin(dir_slash, cmd);
-		free(dir_slash);
-		if (!res)
-			return (sh_ppfree(bin_dirs), NULL);
-		if (access(res, F_OK | X_OK) == 0)
-			return (sh_ppfree(bin_dirs), res);
-		free(res);
-	}
-	return (sh_ppfree(bin_dirs), NULL);
 }
