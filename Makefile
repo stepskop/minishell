@@ -10,14 +10,24 @@ BUILTINS_SRC = echo.c pwd.c cd.c run_builtins.c
 SIGNALS_DIR = signals/
 SIGNALS_SRC = signal.c
 
+# Exec
+EXEC_DIR = exec/
+EXEC_SRC = execve.c cmd_utils.c
+
+# Path
+PATH_DIR = path/
+PATH_SRC = path.c
+
 # Utilites
 UTILS_DIR = utils/
-UTILS_SRC = execve.c path.c sh_spit_q.c utils001.c utils002.c
+UTILS_SRC = sh_spit_q.c utils001.c utils002.c
 
 SRC_DIR = ./src/
 SRCS = 	$(addprefix $(BUILTINS_DIR), $(BUILTINS_SRC)) \
 		$(addprefix $(UTILS_DIR), $(UTILS_SRC)) \
 		$(addprefix $(SIGNALS_DIR), $(SIGNALS_SRC)) \
+		$(addprefix $(EXEC_DIR), $(EXEC_SRC)) \
+		$(addprefix $(PATH_DIR), $(PATH_SRC)) \
 		$(MAIN)
 
 MAIN = minishell.c
@@ -56,6 +66,8 @@ $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)$(BUILTINS_DIR)
 	mkdir -p $(OBJ_DIR)$(UTILS_DIR)
 	mkdir -p $(OBJ_DIR)$(SIGNALS_DIR)
+	mkdir -p $(OBJ_DIR)$(EXEC_DIR)
+	mkdir -p $(OBJ_DIR)$(PATH_DIR)
 
 $(OBJ_DIR)%o: $(SRC_DIR)%c $(INCLUDES)
 	$(CC) $(CCFLAGS) $(HEADERS) $(LIB_HEADERS) -c $< -o $@
