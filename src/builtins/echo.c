@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 15:11:55 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/26 18:50:26 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/27 12:58:36 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ void	echo_write(char *arg)
 		{
 			if (q != 1 && arg[idx[0]] == '$')
 				idx[0] += echo_dollar (&arg[idx[0]]);
+			if (q != 1 && arg[idx[0]] == '\\')
+				idx[0] += echo_slash (&arg[idx[0]]);
 			else
 				write (1, &arg[idx[0]], 1);
 		}
@@ -69,8 +71,8 @@ size_t	echo_dollar(char *dollar)
 	len = 0;
 	if (env_name)
 	{
-		len = ft_strlen (env_name);
-		if (len > 0)
+		len = ft_strlen (env_name) + 1;
+		if (len > 1)
 		{
 			env_var = getenv(env_name);
 			if (env_var)
@@ -105,4 +107,12 @@ char	*echo_get_env_name(char *dollar)
 	ft_memcpy (env_name, &dollar[1], idx - 1);
 	env_name[idx - 1] = '\0';
 	return (env_name);
+}
+
+size_t	echo_slash(char *slash)
+{
+	if (slash[1] == '$')
+		return (write (1, "$", 1), 1);
+	else
+		return (write (1, "\\", 1), 0);
 }

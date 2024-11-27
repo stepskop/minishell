@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/26 18:19:38 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/27 12:35:21 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void	echo(char **argv);
 void	echo_write(char *arg);
 size_t	echo_dollar(char *dollar);
 char	*echo_get_env_name(char *dollar);
+size_t	echo_slash(char *slash);
 
 // pwd.c
 void	pwd(void);
