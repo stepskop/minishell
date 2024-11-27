@@ -22,12 +22,17 @@ PATH_SRC = path.c
 UTILS_DIR = utils/
 UTILS_SRC = sh_spit_q.c utils001.c utils002.c
 
+# Lexer
+LEXER_DIR = lexer/
+LEXER_SRC = lexer.c
+
 SRC_DIR = ./src/
 SRCS = 	$(addprefix $(BUILTINS_DIR), $(BUILTINS_SRC)) \
 		$(addprefix $(UTILS_DIR), $(UTILS_SRC)) \
 		$(addprefix $(SIGNALS_DIR), $(SIGNALS_SRC)) \
 		$(addprefix $(EXEC_DIR), $(EXEC_SRC)) \
 		$(addprefix $(PATH_DIR), $(PATH_SRC)) \
+		$(addprefix $(LEXER_DIR), $(LEXER_SRC)) \
 		$(MAIN)
 
 MAIN = minishell.c
@@ -68,6 +73,7 @@ $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)$(SIGNALS_DIR)
 	mkdir -p $(OBJ_DIR)$(EXEC_DIR)
 	mkdir -p $(OBJ_DIR)$(PATH_DIR)
+	mkdir -p $(OBJ_DIR)$(LEXER_DIR)
 
 $(OBJ_DIR)%o: $(SRC_DIR)%c $(INCLUDES)
 	$(CC) $(CCFLAGS) $(HEADERS) $(LIB_HEADERS) -c $< -o $@

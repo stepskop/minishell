@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/26 14:57:32 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/27 15:28:53 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,40 @@
 
 # define PPS "sksh:"
 
+typedef enum e_lex_token
+{
+	COMMAND,
+	WORD,
+	PIPE,
+	GREAT,
+	GREATGREAT,
+	LESS,
+	LESSLESS,
+	LAST_STATUS,
+	AND,
+	AMPERSAND,
+	OR,
+}	t_lex_token;
+
+typedef struct s_cmd
+{
+	int		in_fd;
+	int		out_fd;
+	char	*path;
+	char	**cmd_line;
+	int		pid;
+	char	**envp;
+}	t_cmd;
+
+typedef struct s_prompt
+{
+	char			*str_val;
+	t_lex_token		lx_token;
+	t_cmd			*cmd;
+	struct t_prompt	*next;
+	struct s_prompt *prev;
+}	t_prompt;
+
 typedef struct s_counters_quotes
 {
 	unsigned int	single_quote;
@@ -34,6 +68,9 @@ typedef struct s_counters_quotes
 }	t_counters_quotes;
 
 void	_loop_(void);
+
+// Lexer
+t_prompt	*lexer(char *cmd_line);
 
 // utils001.c
 size_t	sh_strlen(const char *s);
