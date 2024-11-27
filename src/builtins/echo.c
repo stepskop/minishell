@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 15:11:55 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/27 12:58:36 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/27 18:31:30 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ size_t	echo_dollar(char *dollar)
 	size_t	len;
 	char	*env_var;
 
-	env_name = echo_get_env_name(dollar);
+	env_name = get_env_name(dollar);
 	len = 0;
 	if (env_name)
 	{
@@ -85,28 +85,6 @@ size_t	echo_dollar(char *dollar)
 		write (1, "$", 1);
 	free (env_name);
 	return (len);
-}
-
-char	*echo_get_env_name(char *dollar)
-{
-	size_t	idx;
-	char	*env_name;
-
-	idx = 1;
-	if (!(ft_isalpha (dollar[idx]) || dollar[idx] == '_'))
-		return (NULL);
-	while (dollar[idx])
-		if (!(ft_isdigit (dollar[idx]) || ft_isalpha (dollar[idx])
-				|| dollar[idx] == '_'))
-			break ;
-	else
-		idx++;
-	env_name = (char *) malloc ((idx) * sizeof (char));
-	if (!env_name)
-		return (NULL);
-	ft_memcpy (env_name, &dollar[1], idx - 1);
-	env_name[idx - 1] = '\0';
-	return (env_name);
 }
 
 size_t	echo_slash(char *slash)

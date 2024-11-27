@@ -6,13 +6,13 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 15:34:17 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/26 18:05:26 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/27 13:45:58 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	sh_run(char *cmmnd)
+int	sh_run(char *cmmnd, char **envp)
 {
 	char	**cmmnds_args[3];
 
@@ -28,9 +28,9 @@ int	sh_run(char *cmmnd)
 			|| !ft_strncmp (cmmnds_args[2][0], "unset", 5)
 			|| !ft_strncmp (cmmnds_args[2][0], "env", 3)
 			|| !ft_strncmp (cmmnds_args[2][0], "exit", 4))
-			run_builtins (cmmnds_args[2]);
+			run_builtins (cmmnds_args[2], envp);
 		else
-			sh_execve (cmmnds_args[2], NULL, cmmnds_args[0], cmmnd);
+			sh_execve (cmmnds_args[2], envp, cmmnds_args[0], cmmnd);
 		sh_ppfree (cmmnds_args[2]);
 		cmmnds_args[1]++;
 	}

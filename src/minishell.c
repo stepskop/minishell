@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/26 17:35:58 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/27 20:11:06 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,22 +21,25 @@ int	main(int argc, char *argv[], char **envp)
 	(void)argv;
 	(void)envp;
 	sig_init ();
-	_loop_ ();
+	_loop_ (envp);
 	rl_clear_history ();
 	return (EXIT_SUCCESS);
 }
 
-void	_loop_(void)
+void	_loop_(char **envp)
 {
 	char	*cmmnd[2];
 
+	cmmnd[1] = put_env("abcde7$HOME 77$USER -$USERT");
+	printf ("\nput_env(%s)->%s\n\n", "abcde7$HOME 77$USER -$USERT",  cmmnd[1]);
+	free (cmmnd[1]);
 	while (1)
 	{
 		cmmnd[1] = NULL;
 		rl_on_new_line ();
 		cmmnd[0] = get_command (&cmmnd[1]);
 		add_history (cmmnd[1]);
-		sh_run (cmmnd[1]);
+		sh_run (cmmnd[1], envp);
 		free (cmmnd[1]);
 	}
 }
