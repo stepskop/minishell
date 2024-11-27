@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/27 15:28:53 by username         ###   ########.fr       */
+/*   Updated: 2024/11/27 19:26:59 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@
 
 # define PPS "sksh:"
 
-typedef enum e_lex_token
+typedef enum e_token
 {
-	COMMAND,
+	CMD,
 	WORD,
 	PIPE,
 	GREAT,
@@ -38,9 +38,8 @@ typedef enum e_lex_token
 	LESSLESS,
 	LAST_STATUS,
 	AND,
-	AMPERSAND,
 	OR,
-}	t_lex_token;
+}	t_token;
 
 typedef struct s_cmd
 {
@@ -52,12 +51,19 @@ typedef struct s_cmd
 	char	**envp;
 }	t_cmd;
 
+typedef	struct s_args
+{
+	char			*data;
+	struct s_args 	*next;
+}	t_args;
+
 typedef struct s_prompt
 {
 	char			*str_val;
-	t_lex_token		lx_token;
+	t_token			token;
 	t_cmd			*cmd;
-	struct t_prompt	*next;
+	t_args			*args;
+	struct s_prompt	*next;
 	struct s_prompt *prev;
 }	t_prompt;
 
@@ -70,7 +76,11 @@ typedef struct s_counters_quotes
 void	_loop_(void);
 
 // Lexer
-t_prompt	*lexer(char *cmd_line);
+t_prompt	*lexer(char **cmd_line, char **envp);
+t_prompt 	*lex_add(t_token token, t_prompt *prev);
+
+// Lexer utils
+int			add_arg(char *str, t_args **args);
 
 // utils001.c
 size_t	sh_strlen(const char *s);
@@ -118,6 +128,8 @@ void	pwd(void);
 void	cd(char **argv);
 char	*cd_home(char **argv);
 
+// Err
+void	sh_err(char *str);
 #endif
 
 // valgrind

@@ -26,6 +26,10 @@ UTILS_SRC = sh_spit_q.c utils001.c utils002.c
 LEXER_DIR = lexer/
 LEXER_SRC = lexer.c
 
+# Error
+ERROR_DIR = error/
+ERROR_SRC = error.c
+
 SRC_DIR = ./src/
 SRCS = 	$(addprefix $(BUILTINS_DIR), $(BUILTINS_SRC)) \
 		$(addprefix $(UTILS_DIR), $(UTILS_SRC)) \
@@ -33,6 +37,7 @@ SRCS = 	$(addprefix $(BUILTINS_DIR), $(BUILTINS_SRC)) \
 		$(addprefix $(EXEC_DIR), $(EXEC_SRC)) \
 		$(addprefix $(PATH_DIR), $(PATH_SRC)) \
 		$(addprefix $(LEXER_DIR), $(LEXER_SRC)) \
+		$(addprefix $(ERROR_DIR), $(ERROR_SRC)) \
 		$(MAIN)
 
 MAIN = minishell.c
