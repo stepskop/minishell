@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 12:24:25 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/26 15:51:01 by username         ###   ########.fr       */
+/*   Updated: 2024/11/28 19:08:15 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*get_sh_path(int absolute_path)
 	ul = PATH_MAX;
 	str[1] = (char *) malloc (ul * sizeof (char));
 	if (!getcwd (str[1], ul))
-		write (1, "Something is wrong! (getcwd)\n", 29);
+		sh_err ("Something is wrong! (getcwd)");
 	ul = ft_strlen (str[0]);
 	if (absolute_path || ft_strncmp (str[0], str[1], ul))
 	{

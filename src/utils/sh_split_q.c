@@ -6,14 +6,11 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/26 18:28:54 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/28 18:32:26 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// ls; echo "123;321';'"; cd /
-// crash // ls; echo "32 1;1'23"; cd /;
 
 char	**sh_split_q(char *str, char c)
 {

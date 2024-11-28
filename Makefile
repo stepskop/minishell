@@ -16,7 +16,7 @@ EXEC_SRC = execve.c utils.c
 
 # Path
 PATH_DIR = path/
-PATH_SRC = path.c
+PATH_SRC = path.c a_split.c
 
 # Utilites
 UTILS_DIR = utils/

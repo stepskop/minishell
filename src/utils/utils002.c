@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/28 11:56:47 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/28 16:05:09 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,9 @@ char	*put_env(char *str)
 	char	*buffer;
 	size_t	idx[2];
 
-	if (str[0] == '\'')
+	if (!str)
+		return (NULL);
+	if (str[0] == '\'' && str[ft_strlen (str) - 1] == '\'')
 		return (ft_strdup (str));
 	buffer = NULL;
 	idx[0] = 0;
@@ -92,7 +94,13 @@ char	*get_env_name(char *dollar)
 
 	idx = 1;
 	if (!(ft_isalpha (dollar[idx]) || dollar[idx] == '_'))
-		return (NULL);
+	{
+		env_name = (char *) malloc (sizeof (char));
+		if (!env_name)
+			return (NULL);
+		env_name[0] = '\0';
+		return (env_name);
+	}
 	while (dollar[idx])
 		if (!(ft_isdigit (dollar[idx]) || ft_isalpha (dollar[idx])
 				|| dollar[idx] == '_'))

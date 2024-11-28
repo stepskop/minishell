@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/27 19:26:59 by username         ###   ########.fr       */
+/*   Updated: 2024/11/28 19:12:47 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <limits.h>
 # include <dirent.h>
 # include <errno.h>
+# include <linux/limits.h>
 
 # define PPS "sksh:"
 
@@ -103,9 +104,13 @@ char	*sh_split_map(char *str, char c);
 int		sh_split_couont(char *map, size_t len);
 char	*sh_split_element(char *map, size_t len, int elem);
 
+// sh_split_a.c
+t_list	*a_split(char *str, char c);
+t_list	*a_split_elem(char *str, size_t idx[]);
+void	a_split_clear(void *elem);
+
 // execve.c
 int		sh_run(char *cmmnd, char **envp);
-void	sp_print_cnf(char *cmmnd);
 void	sh_execve(char **argv, char **envp, char **f_cmmnds, char *f_cmmnd);
 
 // signal.c
