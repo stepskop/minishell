@@ -51,21 +51,20 @@ typedef struct s_cmd
 	char	**envp;
 }	t_cmd;
 
-typedef	struct s_args
+typedef struct s_args
 {
 	char			*data;
-	struct s_args 	*next;
+	struct s_args	*next;
 }	t_args;
 
-typedef struct s_prompt
+typedef struct s_input
 {
 	char			*str_val;
 	t_token			token;
-	t_cmd			*cmd;
 	t_args			*args;
-	struct s_prompt	*next;
-	struct s_prompt *prev;
-}	t_prompt;
+	struct s_input	*next;
+	struct s_input	*prev;
+}	t_input;
 
 typedef struct s_counters_quotes
 {
@@ -73,14 +72,16 @@ typedef struct s_counters_quotes
 	unsigned int	double_quote;
 }	t_counters_quotes;
 
-void	_loop_(void);
+void	_loop_(char **envp);
 
 // Lexer
-t_prompt	*lexer(char **cmd_line, char **envp);
-t_prompt 	*lex_add(t_token token, t_prompt *prev);
+t_input	*lexer(char **cmd_line);
 
 // Lexer utils
-int			add_arg(char *str, t_args **args);
+int		lx_add_arg(char *str, t_args **args);
+t_token	lx_get_token(char *str);
+void	lx_free_tokens(t_input *lst);
+int		lx_accept_sub(t_input node);
 
 // utils001.c
 size_t	sh_strlen(const char *s);
@@ -131,6 +132,9 @@ void	pwd(void);
 // cd.c
 void	cd(char **argv);
 char	*cd_home(char **argv);
+
+// env.c
+void	env(char **envp);
 
 // Err
 void	sh_err(char *str);

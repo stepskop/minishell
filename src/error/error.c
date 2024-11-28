@@ -14,7 +14,7 @@
 
 void	sh_err(char *str)
 {
-	char *msg;
+	char	*msg;
 
 	msg = ft_strjoin("sksh: ", str);
 	if (!msg)

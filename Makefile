@@ -12,7 +12,7 @@ SIGNALS_SRC = signal.c
 
 # Exec
 EXEC_DIR = exec/
-EXEC_SRC = execve.c cmd_utils.c
+EXEC_SRC = execve.c utils.c
 
 # Path
 PATH_DIR = path/
@@ -24,7 +24,7 @@ UTILS_SRC = sh_split_q.c utils001.c utils002.c
 
 # Lexer
 LEXER_DIR = lexer/
-LEXER_SRC = lexer.c
+LEXER_SRC = lexer.c utils.c
 
 # Error
 ERROR_DIR = error/
@@ -79,6 +79,7 @@ $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)$(EXEC_DIR)
 	mkdir -p $(OBJ_DIR)$(PATH_DIR)
 	mkdir -p $(OBJ_DIR)$(LEXER_DIR)
+	mkdir -p $(OBJ_DIR)$(ERROR_DIR)
 
 $(OBJ_DIR)%o: $(SRC_DIR)%c $(INCLUDES)
 	$(CC) $(CCFLAGS) $(HEADERS) $(LIB_HEADERS) -c $< -o $@

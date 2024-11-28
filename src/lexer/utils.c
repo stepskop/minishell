@@ -12,7 +12,29 @@
 
 #include "minishell.h"
 
-int	add_arg(char *str, t_args **args)
+t_token	lx_get_token(char *str)
+{
+	if (ft_strcmp(str, "<") == 0)
+		return (LESS);
+	else if (ft_strcmp(str, "<<") == 0)
+		return (LESSLESS);
+	else if (ft_strcmp(str, "|") == 0)
+		return (PIPE);
+	else if (ft_strcmp(str, "||") == 0)
+		return (OR);
+	else if (ft_strcmp(str, "&&") == 0)
+		return (AND);
+	else if (ft_strcmp(str, ">") == 0)
+		return (GREAT);
+	else if (ft_strcmp(str, ">>") == 0)
+		return (GREATGREAT);
+	else if (ft_strcmp(str, "$?") == 0)
+		return (LAST_STATUS);
+	else
+		return (WORD);
+}
+
+int	lx_add_arg(char *str, t_args **args)
 {
 	t_args	*new;
 	t_args	*curr;
@@ -31,17 +53,35 @@ int	add_arg(char *str, t_args **args)
 	return (1);
 }
 
-t_prompt *lex_add(t_token token, t_prompt *prev)
+int	lx_accept_sub(t_input node)
 {
-	t_prompt	*new;
+	if (node.token == CMD)
+		return (1);
+	else if ((node.token == GREAT || node.token == GREATGREAT || \
+		node.token == LESS || node.token == LESSLESS) && node.args == NULL)
+		return (1);
+	return (0);
+}
 
-	new = malloc(sizeof(t_prompt));
-	if (!new)
-		return (perror(NULL), NULL);
-	new->token = token;
-	new->next = NULL;
-	new->prev = prev;
-	new->cmd = NULL;
-	new->args = NULL;
-	return (new);
+void	lx_free_tokens(t_input *lst)
+{
+	t_input	*curr;
+	t_args	*curr_arg;
+	t_input	*tmp;
+	t_args	*tmp_arg;
+
+	curr = lst;
+	while (curr)
+	{
+		tmp = curr->next;
+		curr_arg = curr->args;
+		while (curr_arg)
+		{
+			tmp_arg = curr_arg->next;
+			free(curr_arg);
+			curr_arg = tmp_arg;
+		}
+		free(curr);
+		curr = tmp;
+	}
 }

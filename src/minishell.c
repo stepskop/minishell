@@ -29,16 +29,31 @@ int	main(int argc, char *argv[], char **envp)
 void	_loop_(char **envp)
 {
 	char	*cmmnd[2];
+	t_input	*lst;
+	char	**splitted;
 
-	cmmnd[1] = put_env("abcde7$HOME 77$USER -$USERT");
-	printf ("\nput_env(%s)->%s\n\n", "abcde7$HOME 77$USER -$USERT",  cmmnd[1]);
-	free (cmmnd[1]);
+	(void)lst;
 	while (1)
 	{
 		cmmnd[1] = NULL;
 		rl_on_new_line ();
 		cmmnd[0] = get_command (&cmmnd[1]);
 		add_history (cmmnd[1]);
+		splitted = sh_split_q(cmmnd[0], ' ');
+		lst = lexer(splitted);
+		while (lst)
+		{
+			printf("ITEM: %s, TOKEN: %i\n", lst->str_val, lst->token);
+			if (lst->args)
+			{
+				while (lst->args)
+				{
+					printf("\tSUB_ARG: %s\n", lst->args->data);
+					lst->args = lst->args->next;
+				}
+			}
+			lst = lst->next;
+		}
 		sh_run (cmmnd[1], envp);
 		free (cmmnd[1]);
 	}
