@@ -8,7 +8,7 @@
 			"name": "C/C++: gcc build and debug",
 			"type": "cppdbg",
 			"request": "launch",
-			"program": "${workspaceRoot}/${config:current_project_out}",
+			"program": "${workspaceRoot}/minishell",
 			"stopAtEntry": false,
 			"cwd": "${workspaceRoot}",
 			"environment": [],

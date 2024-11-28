@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/27 19:47:04 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/27 19:26:59 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,44 @@
 
 # define PPS "sksh:"
 
+typedef enum e_token
+{
+	CMD,
+	WORD,
+	PIPE,
+	GREAT,
+	GREATGREAT,
+	LESS,
+	LESSLESS,
+	AND,
+	OR,
+}	t_token;
+
+typedef struct s_cmd
+{
+	int		in_fd;
+	int		out_fd;
+	char	*path;
+	char	**cmd_line;
+	int		pid;
+	char	**envp;
+}	t_cmd;
+
+typedef struct s_args
+{
+	char			*data;
+	struct s_args	*next;
+}	t_args;
+
+typedef struct s_input
+{
+	char			*str_val;
+	t_token			token;
+	t_args			*args;
+	struct s_input	*next;
+	struct s_input	*prev;
+}	t_input;
+
 typedef struct s_counters_quotes
 {
 	unsigned int	single_quote;
@@ -34,6 +72,16 @@ typedef struct s_counters_quotes
 }	t_counters_quotes;
 
 void	_loop_(char **envp);
+
+// Lexer
+t_input	*lexer(char **cmd_line);
+void	print_lex_dbg(t_input *lst);
+
+// Lexer utils
+int		lx_add_arg(char *str, t_args **args);
+t_token	lx_get_token(char *str);
+void	lx_free_tokens(t_input *lst);
+int		lx_accept_sub(t_input node);
 
 // utils001.c
 size_t	sh_strlen(const char *s);
@@ -88,6 +136,8 @@ char	*cd_home(char **argv);
 // env.c
 void	env(char **envp);
 
+// Err
+void	sh_err(char *str);
 #endif
 
 // valgrind

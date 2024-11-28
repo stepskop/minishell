@@ -49,6 +49,4 @@ void	sigact(int sig, siginfo_t *info, void *context)
 	{
 		write (1, "\n(sa_sigaction)-> SIGTERM\n", 26);
 	}
-	else if (sig == SIGCHLD)
-		;
 }

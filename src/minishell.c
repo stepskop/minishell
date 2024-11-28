@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/28 11:47:55 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/28 14:00:19 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,19 @@ int	main(int argc, char *argv[], char **envp)
 void	_loop_(char **envp)
 {
 	char	*cmmnd[2];
+	t_input	*lst;
+	char	**splitted;
 
+	(void)lst;
 	while (1)
 	{
 		cmmnd[1] = NULL;
 		rl_on_new_line ();
 		cmmnd[0] = get_command (&cmmnd[1]);
 		add_history (cmmnd[1]);
+		splitted = sh_split_q(cmmnd[0], ' ');
+		lst = lexer(splitted);
+		print_lex_dbg(lst);
 		sh_run (cmmnd[1], envp);
 		free (cmmnd[1]);
 	}

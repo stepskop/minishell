@@ -12,7 +12,7 @@ SIGNALS_SRC = signal.c
 
 # Exec
 EXEC_DIR = exec/
-EXEC_SRC = execve.c cmd_utils.c
+EXEC_SRC = execve.c utils.c
 
 # Path
 PATH_DIR = path/
@@ -22,12 +22,22 @@ PATH_SRC = path.c
 UTILS_DIR = utils/
 UTILS_SRC = sh_split_q.c utils001.c utils002.c
 
+# Lexer
+LEXER_DIR = lexer/
+LEXER_SRC = lexer.c utils.c
+
+# Error
+ERROR_DIR = error/
+ERROR_SRC = error.c
+
 SRC_DIR = ./src/
 SRCS = 	$(addprefix $(BUILTINS_DIR), $(BUILTINS_SRC)) \
 		$(addprefix $(UTILS_DIR), $(UTILS_SRC)) \
 		$(addprefix $(SIGNALS_DIR), $(SIGNALS_SRC)) \
 		$(addprefix $(EXEC_DIR), $(EXEC_SRC)) \
 		$(addprefix $(PATH_DIR), $(PATH_SRC)) \
+		$(addprefix $(LEXER_DIR), $(LEXER_SRC)) \
+		$(addprefix $(ERROR_DIR), $(ERROR_SRC)) \
 		$(MAIN)
 
 MAIN = minishell.c
@@ -68,6 +78,8 @@ $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)$(SIGNALS_DIR)
 	mkdir -p $(OBJ_DIR)$(EXEC_DIR)
 	mkdir -p $(OBJ_DIR)$(PATH_DIR)
+	mkdir -p $(OBJ_DIR)$(LEXER_DIR)
+	mkdir -p $(OBJ_DIR)$(ERROR_DIR)
 
 $(OBJ_DIR)%o: $(SRC_DIR)%c $(INCLUDES)
 	$(CC) $(CCFLAGS) $(HEADERS) $(LIB_HEADERS) -c $< -o $@
