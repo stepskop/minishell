@@ -32,7 +32,7 @@ void	_loop_(char **envp)
 	t_input	*lst;
 	char	**splitted;
 
-	(void)lst;
+	lst = NULL;
 	while (1)
 	{
 		cmmnd[1] = NULL;
@@ -40,8 +40,10 @@ void	_loop_(char **envp)
 		cmmnd[0] = get_command (&cmmnd[1]);
 		add_history (cmmnd[1]);
 		splitted = sh_split_q(cmmnd[0], ' ');
-		lst = lexer(splitted);
-		print_lex_dbg(lst);
+		if (splitted && splitted[0])
+			lst = lexer(splitted);
+		if (lst)
+			print_lex_dbg(lst);
 		sh_run (cmmnd[1], envp);
 		free (cmmnd[1]);
 	}
