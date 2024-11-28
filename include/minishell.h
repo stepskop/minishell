@@ -36,7 +36,6 @@ typedef enum e_token
 	GREATGREAT,
 	LESS,
 	LESSLESS,
-	LAST_STATUS,
 	AND,
 	OR,
 }	t_token;
