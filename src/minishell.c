@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/27 20:11:06 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/28 11:47:55 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,6 @@ void	_loop_(char **envp)
 {
 	char	*cmmnd[2];
 
-	cmmnd[1] = put_env("abcde7$HOME 77$USER -$USERT");
-	printf ("\nput_env(%s)->%s\n\n", "abcde7$HOME 77$USER -$USERT",  cmmnd[1]);
-	free (cmmnd[1]);
 	while (1)
 	{
 		cmmnd[1] = NULL;
