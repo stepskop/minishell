@@ -74,3 +74,22 @@ t_input	*lexer(char **cmd_raw)
 	}
 	return (lst);
 }
+
+void	print_lex_dbg(t_input *lst)
+{
+	printf("------LEXER DBG-------\n");
+	while (lst)
+	{
+		printf("ITEM: %s, TOKEN: %i\n", lst->str_val, lst->token);
+		if (lst->args)
+		{
+			while (lst->args)
+			{
+				printf("\tSUB_ARG: %s\n", lst->args->data);
+				lst->args = lst->args->next;
+			}
+		}
+		lst = lst->next;
+	}
+	printf("------LEXER DBG END-------\n");
+}

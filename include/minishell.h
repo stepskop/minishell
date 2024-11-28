@@ -76,6 +76,7 @@ void	_loop_(char **envp);
 
 // Lexer
 t_input	*lexer(char **cmd_line);
+void	print_lex_dbg(t_input *lst);
 
 // Lexer utils
 int		lx_add_arg(char *str, t_args **args);

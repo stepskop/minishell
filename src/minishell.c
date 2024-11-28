@@ -41,19 +41,7 @@ void	_loop_(char **envp)
 		add_history (cmmnd[1]);
 		splitted = sh_split_q(cmmnd[0], ' ');
 		lst = lexer(splitted);
-		while (lst)
-		{
-			printf("ITEM: %s, TOKEN: %i\n", lst->str_val, lst->token);
-			if (lst->args)
-			{
-				while (lst->args)
-				{
-					printf("\tSUB_ARG: %s\n", lst->args->data);
-					lst->args = lst->args->next;
-				}
-			}
-			lst = lst->next;
-		}
+		print_lex_dbg(lst);
 		sh_run (cmmnd[1], envp);
 		free (cmmnd[1]);
 	}
