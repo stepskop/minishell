@@ -6,7 +6,7 @@
 /*   By: username <your@email.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 18:15:35 by username          #+#    #+#             */
-/*   Updated: 2024/11/27 19:15:15 by username         ###   ########.fr       */
+/*   Updated: 2024/11/28 17:37:20 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,21 +66,13 @@ int	lx_accept_sub(t_input node)
 void	lx_free_tokens(t_input *lst)
 {
 	t_input	*curr;
-	t_args	*curr_arg;
 	t_input	*tmp;
-	t_args	*tmp_arg;
 
 	curr = lst;
 	while (curr)
 	{
 		tmp = curr->next;
-		curr_arg = curr->args;
-		while (curr_arg)
-		{
-			tmp_arg = curr_arg->next;
-			free(curr_arg);
-			curr_arg = tmp_arg;
-		}
+		free_args(curr->args);
 		free(curr);
 		curr = tmp;
 	}

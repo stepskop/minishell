@@ -1,6 +1,6 @@
 # Pipes, Redirections
-#PIPES_DIR = pipes/
-#PIPES_SRC = pipes.c
+#PIPEX_DIR = pipex/
+#PIPEX_SRC = pipex.c
 
 # Commands, built-in stuff
 BUILTINS_DIR = builtins/
@@ -20,7 +20,7 @@ PATH_SRC = path.c
 
 # Utilites
 UTILS_DIR = utils/
-UTILS_SRC = sh_split_q.c utils001.c utils002.c
+UTILS_SRC = sh_split_q.c utils001.c utils002.c memory.c
 
 # Lexer
 LEXER_DIR = lexer/
@@ -30,6 +30,9 @@ LEXER_SRC = lexer.c utils.c
 ERROR_DIR = error/
 ERROR_SRC = error.c
 
+PIPELINE_DIR = pipeline/
+PIPELINE_SRC = pipeline.c
+
 SRC_DIR = ./src/
 SRCS = 	$(addprefix $(BUILTINS_DIR), $(BUILTINS_SRC)) \
 		$(addprefix $(UTILS_DIR), $(UTILS_SRC)) \
@@ -38,6 +41,7 @@ SRCS = 	$(addprefix $(BUILTINS_DIR), $(BUILTINS_SRC)) \
 		$(addprefix $(PATH_DIR), $(PATH_SRC)) \
 		$(addprefix $(LEXER_DIR), $(LEXER_SRC)) \
 		$(addprefix $(ERROR_DIR), $(ERROR_SRC)) \
+		$(addprefix $(PIPELINE_DIR), $(PIPELINE_SRC))
 		$(MAIN)
 
 MAIN = minishell.c
@@ -80,6 +84,7 @@ $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)$(PATH_DIR)
 	mkdir -p $(OBJ_DIR)$(LEXER_DIR)
 	mkdir -p $(OBJ_DIR)$(ERROR_DIR)
+	mkdir -p $(OBJ_DIR)$(PIPELINE_DIR)
 
 $(OBJ_DIR)%o: $(SRC_DIR)%c $(INCLUDES)
 	$(CC) $(CCFLAGS) $(HEADERS) $(LIB_HEADERS) -c $< -o $@

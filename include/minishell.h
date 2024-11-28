@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/27 19:26:59 by username         ###   ########.fr       */
+/*   Updated: 2024/11/28 17:36:41 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,11 @@ typedef struct s_input
 	struct s_input	*next;
 	struct s_input	*prev;
 }	t_input;
+
+typedef struct s_pipeline
+{
+	int		in_file;
+}	t_pipeline;
 
 typedef struct s_counters_quotes
 {
@@ -138,6 +143,10 @@ void	env(char **envp);
 
 // Err
 void	sh_err(char *str);
+
+// Memory
+void	free_args(t_args *args);
+
 #endif
 
 // valgrind
