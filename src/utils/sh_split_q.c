@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   sh_spit_q.c                                        :+:      :+:    :+:   */
+/*   sh_split_q.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/25 19:49:37 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/26 18:28:54 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,31 +15,32 @@
 // ls; echo "123;321';'"; cd /
 // crash // ls; echo "32 1;1'23"; cd /;
 
-char	**sh_spit_q(char *str, char c)
+char	**sh_split_q(char *str, char c)
 {
 	char	*map;
 	char	**result;
 	int		counter;
 	int		idx;
 
-	map = sh_spit_map (str, c);
+	map = sh_split_map (str, c);
 	if (!map)
 		return (NULL);
-	counter = sh_spit_couont(map, ft_strlen (str));
+	counter = sh_split_couont(map, ft_strlen (str));
 	result = (char **) malloc ((counter + 1) * sizeof (char **));
 	if (!result)
 		return (free (map), NULL);
 	idx = 0;
 	while (idx < counter)
 	{
-		result[idx] = sh_spit_element (map, ft_strlen (str), idx + 1);
+		result[idx] = sh_split_element (map, ft_strlen (str), idx + 1);
 		idx++;
 	}
 	result[counter] = NULL;
+	free (map);
 	return (result);
 }
 
-char	*sh_spit_map(char *str, char c)
+char	*sh_split_map(char *str, char c)
 {
 	char	*map;
 	size_t	idx;
@@ -66,7 +67,7 @@ char	*sh_spit_map(char *str, char c)
 	return (map);
 }
 
-int	sh_spit_couont(char *map, size_t len)
+int	sh_split_couont(char *map, size_t len)
 {
 	size_t	idx;
 	int		counter;
@@ -89,7 +90,7 @@ int	sh_spit_couont(char *map, size_t len)
 	return (counter);
 }
 
-char	*sh_spit_element(char *map, size_t len, int elem)
+char	*sh_split_element(char *map, size_t len, int elem)
 {
 	size_t	idx;
 	char	*result;

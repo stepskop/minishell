@@ -4,7 +4,7 @@
 
 # Commands, built-in stuff
 BUILTINS_DIR = builtins/
-BUILTINS_SRC = echo.c pwd.c cd.c run_builtins.c
+BUILTINS_SRC = echo.c pwd.c cd.c env.c run_builtins.c
 
 # Signals
 SIGNALS_DIR = signals/
@@ -20,7 +20,7 @@ PATH_SRC = path.c
 
 # Utilites
 UTILS_DIR = utils/
-UTILS_SRC = sh_spit_q.c utils001.c utils002.c
+UTILS_SRC = sh_split_q.c utils001.c utils002.c
 
 # Lexer
 LEXER_DIR = lexer/

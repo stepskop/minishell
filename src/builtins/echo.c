@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 15:11:55 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/26 15:16:15 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/27 18:31:30 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ void	echo_write(char *arg)
 		{
 			if (q != 1 && arg[idx[0]] == '$')
 				idx[0] += echo_dollar (&arg[idx[0]]);
+			if (q != 1 && arg[idx[0]] == '\\')
+				idx[0] += echo_slash (&arg[idx[0]]);
 			else
 				write (1, &arg[idx[0]], 1);
 		}
@@ -61,26 +63,34 @@ void	echo_write(char *arg)
 
 size_t	echo_dollar(char *dollar)
 {
-	char	**split;
+	char	*env_name;
 	size_t	len;
 	char	*env_var;
 
-	split = ft_split (dollar, ' ');
-	len = 1;
-	if (split && *split)
+	env_name = get_env_name(dollar);
+	len = 0;
+	if (env_name)
 	{
-		len = ft_strlen (*split);
+		len = ft_strlen (env_name) + 1;
 		if (len > 1)
 		{
-			env_var = getenv(&(*split)[1]);
+			env_var = getenv(env_name);
 			if (env_var)
 				write (1, env_var, ft_strlen (env_var));
 			else
-				len = 1;
+				len = 0;
 		}
 	}
-	if (len == 1)
+	if (len == 0)
 		write (1, "$", 1);
-	sh_ppfree (split);
-	return (len - 1);
+	free (env_name);
+	return (len);
+}
+
+size_t	echo_slash(char *slash)
+{
+	if (slash[1] == '$')
+		return (write (1, "$", 1), 1);
+	else
+		return (write (1, "\\", 1), 0);
 }

@@ -6,21 +6,21 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 15:34:17 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/25 18:20:38 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/27 13:45:58 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	sh_run(char *cmmnd)
+int	sh_run(char *cmmnd, char **envp)
 {
 	char	**cmmnds_args[3];
 
-	cmmnds_args[0] = sh_spit_q (cmmnd, ';');
+	cmmnds_args[0] = sh_split_q (cmmnd, ';');
 	cmmnds_args[1] = cmmnds_args[0];
 	while (*cmmnds_args[1])
 	{
-		cmmnds_args[2] = sh_spit_q (*cmmnds_args[1], ' ');
+		cmmnds_args[2] = sh_split_q (*cmmnds_args[1], ' ');
 		if (!ft_strncmp (cmmnds_args[2][0], "echo", 4)
 			|| !ft_strncmp (cmmnds_args[2][0], "cd", 2)
 			|| !ft_strncmp (cmmnds_args[2][0], "pwd", 3)
@@ -28,45 +28,14 @@ int	sh_run(char *cmmnd)
 			|| !ft_strncmp (cmmnds_args[2][0], "unset", 5)
 			|| !ft_strncmp (cmmnds_args[2][0], "env", 3)
 			|| !ft_strncmp (cmmnds_args[2][0], "exit", 4))
-			run_builtins (cmmnds_args[2]);
+			run_builtins (cmmnds_args[2], envp);
 		else
-			sh_execve (cmmnds_args[2], NULL, cmmnds_args[0], cmmnd);
+			sh_execve (cmmnds_args[2], envp, cmmnds_args[0], cmmnd);
 		sh_ppfree (cmmnds_args[2]);
 		cmmnds_args[1]++;
 	}
 	return (sh_ppfree (cmmnds_args[0]), EXIT_SUCCESS);
 }
-
-char	**sh_split(char *cmmnd, char c)
-{
-	return (ft_split (cmmnd, c));
-}
-
-// char	*get_first_str(char *cmmnd, char c)
-// {
-// 	char	*cmmnd_[2];
-// 	char	**ppstr;
-// 	size_t	i[3];
-
-// 	cmmnd_[0] = cmmnd;
-// 	cmmnd_[1] = cmmnd_[0];
-// 	i[0] = 0;
-// 	i[1] = 0;
-// 	while (*cmmnd_[1])
-// 	{
-// 		if (*cmmnd_[1] == '"')
-// 			i[0] != i[0];
-// 		if (!i[0] && (*(cmmnd_[1] + 1) == c || *(cmmnd_[1] + 1) == '\0'))
-// 			if (i[1] > 0)
-// 			{
-// 				cmmnd_[0] = cmmnd_[1];
-// 				i[1] = 0;
-// 			}
-// 		else if (i[0] || *(cmmnd_[1]) != c)
-// 			i[1]++;
-// 		cmmnd_[1]++;
-// 	}
-// }
 
 void	sp_print_cnf(char *cmmnd)
 {

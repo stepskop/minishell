@@ -91,18 +91,21 @@ void	sh_ppfree(char	**pp);
 
 // utils002.c
 char	*sh_strcat(char *s1, char *s2);
+char	*put_env(char *str);
+char	*str_join_env(char *str, char *part1, size_t idx[]);
+char	*get_env_name(char *dollar);
+char	*strs_cat(char *str_a, char *str_b, char *str_c, size_t idx_b[]);
 
-// sh_spit_q.c
-char	**sh_spit_q(char *str, char c);
-char	*sh_spit_map(char *str, char c);
-int		sh_spit_couont(char *map, size_t len);
-char	*sh_spit_element(char *map, size_t len, int elem);
+// sh_split_q.c
+char	**sh_split_q(char *str, char c);
+char	*sh_split_map(char *str, char c);
+int		sh_split_couont(char *map, size_t len);
+char	*sh_split_element(char *map, size_t len, int elem);
 
 // execve.c
-int		sh_run(char *cmmnd);
+int		sh_run(char *cmmnd, char **envp);
 void	sp_print_cnf(char *cmmnd);
 void	sh_execve(char **argv, char **envp, char **f_cmmnds, char *f_cmmnd);
-int		cmmdn_running(int f);
 
 // signal.c
 void	sig_init(void);
@@ -114,12 +117,13 @@ char	*get_sh_pps(void);
 char	*get_cmd(char *cmd);
 
 // run_builtins.c
-int		run_builtins(char **argv);
+int		run_builtins(char **argv, char **envp);
 
 // echo.c
 void	echo(char **argv);
 void	echo_write(char *arg);
 size_t	echo_dollar(char *dollar);
+size_t	echo_slash(char *slash);
 
 // pwd.c
 void	pwd(void);

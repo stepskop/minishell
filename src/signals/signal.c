@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:51:45 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/22 16:13:54 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/27 13:09:55 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,5 @@ void	sigact(int sig, siginfo_t *info, void *context)
 		write (1, "\n(sa_sigaction)-> SIGTERM\n", 26);
 	}
 	else if (sig == SIGCHLD)
-	{}
+		;
 }
