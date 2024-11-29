@@ -16,11 +16,11 @@ EXEC_SRC = execve.c utils.c
 
 # Path
 PATH_DIR = path/
-PATH_SRC = path.c a_split.c
+PATH_SRC = path.c a_split.c asterisk.c
 
 # Utilites
 UTILS_DIR = utils/
-UTILS_SRC = sh_split_q.c utils001.c utils002.c
+UTILS_SRC = sh_split_q.c utils001.c utils002.c utils003.c
 
 # Lexer
 LEXER_DIR = lexer/

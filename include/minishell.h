@@ -6,12 +6,14 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/28 19:12:47 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/29 05:42:46 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
+# define _GNU_SOURCE
 
 # include "libft.h"
 # include <stdlib.h>
@@ -98,13 +100,21 @@ char	*str_join_env(char *str, char *part1, size_t idx[]);
 char	*get_env_name(char *dollar);
 char	*strs_cat(char *str_a, char *str_b, char *str_c, size_t idx_b[]);
 
+// utils002.c
+char	*sh_strcat_free(char *s1, char *s2, int opt);
+
 // sh_split_q.c
 char	**sh_split_q(char *str, char c);
 char	*sh_split_map(char *str, char c);
 int		sh_split_couont(char *map, size_t len);
 char	*sh_split_element(char *map, size_t len, int elem);
 
-// sh_split_a.c
+// asterisk.c
+t_list	*sh_asterisk(char *astr);
+void	get_aster_dir(char *path, t_list *dirs, t_list	**result);
+int		wildcard_check(char *wildcard, char *str);
+
+// a_split.c
 t_list	*a_split(char *str, char c);
 t_list	*a_split_elem(char *str, size_t idx[]);
 void	a_split_clear(void *elem);

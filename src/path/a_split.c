@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:43:38 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/28 18:57:32 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/28 23:42:05 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ t_list	*a_split_elem(char *str, size_t idx[])
 	elem = (char *) malloc ((idx[1] - idx[0] + 2) * sizeof (char));
 	if (!elem)
 		return (NULL);
-	ft_memcpy (elem, &str[idx[0]], idx[0] + 1);
+	ft_memcpy (elem, &str[idx[0]], idx[1] - idx[0] + 1);
 	elem[idx[1] - idx[0] + 1] = '\0';
 	return (ft_lstnew (elem));
 }
