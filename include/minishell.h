@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/29 05:42:46 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/01 13:46:44 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,14 @@ typedef struct s_counters_quotes
 	unsigned int	double_quote;
 }	t_counters_quotes;
 
+typedef struct s_dir_element
+{
+	unsigned char	d_type;
+	char			*d_name;
+	char			*full_name;
+	char			*rel_name;
+}	t_de;
+
 void	_loop_(char **envp);
 
 // Lexer
@@ -100,8 +108,9 @@ char	*str_join_env(char *str, char *part1, size_t idx[]);
 char	*get_env_name(char *dollar);
 char	*strs_cat(char *str_a, char *str_b, char *str_c, size_t idx_b[]);
 
-// utils002.c
+// utils003.c
 char	*sh_strcat_free(char *s1, char *s2, int opt);
+void	sh_del_arr(void *arr[], int arr_size);
 
 // sh_split_q.c
 char	**sh_split_q(char *str, char c);
@@ -111,8 +120,19 @@ char	*sh_split_element(char *map, size_t len, int elem);
 
 // asterisk.c
 t_list	*sh_asterisk(char *astr);
-void	get_aster_dir(char *path, t_list *dirs, t_list	**result);
+t_list	*get_dirs(char *pattern);
+int		get_lst_dirs(t_list **lst, char *pattern, char *path[]);
+void	aster_recursion(t_list *dir, t_list *dirs, t_list **result);
 int		wildcard_check(char *wildcard, char *str);
+
+// asterisk02.c
+char	*sh_remove_last_c(char *str, char c);
+t_de	*sh_new_de(unsigned char d_type, char *d_name, char *path[]);
+void	dirs_clean(void *content);
+int		dirs_check(char *d_name, char *pttrn, unsigned char d_type);
+void	dirs_init(t_list *dirs[], char *pathes[], t_list *dir);
+void	dirs_print(void *content);
+void	list_print(void *content);
 
 // a_split.c
 t_list	*a_split(char *str, char c);

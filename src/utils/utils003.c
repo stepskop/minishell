@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/29 05:42:21 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/30 17:45:23 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,4 +27,16 @@ char	*sh_strcat_free(char *s1, char *s2, int opt)
 		free (s2);
 	}
 	return (result);
+}
+
+void	sh_del_arr(void *arr[], int arr_size)
+{
+	int	idx;
+
+	idx = 0;
+	while (idx < arr_size)
+	{
+		free (arr[idx]);
+		idx++;
+	}
 }

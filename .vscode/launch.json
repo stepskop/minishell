@@ -9,6 +9,7 @@
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${workspaceRoot}/minishell",
+			"args": ["~/*43*/*mini*/../mini*/*"],
 			"stopAtEntry": false,
 			"cwd": "${workspaceRoot}",
 			"environment": [],

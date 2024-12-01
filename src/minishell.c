@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/29 06:35:11 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/01 14:00:31 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,6 @@ char	*get_command(char **cmmnd);
 
 int	main(int argc, char *argv[], char **envp)
 {
-	// sh_asterisk ("/home/ksorokol/43_team/minishell/*e/*");
-	sh_asterisk ("/bin/../bin/.././../*");
-	return (EXIT_SUCCESS);
-
 	(void)argc;
 	(void)argv;
 	(void)envp;
