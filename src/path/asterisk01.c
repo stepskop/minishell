@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:43:38 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/01 13:51:24 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/01 20:10:12 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ t_list	*sh_asterisk(char *astr)
 	dirs[0] = a_split (astr, '/');
 	path[0] = NULL;
 	result = NULL;
+	ft_lstiter (dirs[0], &list_print);
 	dirs[1] = get_dirs (dirs[0]->content);
 	dirs[2] = dirs[1];
 	while (dirs[2])
@@ -49,17 +50,22 @@ t_list	*get_dirs(char *pattern)
 	result = NULL;
 	if (!pattern)
 		return (NULL);
-	else if (pattern[0] == '~' && (pattern[1]
-			&& (pattern[1] == '/' || pattern[1] == '\0')))
-	{
-		str[0] = getenv ("HOME");
-		if (str[0])
-			ft_lstadd_back (&result, ft_lstnew (sh_new_de(DT_DIR, NULL, str)));
-	}
-	else if (ft_strcmp (pattern, "*"))
+	else if (pattern[0] == '/')
+		result = aster_slash (pattern);
+	else if (pattern[0] == '~')
+		result = aster_tilde (pattern);
+	else if (pattern[0] == '.')
+		result = aster_dot (pattern);
+	if (result)
+		return (result);
+	if (ft_strchr (pattern, '*'))
 		get_lst_dirs (&result, pattern, str);
 	else
-		ft_lstadd_back (&result, ft_lstnew (ft_strdup (pattern)));
+	{
+		str[0] = ft_strdup (pattern);
+		str[1] = ft_strdup (pattern);
+		ft_lstadd_back (&result, ft_lstnew (sh_new_de(DT_DIR, pattern, str)));
+	}
 	return (result);
 }
 
@@ -71,7 +77,10 @@ int	get_lst_dirs(t_list **lst, char *pattern, char *pathes[])
 
 	pttrn = sh_remove_last_c (ft_strdup (pattern), '/');
 	if (!pathes[0])
+	{
+		pathes[0] = ft_strdup ("");
 		pathes[1] = get_sh_path(1);
+	}
 	dp = opendir (pathes[1]);
 	if (dp == NULL)
 		return (0);
@@ -92,14 +101,11 @@ void	aster_recursion(t_list *dir, t_list *pttrns, t_list **result)
 	t_list	*dirs[2];
 	char	*pathes[2];
 
-	// dirs[0] = NULL;
 	if (pttrns)
 	{
 		if (((t_de *)dir->content)->d_type == DT_DIR)
 		{
 			dirs_init (dirs, pathes, dir);
-			// pathes[0] = ft_strdup (((t_de *)dir->content)->rel_name);
-			// pathes[1] = ft_strdup (((t_de *)dir->content)->full_name);
 			get_lst_dirs (&dirs[0], pttrns->content, pathes);
 			dirs[1] = dirs[0];
 			while (dirs[1])
@@ -121,7 +127,7 @@ void	aster_recursion(t_list *dir, t_list *pttrns, t_list **result)
 int	wildcard_check(char *wildcard, char *str)
 {
 	t_list	*parts[2];
-	char	*part[2];
+	char	*part[3];
 
 	part[1] = str;
 	parts[0] = a_split (wildcard, '*');
@@ -130,8 +136,8 @@ int	wildcard_check(char *wildcard, char *str)
 	{
 		part[0] = ft_strdup(parts[1]->content);
 		part[0] = sh_remove_last_c (part[0], '*');
-		part[1] = ft_strnstr (part[1], part[0], ft_strlen (part[1]));
-		if (!part[1])
+		part[2] = ft_strnstr (part[1], part[0], ft_strlen (part[1]));
+		if (part[1] != part[2])
 			return (ft_lstclear (&parts[0], &a_split_clear), free (part[0]), 0);
 		part[1] += ft_strlen (part[0]);
 		free (part[0]);
