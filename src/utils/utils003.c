@@ -6,17 +6,17 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/30 17:45:23 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/02 13:08:57 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*sh_strcat_free(char *s1, char *s2, int opt)
+char	*sh_strjoin_free(char *s1, char *s2, int opt)
 {
 	char	*result;
 
-	result = sh_strcat (s1, s2);
+	result = sh_strjoin (s1, s2);
 	if (opt == 1)
 		free (s1);
 	else if (opt == 2)

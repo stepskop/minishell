@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/01 17:51:33 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/02 15:57:13 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,18 +98,18 @@ int		lx_accept_sub(t_input node);
 size_t	sh_strlen(const char *s);
 int		sh_check_eol(char *cmmnd);
 int		sh_backslash(char **line);
-char	*sh_strjoin(char *s1, char *s2);
+// char	*sh_strjoin(char *s1, char *s2);
 void	sh_ppfree(char	**pp);
 
 // utils002.c
-char	*sh_strcat(char *s1, char *s2);
+char	*sh_strjoin(char *s1, char *s2);
 char	*put_env(char *str);
 char	*str_join_env(char *str, char *part1, size_t idx[]);
 char	*get_env_name(char *dollar);
 char	*strs_cat(char *str_a, char *str_b, char *str_c, size_t idx_b[]);
 
 // utils003.c
-char	*sh_strcat_free(char *s1, char *s2, int opt);
+char	*sh_strjoin_free(char *s1, char *s2, int opt);
 void	sh_del_arr(void *arr[], int arr_size);
 
 // sh_split_q.c
@@ -131,13 +131,20 @@ t_de	*sh_new_de(unsigned char d_type, char *d_name, char *path[]);
 void	dirs_clean(void *content);
 int		dirs_check(char *d_name, char *pttrn, unsigned char d_type);
 void	dirs_init(t_list *dirs[], char *pathes[], t_list *dir);
-void	dirs_print(void *content);
-void	list_print(void *content);
+void	dirs_print(void *content);	//
+void	list_print(void *content);	//
 
 // asterisk03.c
-t_list *aster_slash(char *pattern);
-t_list *aster_tilde(char *pattern);
+t_list	*aster_slash(char *pattern);
+t_list	*aster_tilde(char *pattern);
 t_list	*aster_dot(char *pattern);
+t_list	*aster_start(t_list *dirs);
+int		check_d_type(t_list *dir);
+
+// asterisk04.c
+void	aster_order(t_list *result);
+int		aster_pathcmp(char *path1, char *path2);
+int		aster_strcmp(char *s1, char *s2);
 
 // a_split.c
 t_list	*a_split(char *str, char c);

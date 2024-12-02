@@ -6,13 +6,13 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/28 16:05:09 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/02 13:08:57 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*sh_strcat(char *s1, char *s2)
+char	*sh_strjoin(char *s1, char *s2)
 {
 	char	*result;
 	size_t	len;
@@ -54,7 +54,7 @@ char	*put_env(char *str)
 			buffer = str_join_env(str, buffer, idx);
 		idx[1]++;
 	}
-	result = sh_strcat(buffer, &str[idx[0]]);
+	result = sh_strjoin(buffer, &str[idx[0]]);
 	free (buffer);
 	return (result);
 }
