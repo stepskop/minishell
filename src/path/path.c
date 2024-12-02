@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 12:24:25 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/28 19:08:15 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/02 17:57:26 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,30 @@ char	*get_sh_pps(void)
 	str[0][len - 2] = ' ';
 	str[0][len - 1] = '\0';
 	return (str[0]);
+}
+
+char	*sh_replace_tilde(char *path)
+{
+	char	*result;
+
+	if (path[0] == '~' && (path[1] == '/' || path[1] == '\0'))
+	{
+		result = ft_strdup (getenv ("HOME"));
+		result = sh_strjoin_free (result, &path[1], 1);
+		return (result);
+	}
+	return (ft_strdup (path));
+}
+
+char	*sh_replace_dot(char *path)
+{
+	char	*result;
+
+	if (path[0] == '.' && (path[1] == '/' || path[1] == '\0'))
+	{
+		result = get_sh_path (1);
+		result = sh_strjoin_free (result, &path[1], 1);
+		return (result);
+	}
+	return (ft_strdup (path));
 }

@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:43:38 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/02 16:47:10 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/02 19:03:04 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,24 +16,29 @@ void	aster_order(t_list *result)
 {
 	t_list	*lst[2];
 	void	*buffer;
+	int		i;
 
 	lst[0] = result;
-	while (lst[0]->next)
+	while (lst[0] && lst[0]->next)
 	{
 		lst[1] = lst[0]->next;
+		i = 0;
 		while (lst[1])
 		{
-			if (aster_pathcmp (lst[0]->content, lst[1]->content))
+			if (aster_pathcmp (lst[0]->content, lst[1]->content) > 0)
 			{
 				buffer = lst[0]->content;
 				lst[0]->content = lst[1]->content;
 				lst[1]->content = buffer;
-				lst[1] = lst[0]->next;
+				lst[0] = lst[1];
+				i = 1;
 			}
-			else
-				lst[1] = lst[1]->next;
+			lst[1] = lst[1]->next;
 		}
-		lst[0] = lst[0]->next;
+		if (i)
+			lst[0] = result;
+		else
+			lst[0] = lst[0]->next;
 	}
 }
 
@@ -43,7 +48,6 @@ int	aster_pathcmp(char *path1, char *path2)
 
 	path[0] = a_split (path1, '/');
 	path[1] = a_split (path2, '/');
-
 	path[2] = path[0];
 	path[3] = path[1];
 	while (path[0] && path[1])
@@ -73,7 +77,7 @@ int	aster_strcmp(char *s1, char *s2)
 		c[0] = ft_tolower (s1[idx]);
 		c[1] = ft_tolower (s2[idx]);
 		if (c[0] != c[1])
-			return (c[0] - c[1]);		
+			return (c[0] - c[1]);
 		idx++;
 	}
 	if (s1[idx] == s2[idx])

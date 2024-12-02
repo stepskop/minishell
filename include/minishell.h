@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/02 15:57:13 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/02 18:08:14 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,8 +129,9 @@ int		wildcard_check(char *wildcard, char *str);
 char	*sh_remove_last_c(char *str, char c);
 t_de	*sh_new_de(unsigned char d_type, char *d_name, char *path[]);
 void	dirs_clean(void *content);
-int		dirs_check(char *d_name, char *pttrn, unsigned char d_type);
+int		dirs_check(char *d_name, char *pttrn);
 void	dirs_init(t_list *dirs[], char *pathes[], t_list *dir);
+
 void	dirs_print(void *content);	//
 void	list_print(void *content);	//
 
@@ -163,6 +164,8 @@ void	sigact(int sig, siginfo_t *info, void *context);
 char	*get_sh_path(int absolute_path);
 char	*get_sh_pps(void);
 char	*get_cmd(char *cmd);
+char	*sh_replace_tilde(char *path);
+char	*sh_replace_dot(char *path);
 
 // run_builtins.c
 int		run_builtins(char **argv, char **envp);

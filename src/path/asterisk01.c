@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:43:38 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/02 16:53:36 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/02 18:45:09 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,16 +44,14 @@ t_list	*get_dirs(char *pattern)
 	t_list	*result;
 	char	*str[2];
 
-	str[0] = NULL;
-	str[1] = NULL;
+	str[0] = ft_strdup ("");
+	str[1] = get_sh_path(1);
 	result = NULL;
 	if (!pattern)
 		return (NULL);
 	else if (pattern[0] == '/')
 		result = aster_slash (pattern);
-	else if (pattern[0] == '~')
-		result = aster_tilde (pattern);
-	else if (pattern[0] == '.')
+	else if (pattern[0] == '.' && (pattern[0] == '/' || pattern[0] == '\0'))
 		result = aster_dot (pattern);
 	if (result)
 		return (result);
@@ -65,7 +63,7 @@ t_list	*get_dirs(char *pattern)
 		str[1] = ft_strdup (pattern);
 		ft_lstadd_back (&result, ft_lstnew (sh_new_de(DT_DIR, pattern, str)));
 	}
-	return (result);
+	return (sh_del_arr ((void **)str, 2), result);
 }
 
 int	get_lst_dirs(t_list **lst, char *pattern, char *pathes[])
@@ -77,18 +75,13 @@ int	get_lst_dirs(t_list **lst, char *pattern, char *pathes[])
 	if (pattern[0] == '/' && pathes[1])
 		return (2);
 	pttrn = sh_remove_last_c (ft_strdup (pattern), '/');
-	if (!pathes[0])
-	{
-		pathes[0] = "";
-		pathes[1] = get_sh_path(1);
-	}
 	dp = opendir (pathes[1]);
 	if (dp == NULL)
 		return (0);
 	ep = readdir (dp);
 	while (ep)
 	{
-		if (dirs_check (ep->d_name, pttrn, ep->d_type))
+		if (dirs_check (ep->d_name, pttrn))
 			ft_lstadd_back (lst, ft_lstnew (
 					sh_new_de(ep->d_type, ep->d_name, pathes)));
 		ep = readdir (dp);
@@ -104,21 +97,17 @@ void	aster_recursion(t_list *dir, t_list *pttrns, t_list **result)
 
 	if (pttrns)
 	{
-		if (check_d_type (dir))
+		dirs_init (dirs, pathes, dir);
+		if (get_lst_dirs (&dirs[0], pttrns->content, pathes) == 2)
+			return (aster_recursion (dir, pttrns->next, result));
+		dirs[1] = dirs[0];
+		while (dirs[1])
 		{
-			dirs_init (dirs, pathes, dir);
-			if (get_lst_dirs (&dirs[0], pttrns->content, pathes) == 2)
-				return (aster_recursion (dir, pttrns->next, result));
-			dirs[1] = dirs[0];
-			while (dirs[1])
-			{
-				if (check_d_type (dirs[1]) || !pttrns->next)
-					aster_recursion (dirs[1], pttrns->next, result);
-				dirs[1] = dirs[1]->next;
-			}
-			ft_lstclear (&dirs[0], &dirs_clean);
-			sh_del_arr ((void **) pathes, 2);
+			aster_recursion (dirs[1], pttrns->next, result);
+			dirs[1] = dirs[1]->next;
 		}
+		ft_lstclear (&dirs[0], &dirs_clean);
+		sh_del_arr ((void **) pathes, 2);
 	}
 	else
 		ft_lstadd_back (result, ft_lstnew
