@@ -6,7 +6,7 @@
 /*   By: username <your@email.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 18:15:35 by username          #+#    #+#             */
-/*   Updated: 2024/11/28 17:37:20 by username         ###   ########.fr       */
+/*   Updated: 2024/12/04 18:49:15 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	lx_add_arg(char *str, t_args **args)
 	return (1);
 }
 
-int	lx_accept_sub(t_prompt node)
+int	lx_accept_sub (t_prompt node)
 {
 	if (node.token == CMD)
 		return (1);
@@ -59,6 +59,13 @@ int	lx_accept_sub(t_prompt node)
 		node.token == LESS || node.token == LESSLESS) && node.args == NULL)
 		return (1);
 	return (0);
+}
+
+t_prompt	*lx_parent(t_prompt *curr, t_prompt *parent)
+{
+	if (!lx_accept_sub(*curr))
+		return (parent);
+	return (curr);
 }
 
 void	lx_free_tokens(t_prompt *lst)

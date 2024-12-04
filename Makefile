@@ -31,7 +31,7 @@ ERROR_DIR = error/
 ERROR_SRC = error.c
 
 PIPELINE_DIR = pipeline/
-PIPELINE_SRC = pipeline.c
+PIPELINE_SRC = executor.c utils.c
 
 SRC_DIR = ./src/
 SRCS = 	$(addprefix $(BUILTINS_DIR), $(BUILTINS_SRC)) \
@@ -41,7 +41,7 @@ SRCS = 	$(addprefix $(BUILTINS_DIR), $(BUILTINS_SRC)) \
 		$(addprefix $(PATH_DIR), $(PATH_SRC)) \
 		$(addprefix $(LEXER_DIR), $(LEXER_SRC)) \
 		$(addprefix $(ERROR_DIR), $(ERROR_SRC)) \
-		$(addprefix $(PIPELINE_DIR), $(PIPELINE_SRC))
+		$(addprefix $(PIPELINE_DIR), $(PIPELINE_SRC)) \
 		$(MAIN)
 
 MAIN = minishell.c

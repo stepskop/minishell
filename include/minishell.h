@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/28 17:36:41 by username         ###   ########.fr       */
+/*   Updated: 2024/12/04 19:21:16 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <limits.h>
 # include <dirent.h>
 # include <errno.h>
+# include <fcntl.h>
 
 # define PPS "sksh:"
 
@@ -42,8 +43,6 @@ typedef enum e_token
 
 typedef struct s_cmd
 {
-	int		in_fd;
-	int		out_fd;
 	char	*path;
 	char	**cmd_line;
 	int		pid;
@@ -58,8 +57,11 @@ typedef struct s_args
 
 typedef struct s_prompt
 {
+	int				in_fd;
+	int				out_fd;
 	char			*str_val;
 	t_token			token;
+	t_cmd			*cmd;
 	t_args			*args;
 	struct s_prompt	*next;
 	struct s_prompt	*prev;
@@ -83,10 +85,17 @@ t_prompt	*lexer(char **cmd_line);
 void	print_lex_dbg(t_prompt *lst);
 
 // Lexer utils
-int		lx_add_arg(char *str, t_args **args);
-t_token	lx_get_token(char *str);
-void	lx_free_tokens(t_prompt *lst);
-int		lx_accept_sub(t_prompt node);
+int			lx_add_arg(char *str, t_args **args);
+t_token		lx_get_token(char *str);
+void		lx_free_tokens(t_prompt *lst);
+t_prompt	*lx_parent(t_prompt *curr, t_prompt *parent);
+int			lx_accept_sub(t_prompt node);
+int			lx_cmdend(t_prompt curr);
+
+// Executor
+void	executor(t_prompt *lst);
+int		ex_get_heredoc(t_args *args);
+int		ex_open_file(t_args *args, int oflag);
 
 // utils001.c
 size_t	sh_strlen(const char *s);

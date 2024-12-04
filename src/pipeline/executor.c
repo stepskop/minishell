@@ -6,56 +6,64 @@
 /*   By: username <your@email.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:00:57 by username          #+#    #+#             */
-/*   Updated: 2024/11/28 17:38:25 by username         ###   ########.fr       */
+/*   Updated: 2024/12/04 19:57:18 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_prompt	*process_node(t_prompt *old, t_prompt *new, t_prompt **lst)
+static void	ex_handle_ionode(t_prompt *curr, int (*last_io)[2])
 {
-	if (old)
-	{
-		free_args(old->args);
-		free(old);
-	}
-	if (!new->prev)
-	{
-		*lst = new->next;
-		new->next->prev = NULL;
-	}
-	return (new);
+	if (curr->token == LESSLESS)
+		(*last_io)[0] = ex_get_heredoc(curr->args);
+	else if (curr->token == LESS)
+		(*last_io)[0] = ex_open_file(curr->args, O_RDONLY);
+	else if (curr->token == GREATGREAT)
+		(*last_io)[1] = ex_open_file(curr->args, O_WRONLY | O_CREAT | O_APPEND);
+	else if (curr->token == GREAT)
+		(*last_io)[1] = ex_open_file(curr->args, O_WRONLY | O_CREAT | O_TRUNC);
+	if (curr->token == GREATGREAT || curr->token == GREAT)
+		curr->in_fd = (*last_io)[1];
+	else if (curr->token == LESSLESS || curr->token == LESS)
+		curr->out_fd = (*last_io)[0];
 }
 
-static int	ex_check_infile(t_prompt **lst)
+static void	ex_ioprep(t_prompt *lst)
 {
-	t_prompt	*input_node;
 	t_prompt	*curr;
+	t_prompt	*last_cmd;
+	int			last_io[2];
 
-	input_node = NULL;
-	curr = *lst;
+	curr = lst;
+	last_io[0] = STDIN_FILENO;
+	last_io[1] = STDOUT_FILENO;
 	while (curr)
 	{
-		if (curr->token == LESS || curr->token == LESSLESS)
+		if (curr->token == CMD)
+			last_cmd = curr;
+		ex_handle_ionode(curr, &last_io);
+		if (!curr->next || (curr->next && lx_cmdend(*(curr->next))))
 		{
-			input_node = process_node(input_node, curr, lst);
+			printf("DBG: [%i, %i]\n", last_io[0], last_io[1]);
+			last_cmd->in_fd = last_io[0];
+			last_cmd->out_fd = last_io[1];
+			last_io[0] = STDIN_FILENO;
+			last_io[1] = STDOUT_FILENO;
 		}
 		curr = curr->next;
 	}
-	if (!input_node)
-		return (0);
-	return (1);
 }
 
 void	executor(t_prompt *lst)
 {
-	int		infile_fd;
-	t_prompt	*curr;
+	//t_prompt	*curr;
 
-	infile_fd = ex_check_infile(&lst);
-	curr = lst;
-	while (curr)
-	{
+	ex_ioprep(lst);
+	print_lex_dbg(lst);
+	//curr = lst;
+	//while (curr)
+	//{
 
-	}
+	//	curr = curr->next;
+	//}
 }
