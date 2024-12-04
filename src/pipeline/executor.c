@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static t_input	*process_node(t_input *old, t_input *new, t_input **lst)
+static t_prompt	*process_node(t_prompt *old, t_prompt *new, t_prompt **lst)
 {
 	if (old)
 	{
@@ -27,10 +27,10 @@ static t_input	*process_node(t_input *old, t_input *new, t_input **lst)
 	return (new);
 }
 
-static int	ex_check_infile(t_input **lst)
+static int	ex_check_infile(t_prompt **lst)
 {
-	t_input	*input_node;
-	t_input	*curr;
+	t_prompt	*input_node;
+	t_prompt	*curr;
 
 	input_node = NULL;
 	curr = *lst;
@@ -47,10 +47,10 @@ static int	ex_check_infile(t_input **lst)
 	return (1);
 }
 
-void	executor(t_input *lst)
+void	executor(t_prompt *lst)
 {
 	int		infile_fd;
-	t_input	*curr;
+	t_prompt	*curr;
 
 	infile_fd = ex_check_infile(&lst);
 	curr = lst;

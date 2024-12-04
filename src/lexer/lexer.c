@@ -12,11 +12,11 @@
 
 #include "minishell.h"
 
-static t_input	*lex_add(t_token token, t_input *prev, char *val)
+static t_prompt	*lex_add(t_token token, t_prompt *prev, char *val)
 {
-	t_input	*new;
+	t_prompt	*new;
 
-	new = malloc(sizeof(t_input));
+	new = malloc(sizeof(t_prompt));
 	if (!new)
 		return (perror(NULL), NULL);
 	new->token = token;
@@ -29,9 +29,9 @@ static t_input	*lex_add(t_token token, t_input *prev, char *val)
 	return (new);
 }
 
-static t_input	*lex_init(char *first)
+static t_prompt	*lex_init(char *first)
 {
-	t_input	*lst;
+	t_prompt	*lst;
 	t_token	token;
 
 	token = lx_get_token(first);
@@ -46,11 +46,11 @@ static t_input	*lex_init(char *first)
 	return (lst);
 }
 
-t_input	*lexer(char **cmd_raw)
+t_prompt	*lexer(char **cmd_raw)
 {
 	int			i;
-	t_input		*lst;
-	t_input		*curr;
+	t_prompt		*lst;
+	t_prompt		*curr;
 
 	i = 0;
 	lst = lex_init(cmd_raw[i]);
@@ -75,7 +75,7 @@ t_input	*lexer(char **cmd_raw)
 	return (lst);
 }
 
-void	print_lex_dbg(t_input *lst)
+void	print_lex_dbg(t_prompt *lst)
 {
 	printf("------LEXER DBG-------\n");
 	while (lst)

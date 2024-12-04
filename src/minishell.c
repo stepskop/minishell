@@ -28,9 +28,9 @@ int	main(int argc, char *argv[], char **envp)
 
 void	_loop_(char **envp)
 {
-	char	*cmmnd[2];
-	t_input	*lst;
-	char	**splitted;
+	char		*cmmnd[2];
+	t_prompt	*lst;
+	char		**splitted;
 
 	lst = NULL;
 	while (1)

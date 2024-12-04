@@ -56,14 +56,14 @@ typedef struct s_args
 	struct s_args	*next;
 }	t_args;
 
-typedef struct s_input
+typedef struct s_prompt
 {
 	char			*str_val;
 	t_token			token;
 	t_args			*args;
-	struct s_input	*next;
-	struct s_input	*prev;
-}	t_input;
+	struct s_prompt	*next;
+	struct s_prompt	*prev;
+}	t_prompt;
 
 typedef struct s_pipeline
 {
@@ -79,14 +79,14 @@ typedef struct s_counters_quotes
 void	_loop_(char **envp);
 
 // Lexer
-t_input	*lexer(char **cmd_line);
-void	print_lex_dbg(t_input *lst);
+t_prompt	*lexer(char **cmd_line);
+void	print_lex_dbg(t_prompt *lst);
 
 // Lexer utils
 int		lx_add_arg(char *str, t_args **args);
 t_token	lx_get_token(char *str);
-void	lx_free_tokens(t_input *lst);
-int		lx_accept_sub(t_input node);
+void	lx_free_tokens(t_prompt *lst);
+int		lx_accept_sub(t_prompt node);
 
 // utils001.c
 size_t	sh_strlen(const char *s);

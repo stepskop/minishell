@@ -51,7 +51,7 @@ int	lx_add_arg(char *str, t_args **args)
 	return (1);
 }
 
-int	lx_accept_sub(t_input node)
+int	lx_accept_sub(t_prompt node)
 {
 	if (node.token == CMD)
 		return (1);
@@ -61,10 +61,10 @@ int	lx_accept_sub(t_input node)
 	return (0);
 }
 
-void	lx_free_tokens(t_input *lst)
+void	lx_free_tokens(t_prompt *lst)
 {
-	t_input	*curr;
-	t_input	*tmp;
+	t_prompt	*curr;
+	t_prompt	*tmp;
 
 	curr = lst;
 	while (curr)
