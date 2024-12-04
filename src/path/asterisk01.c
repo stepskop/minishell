@@ -6,38 +6,38 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:43:38 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/04 00:46:51 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/04 16:22:31 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_list	*sh_asterisk(char *astr)
+char	*sh_asterisk(char *astr)
 {
-	t_list	*dirs[4];
-	t_list	*result;
+	t_list	*dirs[5];
+	char	*result;
 
 	if (!astr)
 		return (NULL);
 	if ((astr[0] == '\'' && astr[ft_strlen (astr) - 1] == '\'')
 		|| (astr[0] == '"' && astr[ft_strlen (astr) - 1] == '"')
 		|| !ft_strchr (astr, '*'))
-		return (ft_lstnew (ft_strdup (astr)));
+		return (ft_strdup (astr));
 	dirs[0] = a_split (astr, '/');
-	result = NULL;
+	dirs[4] = NULL;
 	dirs[3] = aster_start (dirs[0]);
 	dirs[1] = get_dirs (dirs[3]->content);
 	dirs[2] = dirs[1];
 	while (dirs[2])
 	{
-		aster_recursion (dirs[2], dirs[3]->next, &result);
+		aster_recursion (dirs[2], dirs[3]->next, &dirs[4]);
 		dirs[2] = dirs[2]->next;
 	}
 	ft_lstclear (&dirs[1], &dirs_clean);
 	ft_lstclear (&dirs[0], &a_split_clear);
-	// ft_lstiter (result, &list_print);
-	// printf ("--->\n");
-	aster_order (result);
+	aster_order (dirs[4]);
+	result = sh_lst2str (dirs[4], ' ');
+	ft_lstclear (&dirs[4], &a_split_clear);
 	return (result);
 }
 
@@ -138,7 +138,7 @@ int	wildcard_check(char *wildcard, char *str)
 	}
 	if (ft_strlen (part[1]) > 0
 		&& wildcard[ft_strlen (wildcard) - 1] != '*')
-		return (0);
+		return (ft_lstclear (&parts[0], &a_split_clear), 0);
 	ft_lstclear (&parts[0], &a_split_clear);
 	return (1);
 }

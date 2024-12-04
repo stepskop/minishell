@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/02 18:08:14 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/04 16:26:07 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ char	*strs_cat(char *str_a, char *str_b, char *str_c, size_t idx_b[]);
 // utils003.c
 char	*sh_strjoin_free(char *s1, char *s2, int opt);
 void	sh_del_arr(void *arr[], int arr_size);
+char	*sh_lst2str(t_list *lst, char c);
 
 // sh_split_q.c
 char	**sh_split_q(char *str, char c);
@@ -119,7 +120,7 @@ int		sh_split_couont(char *map, size_t len);
 char	*sh_split_element(char *map, size_t len, int elem);
 
 // asterisk.c
-t_list	*sh_asterisk(char *astr);
+char	*sh_asterisk(char *astr);
 t_list	*get_dirs(char *pattern);
 int		get_lst_dirs(t_list **lst, char *pattern, char *path[]);
 void	aster_recursion(t_list *dir, t_list *dirs, t_list **result);
