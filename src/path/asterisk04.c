@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:43:38 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/02 19:03:04 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/03 20:14:56 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,37 +14,37 @@
 
 void	aster_order(t_list *result)
 {
-	t_list	*lst[2];
+	t_list	*lst[3];
 	void	*buffer;
-	int		i;
+	int		i[2];
 
-	lst[0] = result;
-	while (lst[0] && lst[0]->next)
+	i[0] = ft_lstsize (result);
+	lst[1] = ft_lstlast (result);
+	while (i[0] > 0)
 	{
-		lst[1] = lst[0]->next;
-		i = 0;
-		while (lst[1])
+		lst[0] = result;
+		while (lst[0] != lst[1])
 		{
-			if (aster_pathcmp (lst[0]->content, lst[1]->content) > 0)
+			i[1] = aster_pathcmp (lst[0]->content, lst[0]->next->content);
+			if (i[1] > 0)
 			{
-				buffer = lst[0]->content;
-				lst[0]->content = lst[1]->content;
-				lst[1]->content = buffer;
-				lst[0] = lst[1];
-				i = 1;
+				// printf ("%s <-> %s\n", (char *)lst[0]->content, (char *)lst[0]->next->content);
+				buffer = lst[0]->next->content;
+				lst[0]->next->content = lst[0]->content;
+				lst[0]->content = buffer;
 			}
-			lst[1] = lst[1]->next;
-		}
-		if (i)
-			lst[0] = result;
-		else
+			lst[2] = lst[0];
 			lst[0] = lst[0]->next;
+		}
+		lst[1] = lst[2];
+		i[0]--;
 	}
 }
 
 int	aster_pathcmp(char *path1, char *path2)
 {
 	t_list	*path[4];
+	int		i;
 
 	path[0] = a_split (path1, '/');
 	path[1] = a_split (path2, '/');
@@ -52,11 +52,12 @@ int	aster_pathcmp(char *path1, char *path2)
 	path[3] = path[1];
 	while (path[0] && path[1])
 	{
-		if (aster_strcmp (path[0]->content, path[1]->content) > 0)
+		if (ft_strcmp (path[0]->content, path[1]->content) != 0)
 		{
-			ft_lstclear (&path[2], &a_split_clear);
-			ft_lstclear (&path[3], &a_split_clear);
-			return (1);
+			i = aster_strcmp (path[0]->content, path[1]->content);
+			if (i != 0)
+				return (ft_lstclear (&path[2], &a_split_clear),
+					ft_lstclear (&path[3], &a_split_clear), i);
 		}
 		path[0] = path[0]->next;
 		path[1] = path[1]->next;

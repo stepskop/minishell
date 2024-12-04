@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:43:38 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/02 18:45:09 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/04 00:46:51 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ t_list	*sh_asterisk(char *astr)
 	}
 	ft_lstclear (&dirs[1], &dirs_clean);
 	ft_lstclear (&dirs[0], &a_split_clear);
+	// ft_lstiter (result, &list_print);
+	// printf ("--->\n");
 	aster_order (result);
 	return (result);
 }
@@ -44,8 +46,6 @@ t_list	*get_dirs(char *pattern)
 	t_list	*result;
 	char	*str[2];
 
-	str[0] = ft_strdup ("");
-	str[1] = get_sh_path(1);
 	result = NULL;
 	if (!pattern)
 		return (NULL);
@@ -55,10 +55,13 @@ t_list	*get_dirs(char *pattern)
 		result = aster_dot (pattern);
 	if (result)
 		return (result);
+	str[0] = ft_strdup ("");
+	str[1] = get_sh_path(1);
 	if (ft_strchr (pattern, '*'))
 		get_lst_dirs (&result, pattern, str);
 	else
 	{
+		sh_del_arr ((void **)str, 2);
 		str[0] = ft_strdup (pattern);
 		str[1] = ft_strdup (pattern);
 		ft_lstadd_back (&result, ft_lstnew (sh_new_de(DT_DIR, pattern, str)));
@@ -77,7 +80,7 @@ int	get_lst_dirs(t_list **lst, char *pattern, char *pathes[])
 	pttrn = sh_remove_last_c (ft_strdup (pattern), '/');
 	dp = opendir (pathes[1]);
 	if (dp == NULL)
-		return (0);
+		return (free (pttrn), 0);
 	ep = readdir (dp);
 	while (ep)
 	{
