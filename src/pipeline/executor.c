@@ -6,7 +6,7 @@
 /*   By: username <your@email.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:00:57 by username          #+#    #+#             */
-/*   Updated: 2024/12/04 19:57:18 by username         ###   ########.fr       */
+/*   Updated: 2024/12/04 21:16:25 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ static void	ex_ioprep(t_prompt *lst)
 		ex_handle_ionode(curr, &last_io);
 		if (!curr->next || (curr->next && lx_cmdend(*(curr->next))))
 		{
-			printf("DBG: [%i, %i]\n", last_io[0], last_io[1]);
 			last_cmd->in_fd = last_io[0];
 			last_cmd->out_fd = last_io[1];
 			last_io[0] = STDIN_FILENO;
