@@ -28,8 +28,6 @@ t_token	lx_get_token(char *str)
 		return (GREAT);
 	else if (ft_strcmp(str, ">>") == 0)
 		return (GREATGREAT);
-	else if (ft_strcmp(str, "$?") == 0)
-		return (LAST_STATUS);
 	else
 		return (WORD);
 }

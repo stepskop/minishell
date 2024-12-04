@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/27 15:11:42 by username         ###   ########.fr       */
+/*   Updated: 2024/11/28 12:45:14 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	_loop_(char **envp)
 	t_input	*lst;
 	char	**splitted;
 
-	(void)lst;
+	lst = NULL;
 	while (1)
 	{
 		cmmnd[1] = NULL;
@@ -40,20 +40,10 @@ void	_loop_(char **envp)
 		cmmnd[0] = get_command (&cmmnd[1]);
 		add_history (cmmnd[1]);
 		splitted = sh_split_q(cmmnd[0], ' ');
-		lst = lexer(splitted);
-		while (lst)
-		{
-			printf("ITEM: %s, TOKEN: %i\n", lst->str_val, lst->token);
-			if (lst->args)
-			{
-				while (lst->args)
-				{
-					printf("\tSUB_ARG: %s\n", lst->args->data);
-					lst->args = lst->args->next;
-				}
-			}
-			lst = lst->next;
-		}
+		if (splitted && splitted[0])
+			lst = lexer(splitted);
+		if (lst)
+			print_lex_dbg(lst);
 		sh_run (cmmnd[1], envp);
 		free (cmmnd[1]);
 	}

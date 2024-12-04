@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/27 20:13:44 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/28 11:56:47 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,21 @@ char	*sh_strcat(char *s1, char *s2)
 {
 	char	*result;
 	size_t	len;
+	size_t	len_s1;
+	size_t	len_s2;
 
-	len = ft_strlen (s1) + ft_strlen (s2) + 1;
+	len_s1 = 0;
+	len_s2 = 0;
+	if (s1)
+		len_s1 = ft_strlen (s1);
+	if (s2)
+		len_s2 = ft_strlen (s2);
+	len = len_s1 + len_s2 + 1;
 	result = (char *) malloc (len * sizeof (char));
 	if (!result)
 		return (NULL);
-	ft_memcpy (result, s1, ft_strlen (s1));
-	ft_memcpy (&result[ft_strlen (s1)], s2, ft_strlen (s2));
+	ft_memcpy (result, s1, len_s1);
+	ft_memcpy (&result[len_s1], s2, len_s2);
 	result[len - 1] = '\0';
 	return (result);
 }
@@ -32,19 +40,15 @@ char	*put_env(char *str)
 	char	*result;
 	char	*buffer;
 	size_t	idx[2];
-	int		q;
 
+	if (str[0] == '\'')
+		return (ft_strdup (str));
 	buffer = NULL;
 	idx[0] = 0;
 	idx[1] = 0;
-	q = 0;
 	while (str[idx[1]])
 	{
-		if (idx[1] == 0 && str[idx[1]] == '"')
-			q = 2;
-		else if (idx[1] == 0 && str[idx[1]] == '\'')
-			q = 1;
-		if (q != 1 && str[idx[1]] == '$')
+		if (str[idx[1]] == '$')
 			buffer = str_join_env(str, buffer, idx);
 		idx[1]++;
 	}
@@ -52,10 +56,6 @@ char	*put_env(char *str)
 	free (buffer);
 	return (result);
 }
-
-// 0x4040f6 "abcde7$HOME 77$USER -$USERT"
-// 0x407350 "abcde7/nfs/homes/ksorokol 77ksorokol -$USERT"
-
 
 char	*str_join_env(char *str, char *part1, size_t idx[])
 {
@@ -68,7 +68,6 @@ char	*str_join_env(char *str, char *part1, size_t idx[])
 	env_var = getenv(env_name);
 	len[0] = ft_strlen (env_name);
 	len[1] = 0;
-
 	if (env_var)
 	{
 		result = strs_cat (part1, str, env_var, idx);
