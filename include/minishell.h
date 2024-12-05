@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/04 16:26:07 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/05 11:50:52 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,15 +133,15 @@ void	dirs_clean(void *content);
 int		dirs_check(char *d_name, char *pttrn);
 void	dirs_init(t_list *dirs[], char *pathes[], t_list *dir);
 
-void	dirs_print(void *content);	//
-void	list_print(void *content);	//
+// void	dirs_print(void *content);	//
+// void	list_print(void *content);	//
 
 // asterisk03.c
 t_list	*aster_slash(char *pattern);
 t_list	*aster_tilde(char *pattern);
 t_list	*aster_dot(char *pattern);
 t_list	*aster_start(t_list *dirs);
-int		check_d_type(t_list *dir);
+//int		check_d_type(t_list *dir);
 
 // asterisk04.c
 void	aster_order(t_list *result);

@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:43:38 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/04 16:22:31 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/05 11:42:24 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,9 @@ char	*sh_asterisk(char *astr)
 	return (result);
 }
 
+/*
+*	get_dirs returns a start dir or dirs in linked list
+*/
 t_list	*get_dirs(char *pattern)
 {
 	t_list	*result;
@@ -69,6 +72,13 @@ t_list	*get_dirs(char *pattern)
 	return (sh_del_arr ((void **)str, 2), result);
 }
 
+/*
+*	get_lst_dirs add all dirs (which passed dirs_check) in to lst,
+*	and return status:
+*	0 - folder can not be open (for example - access denied)
+*	1 - OK
+*	2 - it'a a / (slash) sequence
+*/
 int	get_lst_dirs(t_list **lst, char *pattern, char *pathes[])
 {
 	DIR				*dp;
@@ -93,6 +103,9 @@ int	get_lst_dirs(t_list **lst, char *pattern, char *pathes[])
 	return (free (pttrn), 1);
 }
 
+/*
+*	
+*/
 void	aster_recursion(t_list *dir, t_list *pttrns, t_list **result)
 {
 	t_list	*dirs[2];

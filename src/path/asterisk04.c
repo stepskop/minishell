@@ -6,12 +6,15 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:43:38 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/04 16:14:47 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/05 11:56:12 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
+*	aster_order is sorting linked list of pathes by ASCII ...
+*/
 void	aster_order(t_list *result)
 {
 	t_list	*lst[3];
@@ -28,7 +31,6 @@ void	aster_order(t_list *result)
 			i[1] = aster_pathcmp (lst[0]->content, lst[0]->next->content);
 			if (i[1] > 0)
 			{
-				// printf ("%s <-> %s\n", (char *)lst[0]->content, (char *)lst[0]->next->content);
 				buffer = lst[0]->next->content;
 				lst[0]->next->content = lst[0]->content;
 				lst[0]->content = buffer;
@@ -41,6 +43,9 @@ void	aster_order(t_list *result)
 	}
 }
 
+/*
+*	aster_pathcmp compares each dir in a pathes one by one
+*/
 int	aster_pathcmp(char *path1, char *path2)
 {
 	t_list	*path[4];
@@ -52,13 +57,11 @@ int	aster_pathcmp(char *path1, char *path2)
 	path[3] = path[1];
 	while (path[0] && path[1])
 	{
-		i  = ft_strcmp (path[0]->content, path[1]->content);
+		i = ft_strcmp (path[0]->content, path[1]->content);
 		if (i != 0)
 		{
-			// i = aster_strcmp (path[0]->content, path[1]->content);
-			// if (i != 0)
-				return (ft_lstclear (&path[2], &a_split_clear),
-					ft_lstclear (&path[3], &a_split_clear), i);
+			return (ft_lstclear (&path[2], &a_split_clear),
+				ft_lstclear (&path[3], &a_split_clear), i);
 		}
 		path[0] = path[0]->next;
 		path[1] = path[1]->next;
