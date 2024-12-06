@@ -96,14 +96,14 @@ void		_loop_(char **envp);
 t_prompt	*lexer(char **cmd_line);
 void		print_lex_dbg(t_prompt *lst);
 
-// lexer_utils001
+// Lexer - utils
 void		lx_free_tokens(t_prompt *lst);
 t_prompt	*lx_parent(t_prompt *curr, t_prompt *parent);
 int			lx_accept_sub(t_prompt node);
 int			lx_cmdend(t_prompt curr);
 t_prompt	*lx_lastcmd(t_prompt *old, t_prompt *new);
 
-// lexer_utils002
+// Lexer - list_utils
 int			lx_add_arg(char *str, t_args **args);
 t_prompt	*lx_add(t_token token, t_prompt *prev, char *val);
 t_token		lx_get_token(char *str);
@@ -112,6 +112,7 @@ t_token		lx_get_token(char *str);
 void		executor(t_prompt *lst, char **envp);
 int			ex_get_heredoc(t_args *args);
 int			ex_open_file(t_args *args, int oflag);
+size_t		ex_cmdlen(t_args *args);
 
 // utils001.c
 size_t		sh_strlen(const char *s);

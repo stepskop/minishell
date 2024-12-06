@@ -58,12 +58,39 @@ static void	ex_ioprep(t_prompt *lst)
 	}
 }
 
-static char	*ex_cmdprep(t_prompt *node, char **envp)
+static char	*ex_cmdprep(t_prompt *node)
 {
-	// TODO
-	(void)node;
-	(void)envp;
-	return ("Coming soon");
+	char	*res;
+	size_t	len;
+	char	*tmp;
+	t_args	*curr;
+	int		i;
+
+	curr = node->args;
+	while (curr)
+	{
+		tmp = curr->data;
+		curr->data = put_env(curr->data);
+		free(tmp);
+		tmp = curr->data;
+		curr->data = sh_asterisk(curr->data);
+		free(tmp);
+		curr = curr->next;
+	}
+	len = ex_cmdlen(node->args) + ft_strlen(node->str_val);
+	res = malloc(sizeof(char) * (len + 1));
+	i = ft_strlcpy(res, node->str_val, ft_strlen(node->str_val) + 1);
+	curr = node->args;
+	while (curr)
+	{
+		if (curr->data)
+		{
+			i += ft_strlcpy(res + i, " ", 2);
+			i += ft_strlcpy(res + i, curr->data, ft_strlen(curr->data) + 1);
+		}
+		curr = curr->next;
+	}
+	return (res);
 }
 
 static int	ex_execute(t_prompt *node, char **envp)
@@ -83,8 +110,11 @@ static int	ex_execute(t_prompt *node, char **envp)
 		dup2(pipefd[1], STDOUT_FILENO);
 		node->next_cmd->in_fd = pipefd[0];
 	}
-	cmd = ex_cmdprep(node, envp);
-	exit_code = sh_run(cmd, envp);
+	cmd = ex_cmdprep(node);
+	(void)envp;
+	//exit_code = sh_run(cmd, envp);
+	printf("CMD: %s\n", cmd);
+	exit_code = 0;
 	if (node->next_cmd && !node->next_cmd->in_fd)
 		close(pipefd[1]);
 	return (exit_code);

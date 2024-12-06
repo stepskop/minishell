@@ -44,7 +44,7 @@ void	_loop_(char **envp)
 			lst = lexer(splitted);
 		if (lst)
 			print_lex_dbg(lst);
-		//executor(lst, envp);
+		executor(lst, envp);
 		sh_run (cmmnd[1], envp);
 		free (cmmnd[1]);
 	}
