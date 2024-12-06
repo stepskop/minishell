@@ -24,7 +24,7 @@ UTILS_SRC = sh_split_q.c utils001.c utils002.c memory.c
 
 # Lexer
 LEXER_DIR = lexer/
-LEXER_SRC = lexer.c utils.c
+LEXER_SRC = lexer.c utils.c list_utils.c
 
 # Error
 ERROR_DIR = error/
