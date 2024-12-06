@@ -6,11 +6,12 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:43:38 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/05 11:56:12 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/06 18:55:51 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "asterisk.h"
 
 /*
 *	aster_order is sorting linked list of pathes by ASCII ...
@@ -70,29 +71,3 @@ int	aster_pathcmp(char *path1, char *path2)
 	ft_lstclear (&path[3], &a_split_clear);
 	return (0);
 }
-
-// int	aster_strcmp(char *s1, char *s2)
-// {
-// 	size_t	idx;
-// 	int		c[2];
-
-// 	idx = 0;
-// 	while (s1[idx] && s2[idx])
-// 	{
-// 		c[0] = ft_tolower (s1[idx]);
-// 		c[1] = ft_tolower (s2[idx]);
-// 		if (c[0] != c[1])
-// 			return (s1[idx] - s2[idx]);
-// 		else
-// 		// {
-// 		// 	// if (s1[idx] > s2[idx])
-// 		// 	// 	return (s2[idx] - s1[idx]);
-// 		// 	// if (s1[idx] < s2[idx])
-// 		// 	// 	return (s1[idx] - s2[idx]);
-// 		// }
-// 		idx++;
-// 	}
-// 	if (s1[idx] == s2[idx])
-// 		return (0);
-// 	return (s1[idx] - s2[idx]);
-// }

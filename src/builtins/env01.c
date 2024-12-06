@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 13:41:06 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/06 13:48:34 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/06 16:25:44 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,13 @@ int	env_prsng(char **argv, char **envp)
 		pstr[0] = sh_split_q (argv[idx[0]], '=');
 		if (pstr[0][0] && pstr[0][1])
 			idx[2] = env_check_var (pstr[0]);		
-		if (idx[2] == -1)
+		if (idx[2] == 1)
 		{
 			if (env_check_var(pstr[1]) >= 0)
-				;
-				// sh_run ();
-			sh_ppfree (pstr[1]);
+				; // sh_run ();
 		}
+		else if (idx[2] == -1)
+			return (sh_ppfree (pstr[0]), -1);
 		sh_ppfree (pstr[0]);
 		idx[0]++;
 	}

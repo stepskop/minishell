@@ -6,11 +6,15 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/28 18:32:26 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/06 15:42:14 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static char	*sh_split_map(char *str, char c);
+static int	sh_split_couont(char *map, size_t len);
+static char	*sh_split_element(char *map, size_t len, int elem);
 
 char	**sh_split_q(char *str, char c)
 {
@@ -37,7 +41,7 @@ char	**sh_split_q(char *str, char c)
 	return (result);
 }
 
-char	*sh_split_map(char *str, char c)
+static char	*sh_split_map(char *str, char c)
 {
 	char	*map;
 	size_t	idx;
@@ -64,7 +68,7 @@ char	*sh_split_map(char *str, char c)
 	return (map);
 }
 
-int	sh_split_couont(char *map, size_t len)
+static int	sh_split_couont(char *map, size_t len)
 {
 	size_t	idx;
 	int		counter;
@@ -87,7 +91,7 @@ int	sh_split_couont(char *map, size_t len)
 	return (counter);
 }
 
-char	*sh_split_element(char *map, size_t len, int elem)
+static char	*sh_split_element(char *map, size_t len, int elem)
 {
 	size_t	idx;
 	char	*result;
