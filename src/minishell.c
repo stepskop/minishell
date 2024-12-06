@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/01 14:00:31 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/05 19:11:34 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 char	*get_command(char **cmmnd);
 // int		check_eol(char *str, t_counters_quotes	*cq);
 
-int	main(int argc, char *argv[], char **envp)
+int	main(int argc, char **argv, char **envp)
 {
+	envp_set_get (envp, SET);
 	(void)argc;
 	(void)argv;
-	(void)envp;
 	sig_init ();
 	_loop_ (envp);
 	rl_clear_history ();

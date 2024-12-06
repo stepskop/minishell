@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/05 11:50:52 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/06 13:45:06 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@
 # include <linux/limits.h>
 
 # define PPS "sksh:"
+# define SET 0
+# define GET 1
 
 typedef enum e_token
 {
@@ -112,6 +114,8 @@ char	*strs_cat(char *str_a, char *str_b, char *str_c, size_t idx_b[]);
 char	*sh_strjoin_free(char *s1, char *s2, int opt);
 void	sh_del_arr(void *arr[], int arr_size);
 char	*sh_lst2str(t_list *lst, char c);
+char	*sh_pstr2str(char **pstr, char c);
+char	**envp_set_get(char **envp, int set_get);
 
 // sh_split_q.c
 char	**sh_split_q(char *str, char c);
@@ -184,8 +188,16 @@ void	pwd(void);
 void	cd(char **argv);
 char	*cd_home(char **argv);
 
-// env.c
-void	env(char **envp);
+// env01.c
+void	env(char **argv, char **envp);
+int		env_prsng(char **argv, char **envp);
+int		env_check_var(char **var);
+
+// env02.c
+char	**envp_dup(char **envp);
+char	**envp_copy(char **envp1, char **envp2);
+int		envp_size(char **envp);
+char	*envp_set_var(char ***envp, char *sv);
 
 // Err
 void	sh_err(char *str);
