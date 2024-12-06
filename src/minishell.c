@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/01 14:00:31 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/06 01:27:53 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	_loop_(char **envp)
 			lst = lexer(splitted);
 		if (lst)
 			print_lex_dbg(lst);
-		executor(lst);
+		//executor(lst, envp);
 		sh_run (cmmnd[1], envp);
 		free (cmmnd[1]);
 	}
