@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 12:24:25 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/26 15:51:01 by username         ###   ########.fr       */
+/*   Updated: 2024/12/02 17:57:26 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*get_sh_path(int absolute_path)
 	ul = PATH_MAX;
 	str[1] = (char *) malloc (ul * sizeof (char));
 	if (!getcwd (str[1], ul))
-		write (1, "Something is wrong! (getcwd)\n", 29);
+		sh_err ("Something is wrong! (getcwd)");
 	ul = ft_strlen (str[0]);
 	if (absolute_path || ft_strncmp (str[0], str[1], ul))
 	{
@@ -62,4 +62,30 @@ char	*get_sh_pps(void)
 	str[0][len - 2] = ' ';
 	str[0][len - 1] = '\0';
 	return (str[0]);
+}
+
+char	*sh_replace_tilde(char *path)
+{
+	char	*result;
+
+	if (path[0] == '~' && (path[1] == '/' || path[1] == '\0'))
+	{
+		result = ft_strdup (getenv ("HOME"));
+		result = sh_strjoin_free (result, &path[1], 1);
+		return (result);
+	}
+	return (ft_strdup (path));
+}
+
+char	*sh_replace_dot(char *path)
+{
+	char	*result;
+
+	if (path[0] == '.' && (path[1] == '/' || path[1] == '\0'))
+	{
+		result = get_sh_path (1);
+		result = sh_strjoin_free (result, &path[1], 1);
+		return (result);
+	}
+	return (ft_strdup (path));
 }

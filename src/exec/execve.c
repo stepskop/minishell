@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 15:34:17 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/27 13:45:58 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/28 19:12:35 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	sh_execve(char **argv, char **envp, char **f_cmmnds, char *f_cmmnd)
 		if (cmmnd)
 			rp = execve (cmmnd, argv, envp);
 		else
-			sp_print_cnf (argv[0]);
+			sh_err (ft_strjoin (argv[0], ": command not found"));
 		sh_ppfree (argv);
 		exit (rp);
 	}

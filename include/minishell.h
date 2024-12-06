@@ -6,12 +6,14 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/06 00:54:54 by username         ###   ########.fr       */
+/*   Updated: 2024/12/05 11:50:52 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
+# define _GNU_SOURCE
 
 # include "libft.h"
 # include <stdlib.h>
@@ -24,6 +26,7 @@
 # include <limits.h>
 # include <dirent.h>
 # include <errno.h>
+# include <linux/limits.h>
 # include <fcntl.h>
 
 # define PPS "sksh:"
@@ -79,6 +82,14 @@ typedef struct s_counters_quotes
 	unsigned int	double_quote;
 }	t_counters_quotes;
 
+typedef struct s_dir_element
+{
+	unsigned char	d_type;
+	char			*d_name;
+	char			*full_name;
+	char			*rel_name;
+}	t_de;
+
 void		_loop_(char **envp);
 
 // Lexer
@@ -106,15 +117,20 @@ int			ex_open_file(t_args *args, int oflag);
 size_t		sh_strlen(const char *s);
 int			sh_check_eol(char *cmmnd);
 int			sh_backslash(char **line);
-char		*sh_strjoin(char *s1, char *s2);
+// char	*sh_strjoin(char *s1, char *s2);
 void		sh_ppfree(char	**pp);
 
 // utils002.c
-char		*sh_strcat(char *s1, char *s2);
+char		*sh_strjoin(char *s1, char *s2);
 char		*put_env(char *str);
 char		*str_join_env(char *str, char *part1, size_t idx[]);
 char		*get_env_name(char *dollar);
 char		*strs_cat(char *str_a, char *str_b, char *str_c, size_t idx_b[]);
+
+// utils003.c
+char	*sh_strjoin_free(char *s1, char *s2, int opt);
+void	sh_del_arr(void *arr[], int arr_size);
+char	*sh_lst2str(t_list *lst, char c);
 
 // sh_split_q.c
 char		**sh_split_q(char *str, char c);
@@ -122,10 +138,43 @@ char		*sh_split_map(char *str, char c);
 int			sh_split_couont(char *map, size_t len);
 char		*sh_split_element(char *map, size_t len, int elem);
 
+// asterisk.c
+char	*sh_asterisk(char *astr);
+t_list	*get_dirs(char *pattern);
+int		get_lst_dirs(t_list **lst, char *pattern, char *path[]);
+void	aster_recursion(t_list *dir, t_list *dirs, t_list **result);
+int		wildcard_check(char *wildcard, char *str);
+
+// asterisk02.c
+char	*sh_remove_last_c(char *str, char c);
+t_de	*sh_new_de(unsigned char d_type, char *d_name, char *path[]);
+void	dirs_clean(void *content);
+int		dirs_check(char *d_name, char *pttrn);
+void	dirs_init(t_list *dirs[], char *pathes[], t_list *dir);
+
+// void	dirs_print(void *content);	//
+// void	list_print(void *content);	//
+
+// asterisk03.c
+t_list	*aster_slash(char *pattern);
+t_list	*aster_tilde(char *pattern);
+t_list	*aster_dot(char *pattern);
+t_list	*aster_start(t_list *dirs);
+//int		check_d_type(t_list *dir);
+
+// asterisk04.c
+void	aster_order(t_list *result);
+int		aster_pathcmp(char *path1, char *path2);
+int		aster_strcmp(char *s1, char *s2);
+
+// a_split.c
+t_list	*a_split(char *str, char c);
+t_list	*a_split_elem(char *str, size_t idx[]);
+void	a_split_clear(void *elem);
+
 // execve.c
 int			sh_run(char *cmmnd, char **envp);
-void		sp_print_cnf(char *cmmnd);
-int			sh_execve(char **argv, char **envp, char **f_cmmnds, char *f_cmmnd);
+void		sh_execve(char **argv, char **envp, char **f_cmmnds, char *f_cmmnd);
 
 // signal.c
 void		sig_init(void);
@@ -135,6 +184,8 @@ void		sigact(int sig, siginfo_t *info, void *context);
 char		*get_sh_path(int absolute_path);
 char		*get_sh_pps(void);
 char		*get_cmd(char *cmd);
+char		*sh_replace_tilde(char *path);
+char		*sh_replace_dot(char *path);
 
 // run_builtins.c
 int			run_builtins(char **argv, char **envp);

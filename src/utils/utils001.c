@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/25 22:55:37 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/02 13:08:57 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,29 +77,30 @@ int	sh_backslash(char **line)
 	return (free (*line), *line = str, result);
 }
 
-char	*sh_strjoin(char *s1, char *s2)
-{
-	char	*result;
+// char	*sh_strjoin(char *s1, char *s2)
+// {
+// 	char	*result;
+// 	int		set_s[2];
 
-	if (!s1)
-	{
-		s1 = (char *) malloc (1);
-		if (!s1)
-			return (NULL);
-		s1[0] = '\0';
-	}
-	if (!s2)
-	{
-		s2 = (char *) malloc (1);
-		if (!s2)
-			return (NULL);
-		s2[0] = '\0';
-	}
-	result = ft_strjoin (s1, s2);
-	free (s1);
-	free (s2);
-	return (result);
-}
+// 	if (!s1)
+// 	{
+// 		s1 = (char *) malloc (1);
+// 		if (!s1)
+// 			return (NULL);
+// 		s1[0] = '\0';
+// 	}
+// 	if (!s2)
+// 	{
+// 		s2 = (char *) malloc (1);
+// 		if (!s2)
+// 			return (NULL);
+// 		s2[0] = '\0';
+// 	}
+// 	result = ft_strjoin (s1, s2);
+// 	free (s1);
+// 	free (s2);
+// 	return (result);
+// }
 
 void	sh_ppfree(char	**pp)
 {

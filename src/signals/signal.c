@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:51:45 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/27 13:09:55 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/28 19:10:47 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	sig_init(void)
 	int					checker;
 
 	sigemptyset (&block_mask);
-	// sigaddset (&block_mask, 0b11111111 ^ (SIGINT | SIGTERM | SIGCHLD));
 	sigaddset (&block_mask, SIGINT | SIGTERM | SIGCHLD);
 	sig.sa_mask = block_mask;
 	sig.sa_flags = SA_SIGINFO;
@@ -28,7 +27,7 @@ void	sig_init(void)
 	checker += sigaction(SIGTERM, &sig, 0);
 	checker += sigaction(SIGCHLD, &sig, 0);
 	if (checker != 0)
-		write (1, "create sigactions ERROR!\n", 25);
+		sh_err ("create sigactions ERROR!");
 }
 
 void	sigact(int sig, siginfo_t *info, void *context)
@@ -37,7 +36,6 @@ void	sigact(int sig, siginfo_t *info, void *context)
 	(void)context;
 	if (sig == SIGINT)
 	{
-		// write (1, "\n(sa_sigaction)-> SIGINT\n", 25);
 		if (info->si_pid)
 		{
 			write (1, "\n", 1);
@@ -47,6 +45,6 @@ void	sigact(int sig, siginfo_t *info, void *context)
 	}
 	else if (sig == SIGTERM)
 	{
-		write (1, "\n(sa_sigaction)-> SIGTERM\n", 26);
+		write (2, "(sa_sigaction)-> SIGTERM\n", 26);
 	}
 }

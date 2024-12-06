@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 15:11:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/25 14:23:21 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/11/28 19:06:04 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	cd(char **argv)
 
 	if (argv[1] && argv[2])
 	{
-		write (1, "cd: too many arguments\n", 23);
+		sh_err ("cd: too many arguments");
 		return ;
 	}
 	path = NULL;

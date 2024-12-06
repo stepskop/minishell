@@ -6,13 +6,13 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/28 11:56:47 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/02 13:08:57 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*sh_strcat(char *s1, char *s2)
+char	*sh_strjoin(char *s1, char *s2)
 {
 	char	*result;
 	size_t	len;
@@ -41,7 +41,9 @@ char	*put_env(char *str)
 	char	*buffer;
 	size_t	idx[2];
 
-	if (str[0] == '\'')
+	if (!str)
+		return (NULL);
+	if (str[0] == '\'' && str[ft_strlen (str) - 1] == '\'')
 		return (ft_strdup (str));
 	buffer = NULL;
 	idx[0] = 0;
@@ -52,7 +54,7 @@ char	*put_env(char *str)
 			buffer = str_join_env(str, buffer, idx);
 		idx[1]++;
 	}
-	result = sh_strcat(buffer, &str[idx[0]]);
+	result = sh_strjoin(buffer, &str[idx[0]]);
 	free (buffer);
 	return (result);
 }
@@ -92,7 +94,13 @@ char	*get_env_name(char *dollar)
 
 	idx = 1;
 	if (!(ft_isalpha (dollar[idx]) || dollar[idx] == '_'))
-		return (NULL);
+	{
+		env_name = (char *) malloc (sizeof (char));
+		if (!env_name)
+			return (NULL);
+		env_name[0] = '\0';
+		return (env_name);
+	}
 	while (dollar[idx])
 		if (!(ft_isdigit (dollar[idx]) || ft_isalpha (dollar[idx])
 				|| dollar[idx] == '_'))

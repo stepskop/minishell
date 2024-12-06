@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 15:11:55 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/28 11:52:04 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/04 21:16:12 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	echo(char **argv)
 {
 	int		nnl;
 	char	**arg;
+	char	*str[2];	// delete after implement * & $
 
 	nnl = 0;
 	if (argv[1] && !ft_strcmp (argv[1], "-n"))
@@ -23,7 +24,12 @@ void	echo(char **argv)
 	arg = argv + 1 + nnl;
 	while (*arg)
 	{
-		echo_write (*arg);
+		// echo_write (*arg);	// return back after implement *
+		str[0] = put_env (*arg);	// delete after implement $
+		str[1] = sh_asterisk (str[0]);	// delete after implement *
+		echo_write (str[1]);	// delete after implement *
+		free (str[0]);	// delete after implement *
+		free (str[1]);	// delete after implement *
 		if (*(arg + 1))
 			write (1, " ", 1);
 		arg++;
@@ -34,11 +40,7 @@ void	echo(char **argv)
 
 void	echo_write(char *arg)
 {
-	char	*str;
-
-	str = put_env (arg);
-	write (1, str, ft_strlen (str));
-	free (str);
+	write (1, arg, ft_strlen (arg));
 }
 
 // void	echo_write(char *arg)
