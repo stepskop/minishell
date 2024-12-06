@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/05 19:11:34 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/06 13:58:23 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ int	main(int argc, char **argv, char **envp)
 
 void	_loop_(char **envp)
 {
-	char	*cmmnd[2];
-	t_input	*lst;
-	char	**splitted;
+	char		*cmmnd[2];
+	t_prompt	*lst;
+	char		**splitted;
 
 	lst = NULL;
 	while (1)
@@ -44,6 +44,7 @@ void	_loop_(char **envp)
 			lst = lexer(splitted);
 		if (lst)
 			print_lex_dbg(lst);
+		//executor(lst, envp);
 		sh_run (cmmnd[1], envp);
 		free (cmmnd[1]);
 	}

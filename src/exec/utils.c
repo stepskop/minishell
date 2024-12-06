@@ -79,7 +79,7 @@ char	*get_cmd(char *cmd)
 	if (cmd[0] == '~')
 		res = cmd_from_home(cmd);
 	else if (cmd[0] == '.')
-		res = cmd_from_curr(cmd); 
+		res = cmd_from_curr(cmd);
 	else
 		res = cmd_from_path(cmd);
 	return (res);

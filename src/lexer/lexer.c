@@ -6,38 +6,21 @@
 /*   By: username <your@email.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 15:00:19 by username          #+#    #+#             */
-/*   Updated: 2024/11/27 19:27:44 by username         ###   ########.fr       */
+/*   Updated: 2024/12/06 00:30:15 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_input	*lex_add(t_token token, t_input *prev, char *val)
+static t_prompt	*lx_init(char *first)
 {
-	t_input	*new;
-
-	new = malloc(sizeof(t_input));
-	if (!new)
-		return (perror(NULL), NULL);
-	new->token = token;
-	if (token == WORD)
-		new->token = CMD;
-	new->next = NULL;
-	new->prev = prev;
-	new->args = NULL;
-	new->str_val = val;
-	return (new);
-}
-
-static t_input	*lex_init(char *first)
-{
-	t_input	*lst;
-	t_token	token;
+	t_prompt	*lst;
+	t_token		token;
 
 	token = lx_get_token(first);
 	if (token == AND || token == OR || token == PIPE)
 		return (sh_err("syntax error near unexpected token"), NULL);
-	lst = lex_add(token, NULL, first);
+	lst = lx_add(token, NULL, first);
 	if (!lst)
 		return (NULL);
 	if (token == WORD)
@@ -46,50 +29,69 @@ static t_input	*lex_init(char *first)
 	return (lst);
 }
 
-t_input	*lexer(char **cmd_raw)
+static t_prompt	*lx_create(char **cmd_raw, t_prompt *lst)
 {
+	t_prompt	*curr;
+	t_prompt	*l_cmd;
 	int			i;
-	t_input		*lst;
-	t_input		*curr;
 
 	i = 0;
-	lst = lex_init(cmd_raw[i]);
-	if (!lst)
-		return (NULL);
 	curr = lst;
+	l_cmd = curr;
 	while (cmd_raw[++i])
 	{
-		if (lx_get_token(cmd_raw[i]) == WORD && lx_accept_sub(*curr))
+		if (lx_get_token(cmd_raw[i]) == WORD && !lx_cmdend(*curr))
 		{
-			if (!lx_add_arg(put_env(cmd_raw[i]), &curr->args))
+			if (!lx_add_arg(cmd_raw[i], &lx_parent(curr, l_cmd)->args))
 				return (lx_free_tokens(lst), NULL);
 		}
 		else
 		{
-			curr->next = lex_add(lx_get_token(cmd_raw[i]), curr, cmd_raw[i]);
+			curr->next = lx_add(lx_get_token(cmd_raw[i]), curr, cmd_raw[i]);
 			if (!curr->next)
 				return (lx_free_tokens(lst), NULL);
+			if (curr->next->token == CMD)
+				l_cmd = lx_lastcmd(l_cmd, curr->next);
 			curr = curr->next;
 		}
 	}
 	return (lst);
 }
 
-void	print_lex_dbg(t_input *lst)
+t_prompt	*lexer(char **cmd_raw)
 {
+	int			i;
+	t_prompt	*lst;
+
+	i = 0;
+	lst = lx_init(cmd_raw[i]);
+	if (!lst)
+		return (NULL);
+	lst = lx_create(cmd_raw, lst);
+	return (lst);
+}
+
+void	print_lex_dbg(t_prompt *lst)
+{
+	t_prompt	*curr;
+	t_args		*curr_arg;
+
+	curr = lst;
 	printf("------LEXER DBG-------\n");
-	while (lst)
+	while (curr)
 	{
-		printf("ITEM: %s, TOKEN: %i\n", lst->str_val, lst->token);
-		if (lst->args)
+		printf("ITEM: %s, TOKEN: %i\n", curr->str_val, curr->token);
+		printf("IN: %d, OUT: %d\n", curr->in_fd, curr->out_fd);
+		curr_arg = curr->args;
+		if (curr_arg)
 		{
-			while (lst->args)
+			while (curr_arg)
 			{
-				printf("\tSUB_ARG: %s\n", lst->args->data);
-				lst->args = lst->args->next;
+				printf("\tSUB_ARG: %s\n", curr_arg->data);
+				curr_arg = curr_arg->next;
 			}
 		}
-		lst = lst->next;
+		curr = curr->next;
 	}
 	printf("------LEXER DBG END-------\n");
 }

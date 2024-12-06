@@ -1,0 +1,64 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: username <your@email.com>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/04 16:25:32 by username          #+#    #+#             */
+/*   Updated: 2024/12/04 19:33:10 by username         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+static void	read_stdin(int *pipefd, char *limiter)
+{
+	char	*line;
+	char	*delimiter;
+
+	delimiter = ft_strjoin(limiter, "\n");
+	while (1)
+	{
+		write(1, ">", 1);
+		line = get_next_line(STDIN_FILENO);
+		if (!line)
+		{
+			free(delimiter);
+			return ;
+		}
+		if (!ft_strcmp(line, delimiter))
+		{
+			free(delimiter);
+			free(line);
+			return ;
+		}
+		ft_putstr_fd(line, pipefd[1]);
+		free(line);
+	}
+}
+
+int	ex_get_heredoc(t_args *args)
+{
+	int	pipefd[2];
+
+	if (!args)
+		return (sh_err("delimiter not specified\n"), -1);
+	if (pipe(pipefd) == -1)
+		return (perror("heredoc"), -1);
+	read_stdin(pipefd, args->data);
+	close(pipefd[1]);
+	return (pipefd[0]);
+}
+
+int	ex_open_file(t_args *args, int oflag)
+{
+	int	fd;
+
+	if (!args)
+		return (sh_err("path not specified\n"), -1);
+	fd = open(args->data, oflag, 0666);
+	if (fd == -1)
+		return (perror("open"), -1);
+	return (fd);
+}

@@ -15,9 +15,11 @@
 int	sh_run(char *cmmnd, char **envp)
 {
 	char	**cmmnds_args[3];
+	int		exit_code;
 
 	cmmnds_args[0] = sh_split_q (cmmnd, ';');
 	cmmnds_args[1] = cmmnds_args[0];
+	exit_code = EXIT_SUCCESS;
 	while (*cmmnds_args[1])
 	{
 		cmmnds_args[2] = sh_split_q (*cmmnds_args[1], ' ');
@@ -30,14 +32,20 @@ int	sh_run(char *cmmnd, char **envp)
 			|| !ft_strncmp (cmmnds_args[2][0], "exit", 4))
 			run_builtins (cmmnds_args[2], envp);
 		else
-			sh_execve (cmmnds_args[2], envp, cmmnds_args[0], cmmnd);
+			exit_code = sh_execve (cmmnds_args[2], envp, cmmnds_args[0], cmmnd);
 		sh_ppfree (cmmnds_args[2]);
 		cmmnds_args[1]++;
 	}
-	return (sh_ppfree (cmmnds_args[0]), EXIT_SUCCESS);
+	return (sh_ppfree (cmmnds_args[0]), exit_code);
 }
 
-void	sh_execve(char **argv, char **envp, char **f_cmmnds, char *f_cmmnd)
+void	sp_print_cnf(char *cmmnd)
+{
+	write (1, cmmnd, ft_strlen (cmmnd));
+	write (1, ": command not found\n", 20);
+}
+
+int	sh_execve(char **argv, char **envp, char **f_cmmnds, char *f_cmmnd)
 {
 	char	*cmmnd;
 	pid_t	pid;
@@ -59,4 +67,5 @@ void	sh_execve(char **argv, char **envp, char **f_cmmnds, char *f_cmmnd)
 		exit (rp);
 	}
 	waitpid (pid, &rp, 0);
+	return (WEXITSTATUS(rp));
 }
