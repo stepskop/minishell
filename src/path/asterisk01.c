@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:43:38 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/06 19:10:15 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/07 16:06:19 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ char	*sh_asterisk(char *str)
 	t_list	*dirs[5];
 	char	*result;
 
-	if (!str)
-		return (NULL);
+	if (!str || !ft_strchr (str, '*'))
+		return (sh_strdup (str));
 	if (check_quot (str))
 		return (ft_strdup (str));
 	dirs[0] = a_split (str, '/');
@@ -34,6 +34,8 @@ char	*sh_asterisk(char *str)
 	}
 	ft_lstclear (&dirs[1], &dirs_clean);
 	ft_lstclear (&dirs[0], &a_split_clear);
+	if (!dirs[4])
+		return (ft_strdup (str));
 	aster_order (dirs[4]);
 	result = sh_lst2str (dirs[4], ' ');
 	ft_lstclear (&dirs[4], &a_split_clear);
@@ -55,16 +57,16 @@ t_list	*get_dirs(char *pattern)
 	// 	result = aster_slash (pattern);
 	// else if (pattern[0] == '.' && (pattern[0] == '/' || pattern[0] == '\0'))
 	// 	result = aster_dot (pattern);
-	if (result)
-		return (result);
+	// if (result)
+	// 	return (result);
 	str[0] = ft_strdup ("");
-	str[1] = get_sh_path(1);
 	if (ft_strchr (pattern, '*'))
+	{
+		str[1] = get_sh_path(1);
 		get_lst_dirs (&result, pattern, str);
+	}
 	else
 	{
-		sh_del_arr ((void **)str, 2);
-		str[0] = ft_strdup ("");
 		str[1] = ft_strdup ("");
 		ft_lstadd_back (&result, ft_lstnew (sh_new_de(DT_DIR, pattern, str)));
 	}

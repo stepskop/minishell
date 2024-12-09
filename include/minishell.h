@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/06 18:34:56 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/07 16:04:40 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ int			sh_check_eol(char *cmmnd);
 int			sh_backslash(char **line);
 // char	*sh_strjoin(char *s1, char *s2);
 void		sh_ppfree(char	**pp);
+char		*sh_strdup(char *str);
 
 // quotation.c
 int			check_quot(char *str);
