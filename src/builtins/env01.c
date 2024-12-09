@@ -6,31 +6,39 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 13:41:06 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/06 16:25:44 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/09 13:24:34 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "env.h"
 
 void	env(char **argv, char **envp)
 {
-	char	**pstr[2];
+	char	**pstr;
 
-	pstr[1] = envp;
-	if (!argv[1] || (!ft_strcmp ("env", argv[1]) && !argv[2]))
+	if (!argv[0])
 	{
-		while (*pstr[1])
-		{
-			write (1, *pstr[1], ft_strlen (*pstr[1]));
-			write (1, "\n", 1);
-			pstr[1]++;
-		}
+		env_print (envp);
 		return ;
 	}
-	env_prsng (argv, envp);
+	pstr = env_prsng (argv, envp);
 }
 
-int	env_prsng(char **argv, char **envp)
+void	env_print(char **envp)
+{
+	char	**pstr;
+
+	pstr = envp;
+	while (*pstr)
+	{
+		write (1, *pstr, ft_strlen (*pstr));
+		write (1, "\n", 1);
+		pstr++;
+	}
+}
+
+char	**env_prsng(char **argv, char **envp)
 {
 	char	**pstr[2];
 	int		idx[3];
@@ -41,23 +49,17 @@ int	env_prsng(char **argv, char **envp)
 	while (idx[0] <	idx[1])
 	{
 		idx[2] = -1;
-		pstr[0] = sh_split_q (argv[idx[0]], '=');
-		if (pstr[0][0] && pstr[0][1])
-			idx[2] = env_check_var (pstr[0]);		
-		if (idx[2] == 1)
-		{
-			if (env_check_var(pstr[1]) >= 0)
-				; // sh_run ();
-		}
+		if (ft_strchr (argv[idx[0]], '='))
+			idx[2] = envp_set_var (&pstr[1], argv[idx[0]]);
 		else if (idx[2] == -1)
-			return (sh_ppfree (pstr[0]), -1);
-		sh_ppfree (pstr[0]);
+			sh_run (argv[idx[0]], pstr[1]);
+			// return (&argv[idx[0]]);
 		idx[0]++;
 	}
 	return (0);
 }
 
-int	env_check_var(char **var)
+int	env_check_var(char *var)
 {
 	(void)var;
 	return (-1);

@@ -6,11 +6,12 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:13:57 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/05 19:13:03 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/09 13:03:22 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "env.h"
 
 char	**envp_dup(char **envp)
 {
@@ -65,7 +66,7 @@ int	envp_size(char **envp)
 	return (result);
 }
 
-char	*envp_set_var(char ***envp, char *sv)
+int	envp_set_var(char ***envp, char *sv)
 {
 	int		size;
 	char	**new_envp;
@@ -73,10 +74,11 @@ char	*envp_set_var(char ***envp, char *sv)
 	size = envp_size (*envp);
 	new_envp = (char **) malloc ((size + 2) * sizeof (char *));
 	if (!new_envp)
-		return (sh_err ("envp_set_var - malloc error"), NULL);
+		return (sh_err ("envp_set_var - malloc error"), 0);
 	envp_copy (*envp, new_envp);
 	new_envp[size] = ft_strdup (sv);
 	new_envp[size + 1] = NULL;
 	free(*envp);
-	return (NULL);
+	*envp = new_envp;
+	return (1);
 }

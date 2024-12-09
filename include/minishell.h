@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/07 16:04:40 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/09 12:40:55 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,14 +175,6 @@ char		*cd_home(char **argv);
 
 // env01.c
 void		env(char **argv, char **envp);
-int			env_prsng(char **argv, char **envp);
-int			env_check_var(char **var);
-
-// env02.c
-char		**envp_dup(char **envp);
-char		**envp_copy(char **envp1, char **envp2);
-int			envp_size(char **envp);
-char		*envp_set_var(char ***envp, char *sv);
 
 // Err
 void		sh_err(char *str);
