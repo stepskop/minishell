@@ -146,8 +146,8 @@ t_list		*a_split_elem(char *str, size_t idx[]);
 void		a_split_clear(void *elem);
 
 // execve.c
-int			sh_run(char *cmmnd, t_prompt *lst_node, char **envp);
-int			sh_execve(char **argv, char **envp, char **f_cmmnds, char *f_cmmnd);
+int			sh_run(char *cmmnd, t_prompt *lst_node, char **envp, int pipefd[2]);
+int			sh_execve(char **argv, char **envp, int pipefd[2]);
 void		sp_print_cnf(char *cmmnd);
 
 // signal.c

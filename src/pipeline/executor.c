@@ -99,27 +99,34 @@ static int	ex_execute(t_prompt *node, char **envp)
 {
 	int		exit_code;
 	int		pipefd[2];
+	int		c_pipe[2];
 	char	*cmd;
 
-	if (node->in_fd > 0)
-		dup2(node->in_fd, STDIN_FILENO);
-	if (node->out_fd > 1)
-		dup2(node->out_fd, STDOUT_FILENO);
-	if (node->next_cmd && !node->next_cmd->in_fd)
+	if (pipe(pipefd) == -1)
+		return (perror("pipe"), 1);
+	c_pipe[0] = 0;
+	c_pipe[1] = 1;
+	if (node->next_cmd)
 	{
 		if (pipe(pipefd) == -1)
 			return (perror("pipe"), 1);
-		dup2(pipefd[1], STDOUT_FILENO);
-		node->next_cmd->in_fd = pipefd[0];
+		c_pipe[1] = pipefd[1];
+		c_pipe[0] = pipefd[0];
 	}
+	if (node->out_fd > 1)
+		c_pipe[1] = node->out_fd;
+	if (node->in_fd > 0)
+		dup2(node->in_fd, STDIN_FILENO);
 	cmd = ex_cmdprep(node);
-	(void)envp;
-	exit_code = sh_run(cmd, node, envp);
+	exit_code = sh_run(cmd, node, envp, c_pipe);
 	free(cmd);
-	//printf("CMD: %s\n", cmd);
-	exit_code = 0;
-	if (node->next_cmd && !node->next_cmd->in_fd)
+	if (node->next_cmd)
+	{
 		close(pipefd[1]);
+		close(pipefd[0]);
+	}
+	if (node->out_fd > 1)
+		close(node->out_fd);
 	return (exit_code);
 }
 

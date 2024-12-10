@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	sh_run(char *cmmnd, t_prompt *lst_node, char **envp)
+int	sh_run(char *cmmnd, t_prompt *lst_node, char **envp, int pipefd[2])
 {
 	char	**cmmnds_args[3];
 	int		exit_code;
@@ -30,13 +30,9 @@ int	sh_run(char *cmmnd, t_prompt *lst_node, char **envp)
 			|| !ft_strncmp (cmmnds_args[2][0], "unset", 5)
 			|| !ft_strncmp (cmmnds_args[2][0], "env", 3)
 			|| !ft_strncmp (cmmnds_args[2][0], "exit", 4))
-		{
-			sh_ppfree(cmmnds_args[0]);
-			free(cmmnd);
 			run_builtins (cmmnds_args[2], envp, lst_node);
-		}
 		else
-			exit_code = sh_execve (cmmnds_args[2], envp, cmmnds_args[0], cmmnd);
+			exit_code = sh_execve (cmmnds_args[2], envp, pipefd);
 		sh_ppfree (cmmnds_args[2]);
 		cmmnds_args[1]++;
 	}
@@ -49,7 +45,7 @@ void	sp_print_cnf(char *cmmnd)
 	write (1, ": command not found\n", 20);
 }
 
-int	sh_execve(char **argv, char **envp, char **f_cmmnds, char *f_cmmnd)
+int	sh_execve(char **argv, char **envp, int pipefd[2])
 {
 	char	*cmmnd;
 	pid_t	pid;
@@ -59,10 +55,10 @@ int	sh_execve(char **argv, char **envp, char **f_cmmnds, char *f_cmmnd)
 	if (pid == 0)
 	{
 		rl_clear_history ();
-		sh_ppfree (f_cmmnds);
-		free (f_cmmnd);
 		rp = EXIT_SUCCESS;
 		cmmnd = get_cmd (argv[0]);
+		if (pipefd[1] > 1)
+			dup2(pipefd[1], STDOUT_FILENO);
 		if (cmmnd)
 			rp = execve (cmmnd, argv, envp);
 		else
@@ -70,6 +66,11 @@ int	sh_execve(char **argv, char **envp, char **f_cmmnds, char *f_cmmnd)
 		sh_ppfree (argv);
 		exit (rp);
 	}
-	waitpid (pid, &rp, 0);
+	else
+	{
+		waitpid (pid, &rp, 0);
+		if (pipefd[0] > 0)
+			dup2(pipefd[0], STDIN_FILENO);
+	}
 	return (WEXITSTATUS(rp));
 }

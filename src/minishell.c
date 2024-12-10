@@ -61,7 +61,6 @@ char	*get_command(char **cmmnd)
 		line[0] = readline(line[1]);
 		i = sh_backslash (&line[0]);
 		*cmmnd = sh_strjoin (*cmmnd, line[0]);
-		free(line[0]);
 		if (!i)
 		{
 			if (sh_check_eol (*cmmnd))
