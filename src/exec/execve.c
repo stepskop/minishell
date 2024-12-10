@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	sh_run(char *cmmnd, char **envp)
+int	sh_run(char *cmmnd, t_prompt *lst_node, char **envp)
 {
 	char	**cmmnds_args[3];
 	int		exit_code;
@@ -30,7 +30,11 @@ int	sh_run(char *cmmnd, char **envp)
 			|| !ft_strncmp (cmmnds_args[2][0], "unset", 5)
 			|| !ft_strncmp (cmmnds_args[2][0], "env", 3)
 			|| !ft_strncmp (cmmnds_args[2][0], "exit", 4))
-			run_builtins (cmmnds_args[2], envp);
+		{
+			sh_ppfree(cmmnds_args[0]);
+			free(cmmnd);
+			run_builtins (cmmnds_args[2], envp, lst_node);
+		}
 		else
 			exit_code = sh_execve (cmmnds_args[2], envp, cmmnds_args[0], cmmnd);
 		sh_ppfree (cmmnds_args[2]);

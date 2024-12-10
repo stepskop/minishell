@@ -47,7 +47,10 @@ int	env_prsng(char **argv, char **envp)
 		if (idx[2] == 1)
 		{
 			if (env_check_var(pstr[1]) >= 0)
-				; // sh_run ();
+			{
+				;
+			}
+			// sh_run ();
 		}
 		else if (idx[2] == -1)
 			return (sh_ppfree (pstr[0]), -1);

@@ -12,10 +12,16 @@
 
 #include "minishell.h"
 
-int	run_builtins(char **argv, char **envp)
+int	run_builtins(char **argv, char **envp, t_prompt *lst_node)
 {
+	t_prompt	*curr;
+
 	if (!ft_strcmp (argv[0], "exit"))
 	{
+		curr = lst_node;
+		while (curr && curr->prev)
+			curr = curr->prev;
+		lx_free_tokens(curr);
 		sh_ppfree (argv);
 		exit (EXIT_SUCCESS);
 	}

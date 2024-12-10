@@ -146,7 +146,7 @@ t_list		*a_split_elem(char *str, size_t idx[]);
 void		a_split_clear(void *elem);
 
 // execve.c
-int			sh_run(char *cmmnd, char **envp);
+int			sh_run(char *cmmnd, t_prompt *lst_node, char **envp);
 int			sh_execve(char **argv, char **envp, char **f_cmmnds, char *f_cmmnd);
 void		sp_print_cnf(char *cmmnd);
 
@@ -161,7 +161,7 @@ char		*sh_replace_tilde(char *path);
 char		*sh_replace_dot(char *path);
 
 // run_builtins.c
-int			run_builtins(char **argv, char **envp);
+int			run_builtins(char **argv, char **envp, t_prompt *lst_node);
 
 // echo.c
 void		echo(char **argv);

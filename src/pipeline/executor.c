@@ -79,6 +79,8 @@ static char	*ex_cmdprep(t_prompt *node)
 	}
 	len = ex_cmdlen(node->args) + ft_strlen(node->str_val);
 	res = malloc(sizeof(char) * (len + 1));
+	if (!res)
+		return (perror("malloc"), NULL);
 	i = ft_strlcpy(res, node->str_val, ft_strlen(node->str_val) + 1);
 	curr = node->args;
 	while (curr)
@@ -112,8 +114,9 @@ static int	ex_execute(t_prompt *node, char **envp)
 	}
 	cmd = ex_cmdprep(node);
 	(void)envp;
-	//exit_code = sh_run(cmd, envp);
-	printf("CMD: %s\n", cmd);
+	exit_code = sh_run(cmd, node, envp);
+	free(cmd);
+	//printf("CMD: %s\n", cmd);
 	exit_code = 0;
 	if (node->next_cmd && !node->next_cmd->in_fd)
 		close(pipefd[1]);

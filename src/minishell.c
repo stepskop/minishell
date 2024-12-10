@@ -44,9 +44,9 @@ void	_loop_(char **envp)
 			lst = lexer(splitted);
 		if (lst)
 			print_lex_dbg(lst);
-		executor(lst, envp);
-		sh_run (cmmnd[1], envp);
 		free (cmmnd[1]);
+		executor(lst, envp);
+		lx_free_tokens(lst);
 	}
 }
 
@@ -61,6 +61,7 @@ char	*get_command(char **cmmnd)
 		line[0] = readline(line[1]);
 		i = sh_backslash (&line[0]);
 		*cmmnd = sh_strjoin (*cmmnd, line[0]);
+		free(line[0]);
 		if (!i)
 		{
 			if (sh_check_eol (*cmmnd))
