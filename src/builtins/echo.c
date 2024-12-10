@@ -6,11 +6,13 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 15:11:55 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/04 21:16:12 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/06 15:46:12 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	echo_write(char *arg);
 
 void	echo(char **argv)
 {
@@ -27,7 +29,7 @@ void	echo(char **argv)
 		// echo_write (*arg);	// return back after implement *
 		str[0] = put_env (*arg);	// delete after implement $
 		str[1] = sh_asterisk (str[0]);	// delete after implement *
-		echo_write (str[1]);	// delete after implement *
+		echo_write (str[1]);
 		free (str[0]);	// delete after implement *
 		free (str[1]);	// delete after implement *
 		if (*(arg + 1))
@@ -38,7 +40,7 @@ void	echo(char **argv)
 		write (1, "\n", 1);
 }
 
-void	echo_write(char *arg)
+static void	echo_write(char *arg)
 {
 	write (1, arg, ft_strlen (arg));
 }

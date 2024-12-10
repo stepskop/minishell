@@ -6,11 +6,12 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:43:38 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/05 11:51:06 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/06 18:27:10 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "asterisk.h"
 
 /*
 *	sh_remove_last_c creates new string

@@ -6,11 +6,13 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:51:45 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/28 19:10:47 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/06 15:43:06 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	sigact(int sig, siginfo_t *info, void *context);
 
 void	sig_init(void)
 {
@@ -30,7 +32,7 @@ void	sig_init(void)
 		sh_err ("create sigactions ERROR!");
 }
 
-void	sigact(int sig, siginfo_t *info, void *context)
+static void	sigact(int sig, siginfo_t *info, void *context)
 {
 	(void)info;
 	(void)context;

@@ -6,24 +6,23 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:43:38 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/05 11:42:24 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/07 16:06:19 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "asterisk.h"
 
-char	*sh_asterisk(char *astr)
+char	*sh_asterisk(char *str)
 {
 	t_list	*dirs[5];
 	char	*result;
 
-	if (!astr)
-		return (NULL);
-	if ((astr[0] == '\'' && astr[ft_strlen (astr) - 1] == '\'')
-		|| (astr[0] == '"' && astr[ft_strlen (astr) - 1] == '"')
-		|| !ft_strchr (astr, '*'))
-		return (ft_strdup (astr));
-	dirs[0] = a_split (astr, '/');
+	if (!str || !ft_strchr (str, '*'))
+		return (sh_strdup (str));
+	if (check_quot (str))
+		return (ft_strdup (str));
+	dirs[0] = a_split (str, '/');
 	dirs[4] = NULL;
 	dirs[3] = aster_start (dirs[0]);
 	dirs[1] = get_dirs (dirs[3]->content);
@@ -35,6 +34,8 @@ char	*sh_asterisk(char *astr)
 	}
 	ft_lstclear (&dirs[1], &dirs_clean);
 	ft_lstclear (&dirs[0], &a_split_clear);
+	if (!dirs[4])
+		return (ft_strdup (str));
 	aster_order (dirs[4]);
 	result = sh_lst2str (dirs[4], ' ');
 	ft_lstclear (&dirs[4], &a_split_clear);
@@ -50,23 +51,23 @@ t_list	*get_dirs(char *pattern)
 	char	*str[2];
 
 	result = NULL;
-	if (!pattern)
-		return (NULL);
-	else if (pattern[0] == '/')
-		result = aster_slash (pattern);
-	else if (pattern[0] == '.' && (pattern[0] == '/' || pattern[0] == '\0'))
-		result = aster_dot (pattern);
-	if (result)
-		return (result);
+	// if (!pattern)
+	// 	return (NULL);
+	// else if (pattern[0] == '/')
+	// 	result = aster_slash (pattern);
+	// else if (pattern[0] == '.' && (pattern[0] == '/' || pattern[0] == '\0'))
+	// 	result = aster_dot (pattern);
+	// if (result)
+	// 	return (result);
 	str[0] = ft_strdup ("");
-	str[1] = get_sh_path(1);
 	if (ft_strchr (pattern, '*'))
+	{
+		str[1] = get_sh_path(1);
 		get_lst_dirs (&result, pattern, str);
+	}
 	else
 	{
-		sh_del_arr ((void **)str, 2);
-		str[0] = ft_strdup (pattern);
-		str[1] = ft_strdup (pattern);
+		str[1] = ft_strdup ("");
 		ft_lstadd_back (&result, ft_lstnew (sh_new_de(DT_DIR, pattern, str)));
 	}
 	return (sh_del_arr ((void **)str, 2), result);

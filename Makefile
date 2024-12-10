@@ -4,7 +4,7 @@
 
 # Commands, built-in stuff
 BUILTINS_DIR = builtins/
-BUILTINS_SRC = echo.c pwd.c cd.c env.c run_builtins.c
+BUILTINS_SRC = echo.c pwd.c cd.c env01.c  env02.c run_builtins.c
 
 # Signals
 SIGNALS_DIR = signals/
@@ -20,7 +20,7 @@ PATH_SRC = path.c a_split.c asterisk01.c asterisk02.c asterisk03.c asterisk04.c
 
 # Utilites
 UTILS_DIR = utils/
-UTILS_SRC = sh_split_q.c utils001.c utils002.c utils003.c memory.c
+UTILS_SRC = sh_split_q.c utils001.c utils002.c utils003.c memory.c quotation.c
 
 # Lexer
 LEXER_DIR = lexer/
@@ -48,7 +48,7 @@ MAIN = minishell.c
 
 # Included headers
 INCLUDE_DIR = ./include/
-INCLUDE_SRC = minishell.h
+INCLUDE_SRC = minishell.h asterisk.h
 
 INCLUDES = $(addprefix $(INCLUDE_DIR), $(INCLUDE_SRC))
 

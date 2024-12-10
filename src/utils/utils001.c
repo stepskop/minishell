@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/02 13:08:57 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/07 16:04:16 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,13 @@ int	sh_backslash(char **line)
 	}
 	str[idx[1]] = '\0';
 	return (free (*line), *line = str, result);
+}
+
+char	*sh_strdup(char *str)
+{
+	if (!str)
+		return (NULL);
+	return (ft_strdup (str));
 }
 
 // char	*sh_strjoin(char *s1, char *s2)
