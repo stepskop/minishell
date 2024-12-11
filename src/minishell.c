@@ -32,6 +32,7 @@ void	_loop_(char **envp)
 	t_prompt	*lst;
 	char		**splitted;
 	int			stdin_fd;
+	int			exit_code;
 
 	lst = NULL;
 	while (1)
@@ -50,6 +51,7 @@ void	_loop_(char **envp)
 		free (cmmnd[1]);
 		stdin_fd = dup(STDIN_FILENO);
 		executor(lst, envp);
+		wait(&exit_code);
 		lx_free_tokens(lst);
 		dup2(stdin_fd, STDIN_FILENO);
 		close(stdin_fd);

@@ -57,8 +57,11 @@ int	sh_execve(char **argv, char **envp, int pipefd[2])
 	int		rp;
 
 	pid = fork ();
+	rp = 0;
 	if (pid == 0)
 	{
+		if (pipefd[1] > 1)
+			close(pipefd[0]);
 		rl_clear_history ();
 		rp = EXIT_SUCCESS;
 		cmmnd = get_cmd (argv[0]);
@@ -73,7 +76,6 @@ int	sh_execve(char **argv, char **envp, int pipefd[2])
 	}
 	else
 	{
-		waitpid (pid, &rp, 0);
 		if (pipefd[0] > 0)
 			dup2(pipefd[0], STDIN_FILENO);
 	}
