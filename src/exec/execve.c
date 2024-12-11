@@ -18,6 +18,7 @@ int	sh_run(char *cmmnd, t_prompt *lst_node, char **envp, int pipefd[2])
 	int		exit_code;
 
 	cmmnds_args[0] = sh_split_q (cmmnd, ';');
+	free(cmmnd);
 	cmmnds_args[1] = cmmnds_args[0];
 	exit_code = EXIT_SUCCESS;
 	while (*cmmnds_args[1])
@@ -30,7 +31,10 @@ int	sh_run(char *cmmnd, t_prompt *lst_node, char **envp, int pipefd[2])
 			|| !ft_strncmp (cmmnds_args[2][0], "unset", 5)
 			|| !ft_strncmp (cmmnds_args[2][0], "env", 3)
 			|| !ft_strncmp (cmmnds_args[2][0], "exit", 4))
+		{
+			sh_ppfree(cmmnds_args[0]);
 			run_builtins (cmmnds_args[2], envp, lst_node);
+		}
 		else
 			exit_code = sh_execve (cmmnds_args[2], envp, pipefd);
 		sh_ppfree (cmmnds_args[2]);

@@ -119,7 +119,6 @@ static int	ex_execute(t_prompt *node, char **envp)
 		dup2(node->in_fd, STDIN_FILENO);
 	cmd = ex_cmdprep(node);
 	exit_code = sh_run(cmd, node, envp, c_pipe);
-	free(cmd);
 	if (node->next_cmd)
 	{
 		close(pipefd[1]);
