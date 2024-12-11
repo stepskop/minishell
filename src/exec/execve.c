@@ -32,7 +32,8 @@ int	sh_run(char *cmmnd, t_prompt *lst_node, char **envp, int pipefd[2])
 			|| !ft_strncmp (cmmnds_args[2][0], "env", 3)
 			|| !ft_strncmp (cmmnds_args[2][0], "exit", 4))
 		{
-			sh_ppfree(cmmnds_args[0]);
+			if (!ft_strncmp (cmmnds_args[2][0], "exit", 4))
+				sh_ppfree(cmmnds_args[0]);
 			run_builtins (cmmnds_args[2], envp, lst_node);
 		}
 		else

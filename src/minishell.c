@@ -31,6 +31,7 @@ void	_loop_(char **envp)
 	char		*cmmnd[2];
 	t_prompt	*lst;
 	char		**splitted;
+	int			stdin_fd;
 
 	lst = NULL;
 	while (1)
@@ -38,6 +39,8 @@ void	_loop_(char **envp)
 		cmmnd[1] = NULL;
 		rl_on_new_line ();
 		cmmnd[0] = get_command (&cmmnd[1]);
+		if (!cmmnd[0])
+			continue;
 		add_history (cmmnd[1]);
 		splitted = sh_split_q(cmmnd[0], ' ');
 		if (splitted && splitted[0])
@@ -45,8 +48,11 @@ void	_loop_(char **envp)
 		if (lst)
 			print_lex_dbg(lst);
 		free (cmmnd[1]);
+		stdin_fd = dup(STDIN_FILENO);
 		executor(lst, envp);
 		lx_free_tokens(lst);
+		dup2(stdin_fd, STDIN_FILENO);
+		close(stdin_fd);
 	}
 }
 
@@ -59,6 +65,8 @@ char	*get_command(char **cmmnd)
 	while (1)
 	{
 		line[0] = readline(line[1]);
+		if (!line[0][0])
+			return (NULL);
 		i = sh_backslash (&line[0]);
 		*cmmnd = sh_strjoin (*cmmnd, line[0]);
 		free(line[0]);
