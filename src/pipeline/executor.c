@@ -58,35 +58,74 @@ static void	ex_ioprep(t_prompt *lst)
 	}
 }
 
-static char	*ex_cmdprep(t_prompt *node, char **envp)
+static char	*ex_cmdprep(t_prompt *node)
 {
-	// TODO
-	(void)node;
-	(void)envp;
-	return ("Coming soon");
+	char	*res;
+	size_t	len;
+	char	*tmp;
+	t_args	*curr;
+	int		i;
+
+	curr = node->args;
+	while (curr)
+	{
+		tmp = curr->data;
+		curr->data = put_env(curr->data);
+		free(tmp);
+		tmp = curr->data;
+		curr->data = sh_asterisk(curr->data);
+		free(tmp);
+		curr = curr->next;
+	}
+	len = ex_cmdlen(node->args) + ft_strlen(node->str_val);
+	res = malloc(sizeof(char) * (len + 1));
+	if (!res)
+		return (perror("malloc"), NULL);
+	i = ft_strlcpy(res, node->str_val, ft_strlen(node->str_val) + 1);
+	curr = node->args;
+	while (curr)
+	{
+		if (curr->data)
+		{
+			i += ft_strlcpy(res + i, " ", 2);
+			i += ft_strlcpy(res + i, curr->data, ft_strlen(curr->data) + 1);
+		}
+		curr = curr->next;
+	}
+	return (res);
 }
 
 static int	ex_execute(t_prompt *node, char **envp)
 {
 	int		exit_code;
 	int		pipefd[2];
+	int		c_pipe[2];
 	char	*cmd;
 
-	if (node->in_fd > 0)
-		dup2(node->in_fd, STDIN_FILENO);
-	if (node->out_fd > 1)
-		dup2(node->out_fd, STDOUT_FILENO);
-	if (node->next_cmd && !node->next_cmd->in_fd)
+	if (pipe(pipefd) == -1)
+		return (perror("pipe"), 1);
+	c_pipe[0] = 0;
+	c_pipe[1] = 1;
+	if (node->next_cmd)
 	{
 		if (pipe(pipefd) == -1)
 			return (perror("pipe"), 1);
-		dup2(pipefd[1], STDOUT_FILENO);
-		node->next_cmd->in_fd = pipefd[0];
+		c_pipe[1] = pipefd[1];
+		c_pipe[0] = pipefd[0];
 	}
-	cmd = ex_cmdprep(node, envp);
-	exit_code = sh_run(cmd, envp);
-	if (node->next_cmd && !node->next_cmd->in_fd)
+	if (node->out_fd > 1)
+		c_pipe[1] = node->out_fd;
+	if (node->in_fd > 0)
+		dup2(node->in_fd, STDIN_FILENO);
+	cmd = ex_cmdprep(node);
+	exit_code = sh_run(cmd, node, envp, c_pipe);
+	if (node->next_cmd)
+	{
 		close(pipefd[1]);
+		close(pipefd[0]);
+	}
+	if (node->out_fd > 1)
+		close(node->out_fd);
 	return (exit_code);
 }
 
@@ -96,7 +135,7 @@ void	executor(t_prompt *lst, char **envp)
 	int			last_status;
 
 	ex_ioprep(lst);
-	print_lex_dbg(lst);
+	//print_lex_dbg(lst);
 	curr = lst;
 	last_status = 0;
 	while (curr)

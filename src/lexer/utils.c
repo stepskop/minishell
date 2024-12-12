@@ -53,6 +53,7 @@ void	lx_free_tokens(t_prompt *lst)
 	{
 		tmp = curr->next;
 		free_args(curr->args);
+		free(curr->str_val);
 		free(curr);
 		curr = tmp;
 	}

@@ -68,6 +68,7 @@ t_prompt	*lexer(char **cmd_raw)
 	if (!lst)
 		return (NULL);
 	lst = lx_create(cmd_raw, lst);
+	free(cmd_raw);
 	return (lst);
 }
 

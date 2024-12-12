@@ -19,6 +19,7 @@ void	free_args(t_args *args)
 	while (args)
 	{
 		tmp = args->next;
+		free(args->data);
 		free(args);
 		args = tmp;
 	}
