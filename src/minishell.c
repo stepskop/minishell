@@ -46,8 +46,8 @@ void	_loop_(char **envp)
 		splitted = sh_split_q(cmmnd[0], ' ');
 		if (splitted && splitted[0])
 			lst = lexer(splitted);
-		if (lst)
-			print_lex_dbg(lst);
+		//if (lst)
+		//	print_lex_dbg(lst);
 		free (cmmnd[1]);
 		stdin_fd = dup(STDIN_FILENO);
 		executor(lst, envp);
@@ -66,6 +66,7 @@ char	*get_command(char **cmmnd)
 	line[1] = get_sh_pps ();
 	while (1)
 	{
+		wait(NULL);
 		line[0] = readline(line[1]);
 		if (!line[0][0])
 			return (NULL);

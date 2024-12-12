@@ -46,8 +46,8 @@ int	sh_run(char *cmmnd, t_prompt *lst_node, char **envp, int pipefd[2])
 
 void	sp_print_cnf(char *cmmnd)
 {
-	write (1, cmmnd, ft_strlen (cmmnd));
-	write (1, ": command not found\n", 20);
+	write (2, cmmnd, ft_strlen (cmmnd));
+	write (2, ": command not found\n", 20);
 }
 
 int	sh_execve(char **argv, char **envp, int pipefd[2])
@@ -70,7 +70,7 @@ int	sh_execve(char **argv, char **envp, int pipefd[2])
 		if (cmmnd)
 			rp = execve (cmmnd, argv, envp);
 		else
-			sh_err (ft_strjoin (argv[0], ": command not found"));
+			sp_print_cnf(argv[0]);
 		sh_ppfree (argv);
 		exit (rp);
 	}

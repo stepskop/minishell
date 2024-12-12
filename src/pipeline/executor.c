@@ -135,7 +135,7 @@ void	executor(t_prompt *lst, char **envp)
 	int			last_status;
 
 	ex_ioprep(lst);
-	print_lex_dbg(lst);
+	//print_lex_dbg(lst);
 	curr = lst;
 	last_status = 0;
 	while (curr)
