@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:13:57 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/09 13:03:22 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/09 22:20:34 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	**envp_copy(char **envp1, char **envp2)
 
 	idx[0] = envp1;
 	idx[1] = envp2;
-	while (*idx)
+	while (*idx[0])
 	{
 		*idx[1] = *idx[0];
 		idx[0]++;
