@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 15:11:55 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/06 15:46:12 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/13 12:48:33 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	echo(char **argv)
 {
 	int		nnl;
 	char	**arg;
-	char	*str[2];	// delete after implement * & $
 
 	nnl = 0;
 	if (argv[1] && !ft_strcmp (argv[1], "-n"))
@@ -26,12 +25,7 @@ void	echo(char **argv)
 	arg = argv + 1 + nnl;
 	while (*arg)
 	{
-		// echo_write (*arg);	// return back after implement *
-		str[0] = put_env (*arg);	// delete after implement $
-		str[1] = sh_asterisk (str[0]);	// delete after implement *
-		echo_write (str[1]);
-		free (str[0]);	// delete after implement *
-		free (str[1]);	// delete after implement *
+		echo_write (*arg);
 		if (*(arg + 1))
 			write (1, " ", 1);
 		arg++;
@@ -44,66 +38,3 @@ static void	echo_write(char *arg)
 {
 	write (1, arg, ft_strlen (arg));
 }
-
-// void	echo_write(char *arg)
-// {
-// 	int		q;
-// 	size_t	idx[2];
-
-// 	q = 0;
-// 	idx[1] = ft_strlen (arg) - 1;
-// 	idx[0] = 0;
-// 	while (arg[idx[0]])
-// 	{
-// 		if (idx[0] == 0 && arg[idx[0]] == '"')
-// 			q = 2;
-// 		else if (idx[0] == 0 && arg[idx[0]] == '\'')
-// 			q = 1;
-// 		else
-// 		{
-// 			if (q != 1 && arg[idx[0]] == '$')
-// 				idx[0] += echo_dollar (&arg[idx[0]]);
-// 			if (q != 1 && arg[idx[0]] == '\\')
-// 				idx[0] += echo_slash (&arg[idx[0]]);
-// 			else
-// 				write (1, &arg[idx[0]], 1);
-// 		}
-// 		if (idx[0] == 0 && q)
-// 			arg[ft_strlen (arg) - 1] = '\0';
-// 		idx[0]++;
-// 	}
-// }
-
-// size_t	echo_dollar(char *dollar)
-// {
-// 	char	*env_name;
-// 	size_t	len;
-// 	char	*env_var;
-
-// 	env_name = get_env_name(dollar);
-// 	len = 0;
-// 	if (env_name)
-// 	{
-// 		len = ft_strlen (env_name) + 1;
-// 		if (len > 1)
-// 		{
-// 			env_var = getenv(env_name);
-// 			if (env_var)
-// 				write (1, env_var, ft_strlen (env_var));
-// 			else
-// 				len = 0;
-// 		}
-// 	}
-// 	if (len == 0)
-// 		write (1, "$", 1);
-// 	free (env_name);
-// 	return (len);
-// }
-
-// size_t	echo_slash(char *slash)
-// {
-// 	if (slash[1] == '$')
-// 		return (write (1, "$", 1), 1);
-// 	else
-// 		return (write (1, "\\", 1), 0);
-// }

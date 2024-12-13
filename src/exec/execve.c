@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 15:34:17 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/13 12:18:02 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/13 12:38:51 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static int	check_builtins(char *cmmnd);
 
 int	sh_run(char *cmmnd, t_prompt *lst_node, char **envp, int pipefd[2])
 {
+	//TODO: dont leak fd's
 	char	**cmmnds_args[3];
 	int		exit_code;
 
