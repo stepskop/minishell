@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/06 13:12:42 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/13 12:11:45 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ char	*sh_pstr2str(char **pstr, char c)
 	while (*pp)
 	{
 		result = sh_strjoin_free (result, *pp, 1);
-		if (*(pp + 1))
+		if (c && *(pp + 1))
 		{
 			str = (char *) malloc(2 * sizeof (char));
 			str[0] = c;
@@ -87,17 +87,17 @@ char	*sh_pstr2str(char **pstr, char c)
 	return (result);
 }
 
-char	**envp_set_get(char **envp, int set_get)
-{
-	static char	**sg_envp = NULL;
-	static int	i = 0;
+// char	**envp_set_get(char **envp, int set_get)
+// {
+// 	static char	**sg_envp = NULL;
+// 	static int	i = 0;
 
-	if (set_get == SET)
-	{
-		if (i == 0)
-			sg_envp = envp;
-		else
-			sh_err ("envp aready set");
-	}
-	return (sg_envp);
-}
+// 	if (set_get == SET)
+// 	{
+// 		if (i == 0)
+// 			sg_envp = envp;
+// 		else
+// 			sh_err ("envp aready set");
+// 	}
+// 	return (sg_envp);
+// }

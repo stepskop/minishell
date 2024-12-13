@@ -6,11 +6,13 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 15:34:17 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/11/28 19:12:35 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/13 12:18:02 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	check_builtins(char *cmmnd);
 
 int	sh_run(char *cmmnd, t_prompt *lst_node, char **envp, int pipefd[2])
 {
@@ -24,17 +26,13 @@ int	sh_run(char *cmmnd, t_prompt *lst_node, char **envp, int pipefd[2])
 	while (*cmmnds_args[1])
 	{
 		cmmnds_args[2] = sh_split_q (*cmmnds_args[1], ' ');
-		if (!ft_strncmp (cmmnds_args[2][0], "echo", 4)
-			|| !ft_strncmp (cmmnds_args[2][0], "cd", 2)
-			|| !ft_strncmp (cmmnds_args[2][0], "pwd", 3)
-			|| !ft_strncmp (cmmnds_args[2][0], "export", 6)
-			|| !ft_strncmp (cmmnds_args[2][0], "unset", 5)
-			|| !ft_strncmp (cmmnds_args[2][0], "env", 3)
-			|| !ft_strncmp (cmmnds_args[2][0], "exit", 4))
+		if (check_builtins (cmmnds_args[2][0]) == 1)
+			run_builtins_01 (cmmnds_args[2], envp, lst_node, pipefd);
+		else if (check_builtins (cmmnds_args[2][0]) == 2)
 		{
 			if (!ft_strncmp (cmmnds_args[2][0], "exit", 4))
 				sh_ppfree(cmmnds_args[0]);
-			run_builtins (cmmnds_args[2], envp, lst_node);
+			run_builtins_02 (cmmnds_args[2], envp, lst_node, pipefd);
 		}
 		else
 			exit_code = sh_execve (cmmnds_args[2], envp, pipefd);
@@ -42,6 +40,21 @@ int	sh_run(char *cmmnd, t_prompt *lst_node, char **envp, int pipefd[2])
 		cmmnds_args[1]++;
 	}
 	return (sh_ppfree (cmmnds_args[0]), exit_code);
+}
+
+static int	check_builtins(char *cmmnd)
+{
+	if (!ft_strncmp (cmmnd, "echo", 4)
+		|| !ft_strncmp (cmmnd, "cd", 2)
+		|| !ft_strncmp (cmmnd, "pwd", 3))
+		return (1);
+	else if (!ft_strncmp (cmmnd, "export", 6)
+		|| !ft_strncmp (cmmnd, "unset", 5)
+		|| !ft_strncmp (cmmnd, "env", 3)
+		|| !ft_strncmp (cmmnd, "exit", 4))
+		return (2);
+	else
+		return (0);
 }
 
 void	sp_print_cnf(char *cmmnd)

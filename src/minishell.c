@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/06 13:58:23 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/13 12:12:34 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,21 @@ char	*get_command(char **cmmnd);
 
 int	main(int argc, char **argv, char **envp)
 {
-	envp_set_get (envp, SET);
+	// envp_set_get (envp, SET);
+	((t_pv *)sh_get_pv ())->envp = envp_dup (envp);
 	(void)argc;
 	(void)argv;
 	sig_init ();
 	_loop_ (envp);
 	rl_clear_history ();
 	return (EXIT_SUCCESS);
+}
+
+t_pv	*sh_get_pv(void)
+{
+	static t_pv	pv = {NULL};
+
+	return (&pv);
 }
 
 void	_loop_(char **envp)
@@ -41,7 +49,7 @@ void	_loop_(char **envp)
 		rl_on_new_line ();
 		cmmnd[0] = get_command (&cmmnd[1]);
 		if (!cmmnd[0])
-			continue;
+			continue ;
 		add_history (cmmnd[1]);
 		splitted = sh_split_q(cmmnd[0], ' ');
 		if (splitted && splitted[0])

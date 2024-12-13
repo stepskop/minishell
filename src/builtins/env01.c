@@ -6,14 +6,38 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 13:41:06 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/12 08:58:36 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/13 11:25:35 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "env.h"
 
-void	env(char **argv, char **envp)
+char	*sh_getenv(char *name, char **envp)
+{
+	char	*str[3];
+	char	**envp_;
+	size_t	len;
+
+	if (!name || !envp)
+		return (NULL);
+	str[0] = ft_strjoin (name, "=");
+	len = ft_strlen (str[0]);
+	envp_ = envp;
+	while (*envp_)
+	{
+		if (ft_strlen (*envp_) > len && !ft_strncmp (*envp_, str[0], len))
+		{
+			str[1] = ft_strchr (*envp_, '=');
+			str[2] = ft_strdup (str[1] + 1);
+			return (free (str[0]), str[2]);
+		}
+		envp_++;
+	}
+	return (NULL);
+}
+
+void	env(char **argv, char **envp, t_prompt *lst_node, int pipefd[2])
 {
 	char	**pstr;
 
@@ -22,7 +46,7 @@ void	env(char **argv, char **envp)
 		env_print (envp);
 		return ;
 	}
-	pstr = env_prsng (argv, envp);
+	pstr = env_prsng (argv, envp, lst_node, pipefd);
 	(void)pstr;
 }
 
@@ -39,7 +63,7 @@ void	env_print(char **envp)
 	}
 }
 
-char	**env_prsng(char **argv, char **envp)
+char	**env_prsng(char **argv, char **envp, t_prompt *lst_node, int pipefd[2])
 {
 	char	**pstr[2];
 	int		idx[3];
@@ -56,8 +80,8 @@ char	**env_prsng(char **argv, char **envp)
 		else if (idx[2] == -1)
 		{
 			str = sh_pstr2str (&argv[idx[0]], ' ');
-			sh_run (str, pstr[1]);
-			free (str);
+			sh_run (str, lst_node, pstr[1], pipefd);
+			// free (str);
 			return (0);
 		}
 		(idx[0])++;

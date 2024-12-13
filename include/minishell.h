@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/09 12:40:55 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/13 12:21:39 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,12 @@ typedef struct s_counters_quotes
 	unsigned int	double_quote;
 }	t_counters_quotes;
 
+typedef struct s_pv
+{
+	char	**envp;
+}	t_pv;
+
+t_pv		*sh_get_pv();
 void		_loop_(char **envp);
 
 // Lexer
@@ -132,7 +138,7 @@ char		*sh_strjoin_free(char *s1, char *s2, int opt);
 void		sh_del_arr(void *arr[], int arr_size);
 char		*sh_lst2str(t_list *lst, char c);
 char		*sh_pstr2str(char **pstr, char c);
-char		**envp_set_get(char **envp, int set_get);
+// char		**envp_set_get(char **envp, int set_get);
 
 // sh_split_q.c
 char		**sh_split_q(char *str, char c);
@@ -161,11 +167,14 @@ char		*sh_replace_tilde(char *path);
 char		*sh_replace_dot(char *path);
 
 // run_builtins.c
-int			run_builtins(char **argv, char **envp, t_prompt *lst_node);
+// int			run_builtins(char **argv, char **envp, t_prompt *lst_node);
+int			run_builtins_01(char **argv, char **envp,
+				t_prompt *lst_node, int pipefd[2]);
+int			run_builtins_02(char **argv, char **envp,
+				t_prompt *lst_node, int pipefd[2]);
 
 // echo.c
 void		echo(char **argv);
-
 
 // pwd.c
 void		pwd(void);
@@ -175,7 +184,11 @@ void		cd(char **argv);
 char		*cd_home(char **argv);
 
 // env01.c
-void		env(char **argv, char **envp);
+char		*sh_getenv(char *name, char **envp);
+void		env(char **argv, char **envp, t_prompt *lst_node, int pipefd[2]);
+
+// env02.c
+char		**envp_dup(char **envp);
 
 // Err
 void		sh_err(char *str);
