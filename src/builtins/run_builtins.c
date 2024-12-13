@@ -12,9 +12,10 @@
 
 #include "minishell.h"
 
-int	run_builtins(char **argv, char **envp, t_prompt *lst_node)
+int	run_builtins(char **argv, char **envp, t_prompt *lst_node, int pipefd[2])
 {
 	t_prompt	*curr;
+	int			pid;
 
 	if (!ft_strcmp (argv[0], "exit"))
 	{
@@ -25,17 +26,32 @@ int	run_builtins(char **argv, char **envp, t_prompt *lst_node)
 		sh_ppfree (argv);
 		exit (EXIT_SUCCESS);
 	}
-	else if (!ft_strcmp (argv[0], "echo")
-		|| !ft_strncmp (argv[0], "echo ", 5))
-		echo (argv);
-	else if (!ft_strcmp (argv[0], "pwd")
-		|| !ft_strncmp (argv[0], "pwd ", 4))
-		pwd ();
-	else if (!ft_strcmp (argv[0], "cd")
-		|| !ft_strncmp (argv[0], "cd ", 3))
-		cd (argv);
-	else if (!ft_strcmp (argv[0], "env")
-		|| !ft_strncmp (argv[0], "env ", 4))
-		env (argv, envp);
+	pid = fork();
+	if (pid == 0)
+	{	
+		if (pipefd[1] > 1)
+			close(pipefd[0]);
+		if (pipefd[1] > 1)
+			dup2(pipefd[1], STDOUT_FILENO);
+		if (!ft_strcmp (argv[0], "echo")
+			|| !ft_strncmp (argv[0], "echo ", 5))
+			echo (argv);
+		else if (!ft_strcmp (argv[0], "pwd")
+			|| !ft_strncmp (argv[0], "pwd ", 4))
+			pwd ();
+		else if (!ft_strcmp (argv[0], "cd")
+			|| !ft_strncmp (argv[0], "cd ", 3))
+			cd (argv);
+		else if (!ft_strcmp (argv[0], "env")
+			|| !ft_strncmp (argv[0], "env ", 4))
+			env (argv, envp);
+		// TODO exit status code
+		exit(0);
+	}
+	else
+	{
+		if (pipefd[0] > 0)
+			dup2(pipefd[0], STDIN_FILENO);
+	}
 	return (0);
 }

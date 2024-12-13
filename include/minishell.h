@@ -161,7 +161,7 @@ char		*sh_replace_tilde(char *path);
 char		*sh_replace_dot(char *path);
 
 // run_builtins.c
-int			run_builtins(char **argv, char **envp, t_prompt *lst_node);
+int			run_builtins(char **argv, char **envp, t_prompt *lst_node, int pipefd[2]);
 
 // echo.c
 void		echo(char **argv);

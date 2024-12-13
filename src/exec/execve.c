@@ -14,6 +14,7 @@
 
 int	sh_run(char *cmmnd, t_prompt *lst_node, char **envp, int pipefd[2])
 {
+	//TODO: dont leak fd's
 	char	**cmmnds_args[3];
 	int		exit_code;
 
@@ -34,7 +35,7 @@ int	sh_run(char *cmmnd, t_prompt *lst_node, char **envp, int pipefd[2])
 		{
 			if (!ft_strncmp (cmmnds_args[2][0], "exit", 4))
 				sh_ppfree(cmmnds_args[0]);
-			run_builtins (cmmnds_args[2], envp, lst_node);
+			run_builtins (cmmnds_args[2], envp, lst_node, pipefd);
 		}
 		else
 			exit_code = sh_execve (cmmnds_args[2], envp, pipefd);
