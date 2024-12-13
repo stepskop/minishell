@@ -6,24 +6,24 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 13:41:06 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/13 11:25:35 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/13 14:32:59 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "env.h"
 
-char	*sh_getenv(char *name, char **envp)
+char	*sh_getenv(char *name)
 {
 	char	*str[3];
 	char	**envp_;
 	size_t	len;
 
-	if (!name || !envp)
+	if (!name)
 		return (NULL);
 	str[0] = ft_strjoin (name, "=");
 	len = ft_strlen (str[0]);
-	envp_ = envp;
+	envp_ = sh_get_pv()->envp;
 	while (*envp_)
 	{
 		if (ft_strlen (*envp_) > len && !ft_strncmp (*envp_, str[0], len))
@@ -37,7 +37,7 @@ char	*sh_getenv(char *name, char **envp)
 	return (NULL);
 }
 
-void	env(char **argv, char **envp, t_prompt *lst_node, int pipefd[2])
+void	env(char **argv, char **envp)
 {
 	char	**pstr;
 
@@ -46,7 +46,7 @@ void	env(char **argv, char **envp, t_prompt *lst_node, int pipefd[2])
 		env_print (envp);
 		return ;
 	}
-	pstr = env_prsng (argv, envp, lst_node, pipefd);
+	pstr = env_prsng (argv, envp);
 	(void)pstr;
 }
 
@@ -63,30 +63,33 @@ void	env_print(char **envp)
 	}
 }
 
-char	**env_prsng(char **argv, char **envp, t_prompt *lst_node, int pipefd[2])
+char	**env_prsng(char **argv, char **envp)
 {
-	char	**pstr[2];
-	int		idx[3];
-	char	*str;
+	char		**pstr[2];
+	int			idx[4];
+	t_prompt	*lst;
 
-	pstr[1] = envp_dup (envp);
+	pstr[0] = sh_pstrdup (envp);
 	idx[0] = 1;
-	idx[1] = envp_size (argv);
-	while (idx[0] <= idx[1])
+	idx[1] = sh_pstr_size (argv);
+	while (idx[0] < idx[1])
 	{
 		idx[2] = -1;
 		if (argv[idx[0]] && ft_strchr (argv[idx[0]], '='))
-			idx[2] = envp_set_var (&pstr[1], argv[idx[0]]);
+			idx[2] = envp_set_var (&pstr[0], argv[idx[0]]);
 		else if (idx[2] == -1)
 		{
-			str = sh_pstr2str (&argv[idx[0]], ' ');
-			sh_run (str, lst_node, pstr[1], pipefd);
-			// free (str);
-			return (0);
+			lst = lexer (sh_pstrdup (&argv[idx[0]]));
+			executor (lst, pstr[0]);
+			wait (&idx[3]);
+			lx_free_tokens(lst);
+			return (sh_ppfree(pstr[0]), NULL);
 		}
 		(idx[0])++;
 	}
-	return (0);
+	pstr[1] = sh_split_q ("env", ' ');
+	env (pstr[1], pstr[0]);
+	return (sh_ppfree (pstr[0]), sh_ppfree (pstr[1]), NULL);
 }
 
 int	env_check_var(char *var)

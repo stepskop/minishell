@@ -6,35 +6,12 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:13:57 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/09 22:20:34 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/13 13:54:59 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "env.h"
-
-char	**envp_dup(char **envp)
-{
-	char	**new_envp;
-	int		idx[2];
-
-	new_envp = NULL;
-	idx[0] = 0;
-	idx[1] = envp_size (envp);
-	if (idx[1] > 1)
-	{
-		new_envp = (char **) malloc ((idx[1] + 1) * sizeof (char *));
-		if (!new_envp)
-			return (NULL);
-	}
-	while (idx[0] < idx[1])
-	{
-		new_envp[idx[0]] = ft_strdup (envp[idx[0]]);
-		idx[0]++;
-	}
-	new_envp[idx[0]] = NULL;
-	return (new_envp);
-}
 
 char	**envp_copy(char **envp1, char **envp2)
 {
@@ -51,27 +28,27 @@ char	**envp_copy(char **envp1, char **envp2)
 	return (envp2);
 }
 
-int	envp_size(char **envp)
-{
-	char	**idx;
-	int		result;
+// int	envp_size(char **envp)
+// {
+// 	char	**idx;
+// 	int		result;
 
-	result = 0;
-	idx = envp;
-	while (*idx)
-	{
-		result++;
-		idx++;
-	}
-	return (result);
-}
+// 	result = 0;
+// 	idx = envp;
+// 	while (*idx)
+// 	{
+// 		result++;
+// 		idx++;
+// 	}
+// 	return (result);
+// }
 
 int	envp_set_var(char ***envp, char *sv)
 {
 	int		size;
 	char	**new_envp;
 
-	size = envp_size (*envp);
+	size = sh_pstr_size (*envp);
 	new_envp = (char **) malloc ((size + 2) * sizeof (char *));
 	if (!new_envp)
 		return (sh_err ("envp_set_var - malloc error"), 0);

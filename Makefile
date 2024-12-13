@@ -20,7 +20,7 @@ PATH_SRC = path.c a_split.c asterisk01.c asterisk02.c asterisk03.c asterisk04.c
 
 # Utilites
 UTILS_DIR = utils/
-UTILS_SRC = sh_split_q.c utils001.c utils002.c utils003.c memory.c quotation.c
+UTILS_SRC = sh_split_q.c utils001.c utils002.c utils003.c utils004.c memory.c quotation.c
 
 # Lexer
 LEXER_DIR = lexer/

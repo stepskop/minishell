@@ -1,25 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.h                                              :+:      :+:    :+:   */
+/*   utils004.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/09 12:39:55 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/13 14:20:29 by ksorokol         ###   ########.fr       */
+/*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
+/*   Updated: 2024/12/13 13:48:15 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ENV_H
-# define ENV_H
+#include "minishell.h"
 
-// env01.c
-void	env_print(char **envp);
-char	**env_prsng(char **argv, char **envp);
-int		env_check_var(char *var);
+int	sh_pstr_size(char **pstr)
+{
+	char	**idx;
+	int		result;
 
-// env02.c
-char	**envp_copy(char **envp1, char **envp2);
-int		envp_set_var(char ***envp, char *sv);
-
-#endif
+	result = 0;
+	idx = pstr;
+	while (*idx)
+	{
+		result++;
+		idx++;
+	}
+	return (result);
+}

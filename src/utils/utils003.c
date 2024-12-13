@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/13 12:11:45 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/13 14:01:25 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,17 +87,27 @@ char	*sh_pstr2str(char **pstr, char c)
 	return (result);
 }
 
-// char	**envp_set_get(char **envp, int set_get)
-// {
-// 	static char	**sg_envp = NULL;
-// 	static int	i = 0;
+char	**sh_pstrdup(char **pstr)
+{
+	char	**new_envp;
+	int		idx[2];
 
-// 	if (set_get == SET)
-// 	{
-// 		if (i == 0)
-// 			sg_envp = envp;
-// 		else
-// 			sh_err ("envp aready set");
-// 	}
-// 	return (sg_envp);
-// }
+	if (!pstr)
+		return (NULL);
+	new_envp = NULL;
+	idx[0] = 0;
+	idx[1] = sh_pstr_size (pstr);
+	if (idx[1] > 0)
+	{
+		new_envp = (char **) malloc ((idx[1] + 1) * sizeof (char *));
+		if (!new_envp)
+			return (NULL);
+	}
+	while (idx[0] < idx[1])
+	{
+		new_envp[idx[0]] = ft_strdup (pstr[idx[0]]);
+		idx[0]++;
+	}
+	new_envp[idx[0]] = NULL;
+	return (new_envp);
+}

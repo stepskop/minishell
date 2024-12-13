@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 23:53:25 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/13 13:01:25 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/13 14:20:42 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int	run_builtins_01(char **argv, char **envp, t_prompt *lst_node, int pipefd[2])
 	pid = fork();
 	if (pid == 0)
 	{
+		sh_get_pv()->envp = envp;
 		if (pipefd[1] > 1)
 			close(pipefd[0]);
 		if (pipefd[1] > 1)
@@ -89,13 +90,14 @@ int	run_builtins_02(char **argv, char **envp, t_prompt *lst_node, int pipefd[2])
 	pid = fork();
 	if (pid == 0)
 	{
+		sh_get_pv()->envp = envp;
 		if (pipefd[1] > 1)
 			close(pipefd[0]);
 		if (pipefd[1] > 1)
 			dup2(pipefd[1], STDOUT_FILENO);
 		if (!ft_strcmp (argv[0], "env")
 			|| !ft_strncmp (argv[0], "env ", 4))
-			env (argv, envp, lst_node, pipefd);
+			env (argv, envp);
 		exit(EXIT_SUCCESS);
 	}
 	else
