@@ -54,11 +54,9 @@ void	_loop_(char **envp)
 		splitted = sh_split_q(cmmnd[0], ' ');
 		if (splitted && splitted[0])
 			lst = lexer(splitted);
-		//if (lst)
-		//	print_lex_dbg(lst);
 		free (cmmnd[1]);
 		stdin_fd = dup(STDIN_FILENO);
-		executor(lst, envp);
+		executor(lst, stdin_fd, envp);
 		wait(&exit_code);
 		lx_free_tokens(lst);
 		dup2(stdin_fd, STDIN_FILENO);

@@ -37,7 +37,7 @@ char	*sh_getenv(char *name)
 	return (NULL);
 }
 
-void	env(char **argv, char **envp)
+void	env(char **argv, char **envp, int stdin_fd)
 {
 	char	**pstr;
 
@@ -46,7 +46,7 @@ void	env(char **argv, char **envp)
 		env_print (envp);
 		return ;
 	}
-	pstr = env_prsng (argv, envp);
+	pstr = env_prsng (argv, envp, stdin_fd);
 	(void)pstr;
 }
 
@@ -63,7 +63,7 @@ void	env_print(char **envp)
 	}
 }
 
-char	**env_prsng(char **argv, char **envp)
+char	**env_prsng(char **argv, char **envp, int stdin_fd)
 {
 	char		**pstr[2];
 	int			idx[4];
@@ -80,7 +80,7 @@ char	**env_prsng(char **argv, char **envp)
 		else if (idx[2] == -1)
 		{
 			lst = lexer (sh_pstrdup (&argv[idx[0]]));
-			executor (lst, pstr[0]);
+			executor (lst, stdin_fd, pstr[0]);
 			wait (&idx[3]);
 			lx_free_tokens(lst);
 			return (sh_ppfree(pstr[0]), NULL);
@@ -88,7 +88,7 @@ char	**env_prsng(char **argv, char **envp)
 		(idx[0])++;
 	}
 	pstr[1] = sh_split_q ("env", ' ');
-	env (pstr[1], pstr[0]);
+	env (pstr[1], pstr[0], stdin_fd);
 	return (sh_ppfree (pstr[0]), sh_ppfree (pstr[1]), NULL);
 }
 

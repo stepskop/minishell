@@ -14,9 +14,8 @@
 
 static int	check_builtins(char *cmmnd);
 
-int	sh_run(char *cmmnd, t_prompt *lst_node, char **envp, int pipefd[2])
+int	sh_run(char *cmmnd, t_prompt *lst_node, char **envp, int pipefd[2], int	stdin_fd)
 {
-	//TODO: dont leak fd's
 	char	**cmmnds_args[3];
 	int		exit_code;
 
@@ -28,12 +27,15 @@ int	sh_run(char *cmmnd, t_prompt *lst_node, char **envp, int pipefd[2])
 	{
 		cmmnds_args[2] = sh_split_q (*cmmnds_args[1], ' ');
 		if (check_builtins (cmmnds_args[2][0]) == 1)
-			run_builtins_01 (cmmnds_args[2], envp, lst_node, pipefd);
+			run_builtins_01 (cmmnds_args[2], envp, lst_node, pipefd, stdin_fd);
 		else if (check_builtins (cmmnds_args[2][0]) == 2)
 		{
 			if (!ft_strncmp (cmmnds_args[2][0], "exit", 4))
+			{
+				close(stdin_fd);
 				sh_ppfree(cmmnds_args[0]);
-			run_builtins_02 (cmmnds_args[2], envp, lst_node, pipefd);
+			}
+			run_builtins_02 (cmmnds_args[2], envp, lst_node, pipefd, stdin_fd);
 		}
 		else
 			exit_code = sh_execve (cmmnds_args[2], envp, pipefd);
@@ -67,26 +69,26 @@ void	sp_print_cnf(char *cmmnd)
 int	sh_execve(char **argv, char **envp, int pipefd[2])
 {
 	char	*cmmnd;
-	pid_t	pid;
 	int		rp;
 
-	pid = fork ();
 	rp = 0;
-	if (pid == 0)
+	if (fork() == 0)
 	{
-		if (pipefd[1] > 1)
-			close(pipefd[0]);
 		rl_clear_history ();
 		rp = EXIT_SUCCESS;
 		cmmnd = get_cmd (argv[0]);
 		if (pipefd[1] > 1)
 			dup2(pipefd[1], STDOUT_FILENO);
+		if (pipefd[1] > 1)
+			close(pipefd[1]);
+		if (pipefd[0] > 0)
+			close(pipefd[0]);
 		if (cmmnd)
 			rp = execve (cmmnd, argv, envp);
 		else
 			sp_print_cnf(argv[0]);
 		sh_ppfree (argv);
-		exit (rp);
+		exit (EXIT_FAILURE);
 	}
 	else
 	{

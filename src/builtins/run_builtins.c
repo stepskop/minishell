@@ -41,7 +41,7 @@
 // }
 
 // echo, cd, pwd
-int	run_builtins_01(char **argv, char **envp, t_prompt *lst_node, int pipefd[2])
+int	run_builtins_01(char **argv, char **envp, t_prompt *lst_node, int pipefd[2], int stdin_fd)
 {
 	int	pid;
 
@@ -53,9 +53,12 @@ int	run_builtins_01(char **argv, char **envp, t_prompt *lst_node, int pipefd[2])
 	{
 		sh_get_pv()->envp = envp;
 		if (pipefd[1] > 1)
-			close(pipefd[0]);
-		if (pipefd[1] > 1)
 			dup2(pipefd[1], STDOUT_FILENO);
+		if (pipefd[1] > 1)
+			close(pipefd[1]);
+		if (pipefd[0] > 0)
+			close(pipefd[0]);
+		close(stdin_fd);
 		if (!ft_strcmp (argv[0], "echo")
 			|| !ft_strncmp (argv[0], "echo ", 5))
 			echo (argv);
@@ -73,7 +76,7 @@ int	run_builtins_01(char **argv, char **envp, t_prompt *lst_node, int pipefd[2])
 	return (0);
 }
 
-int	run_builtins_02(char **argv, char **envp, t_prompt *lst_node, int pipefd[2])
+int	run_builtins_02(char **argv, char **envp, t_prompt *lst_node, int pipefd[2], int stdin_fd)
 {
 	t_prompt	*curr;
 	int			pid;
@@ -92,12 +95,15 @@ int	run_builtins_02(char **argv, char **envp, t_prompt *lst_node, int pipefd[2])
 	{
 		sh_get_pv()->envp = envp;
 		if (pipefd[1] > 1)
-			close(pipefd[0]);
-		if (pipefd[1] > 1)
 			dup2(pipefd[1], STDOUT_FILENO);
+		close(stdin_fd);
+		if (pipefd[1] > 1)
+			close(pipefd[1]);
+		if (pipefd[0] > 0)
+			close(pipefd[0]);
 		if (!ft_strcmp (argv[0], "env")
 			|| !ft_strncmp (argv[0], "env ", 4))
-			env (argv, envp);
+			env (argv, envp, stdin_fd);
 		exit(EXIT_SUCCESS);
 	}
 	else

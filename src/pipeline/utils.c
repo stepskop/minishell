@@ -38,7 +38,7 @@ static void	read_stdin(int *pipefd, char *limiter)
 	}
 }
 
-size_t ex_cmdlen(t_args *args)
+size_t	ex_cmdlen(t_args *args)
 {
 	size_t	len;
 	t_args	*curr;

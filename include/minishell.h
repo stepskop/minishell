@@ -109,7 +109,7 @@ t_prompt	*lx_add(t_token token, t_prompt *prev, char *val);
 t_token		lx_get_token(char *str);
 
 // Executor
-void		executor(t_prompt *lst, char **envp);
+void		executor(t_prompt *lst, int stdin_fd, char **envp);
 int			ex_get_heredoc(t_args *args);
 int			ex_open_file(t_args *args, int oflag);
 size_t		ex_cmdlen(t_args *args);
@@ -143,7 +143,6 @@ char		**sh_pstrdup(char **pstr);
 // utils004.c
 int			sh_pstr_size(char **pstr);
 
-
 // sh_split_q.c
 char		**sh_split_q(char *str, char c);
 
@@ -156,7 +155,7 @@ t_list		*a_split_elem(char *str, size_t idx[]);
 void		a_split_clear(void *elem);
 
 // execve.c
-int			sh_run(char *cmmnd, t_prompt *lst_node, char **envp, int pipefd[2]);
+int			sh_run(char *cmmnd, t_prompt *lst_node, char **envp, int pipefd[2], int stdin_fd);
 int			sh_execve(char **argv, char **envp, int pipefd[2]);
 void		sp_print_cnf(char *cmmnd);
 
@@ -173,9 +172,9 @@ char		*sh_replace_dot(char *path);
 // run_builtins.c
 // int			run_builtins(char **argv, char **envp, t_prompt *lst_node);
 int			run_builtins_01(char **argv, char **envp,
-				t_prompt *lst_node, int pipefd[2]);
+				t_prompt *lst_node, int pipefd[2], int stdin_fd);
 int			run_builtins_02(char **argv, char **envp,
-				t_prompt *lst_node, int pipefd[2]);
+				t_prompt *lst_node, int pipefd[2], int stdin_fd);
 
 // echo.c
 void		echo(char **argv);
@@ -189,7 +188,7 @@ char		*cd_home(char **argv);
 
 // env01.c
 char		*sh_getenv(char *name);
-void		env(char **argv, char **envp);
+void		env(char **argv, char **envp, int stdin_fd);
 
 // Err
 void		sh_err(char *str);

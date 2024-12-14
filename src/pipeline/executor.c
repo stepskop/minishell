@@ -95,15 +95,13 @@ static char	*ex_cmdprep(t_prompt *node)
 	return (res);
 }
 
-static int	ex_execute(t_prompt *node, char **envp)
+static int	ex_execute(t_prompt *node, int stdin_fd, char **envp)
 {
 	int		exit_code;
 	int		pipefd[2];
 	int		c_pipe[2];
 	char	*cmd;
 
-	if (pipe(pipefd) == -1)
-		return (perror("pipe"), 1);
 	c_pipe[0] = 0;
 	c_pipe[1] = 1;
 	if (node->next_cmd)
@@ -118,7 +116,7 @@ static int	ex_execute(t_prompt *node, char **envp)
 	if (node->in_fd > 0)
 		dup2(node->in_fd, STDIN_FILENO);
 	cmd = ex_cmdprep(node);
-	exit_code = sh_run(cmd, node, envp, c_pipe);
+	exit_code = sh_run(cmd, node, envp, c_pipe, stdin_fd);
 	if (node->next_cmd)
 	{
 		close(pipefd[1]);
@@ -129,19 +127,18 @@ static int	ex_execute(t_prompt *node, char **envp)
 	return (exit_code);
 }
 
-void	executor(t_prompt *lst, char **envp)
+void	executor(t_prompt *lst, int stdin_fd, char **envp)
 {
 	t_prompt	*curr;
 	int			last_status;
 
 	ex_ioprep(lst);
-	//print_lex_dbg(lst);
 	curr = lst;
 	last_status = 0;
 	while (curr)
 	{
 		if (curr->token == CMD)
-			last_status = ex_execute(curr, envp);
+			last_status = ex_execute(curr, stdin_fd, envp);
 		if (curr->token == AND && last_status != 0)
 			break ;
 		if (curr->token == OR && last_status == 0)
