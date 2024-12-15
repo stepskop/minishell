@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/06 15:42:14 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/15 16:53:18 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,14 @@ static char	*sh_split_map(char *str, char c)
 
 	map = (char *) malloc ((ft_strlen (str) + 1) * sizeof (char));
 	if (!map)
-		return (NULL);
+		return (perror("malloc"), NULL);
 	idx = 0;
 	qc = 0;
 	while (str[idx])
 	{
-		if (!qc && (str[idx] == '"' || str[idx] == '\''))
+		if (!qc && !sh_bsq (str, idx))
 			qc = str[idx];
-		else if (qc && str[idx] == qc)
+		else if (qc && str[idx] == qc && !sh_bsq (str, idx))
 			qc = 0;
 		if (!qc && str[idx] == c)
 			map[idx] = 0;

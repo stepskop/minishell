@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 15:34:17 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/13 13:00:47 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/15 16:53:02 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	sh_run(char *cmmnd, t_prompt *lst_node, char **envp, int pipefd[2])
 	exit_code = EXIT_SUCCESS;
 	while (*cmmnds_args[1])
 	{
-		cmmnds_args[2] = sh_split_q (*cmmnds_args[1], ' ');
+		cmmnds_args[2] = sh_uq_args (sh_split_q (*cmmnds_args[1], ' '));
 		if (check_builtins (cmmnds_args[2][0]) == 1)
 			run_builtins_01 (cmmnds_args[2], envp, lst_node, pipefd);
 		else if (check_builtins (cmmnds_args[2][0]) == 2)

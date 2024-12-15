@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/13 13:54:44 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/15 16:00:25 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ void	_loop_(char **envp)
 		splitted = sh_split_q(cmmnd[0], ' ');
 		if (splitted && splitted[0])
 			lst = lexer(splitted);
-		//if (lst)
-		//	print_lex_dbg(lst);
+		// if (lst)
+		// 	print_lex_dbg(lst);
 		free (cmmnd[1]);
 		stdin_fd = dup(STDIN_FILENO);
 		executor(lst, envp);
@@ -76,7 +76,7 @@ char	*get_command(char **cmmnd)
 	{
 		wait(NULL);
 		line[0] = readline(line[1]);
-		if (!line[0][0])
+		if (!line[0][0] && !(*cmmnd))
 			return (NULL);
 		i = sh_backslash (&line[0]);
 		*cmmnd = sh_strjoin (*cmmnd, line[0]);

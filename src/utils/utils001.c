@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/07 16:04:16 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/15 16:54:29 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,23 +24,25 @@ size_t	sh_strlen(const char *s)
 	return (idx);
 }
 
-int	sh_check_eol(char *cmmnd)
+int	sh_check_eol(char *cmd)
 {
 	size_t			idx;
 	unsigned int	single_quote;
 	unsigned int	double_quote;
 
-	if (!cmmnd)
+	if (!cmd)
 		return (1);
 	single_quote = 0;
 	double_quote = 0;
 	idx = 0;
-	while (cmmnd[idx])
+	while (cmd[idx])
 	{
-		if (cmmnd[idx] == '\'' && !(double_quote % 2))
-			single_quote++;
-		if (cmmnd[idx] == '"' && !(single_quote % 2))
-			double_quote++;
+		if (cmd[idx] == '\'' && !(double_quote % 2))
+			if (idx == 0 || (idx > 0 && cmd[idx - 1] != '\\'))
+				single_quote++;
+		if (cmd[idx] == '"' && !(single_quote % 2))
+			if (idx == 0 || (idx > 0 && cmd[idx - 1] != '\\'))
+				double_quote++;
 		idx++;
 	}
 	if (!(single_quote % 2) && !(double_quote % 2))
@@ -62,9 +64,7 @@ int	sh_backslash(char **line)
 	result = 0;
 	while ((*line)[idx[0]])
 	{
-		if ((*line)[idx[0]] == '\\')
-			idx[0]++;
-		if ((*line)[idx[0]] == '\0')
+		if (((*line)[idx[0]] == '\\') && ((*line)[idx[0] + 1] == '\0'))
 		{
 			result = 1;
 			break ;
@@ -83,31 +83,6 @@ char	*sh_strdup(char *str)
 		return (NULL);
 	return (ft_strdup (str));
 }
-
-// char	*sh_strjoin(char *s1, char *s2)
-// {
-// 	char	*result;
-// 	int		set_s[2];
-
-// 	if (!s1)
-// 	{
-// 		s1 = (char *) malloc (1);
-// 		if (!s1)
-// 			return (NULL);
-// 		s1[0] = '\0';
-// 	}
-// 	if (!s2)
-// 	{
-// 		s2 = (char *) malloc (1);
-// 		if (!s2)
-// 			return (NULL);
-// 		s2[0] = '\0';
-// 	}
-// 	result = ft_strjoin (s1, s2);
-// 	free (s1);
-// 	free (s2);
-// 	return (result);
-// }
 
 void	sh_ppfree(char	**pp)
 {
