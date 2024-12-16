@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/15 16:00:25 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/16 14:47:35 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	sig_init ();
 	_loop_ (envp);
+	sh_ppfree (((t_pv *)sh_get_pv ())->envp);
 	rl_clear_history ();
 	return (EXIT_SUCCESS);
 }

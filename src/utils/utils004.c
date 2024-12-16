@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/15 16:50:14 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/16 13:32:56 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,32 @@ char	*sh_unquotes(char *arg)
 	return (str);
 }
 
+/*
+*	backslash after quote
+*	sh_bsq returns 0 if befor quote char isn't backslash
+*/
 char	sh_bsq(char *arg, size_t idx)
 {
+	size_t	idx_;
+	int		i;
+
 	if (arg[idx] == '\'' || arg[idx] == '"')
 	{
-		if (idx > 0 && arg[idx - 1] == '\\')
+		i = 0;
+		if (idx > 0 )
+		{
+			idx_ = idx - 1;
+			while (1)
+			{
+				if (arg[idx_] != '\\')
+					break ;
+				i = (i + 1) % 2;
+				if (!idx_)
+					break ;
+				idx_--;
+			}
+		}
+		if (i)
 			return (arg[idx]);
 		else
 			return (0);

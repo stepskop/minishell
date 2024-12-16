@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 15:34:17 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/15 16:53:02 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/16 15:45:01 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	sh_run(char *cmmnd, t_prompt *lst_node, char **envp, int pipefd[2])
 	exit_code = EXIT_SUCCESS;
 	while (*cmmnds_args[1])
 	{
-		cmmnds_args[2] = sh_uq_args (sh_split_q (*cmmnds_args[1], ' '));
+		cmmnds_args[2] = sh_ud_rmbs (sh_split_q (*cmmnds_args[1], ' '));
 		if (check_builtins (cmmnds_args[2][0]) == 1)
 			run_builtins_01 (cmmnds_args[2], envp, lst_node, pipefd);
 		else if (check_builtins (cmmnds_args[2][0]) == 2)
@@ -45,14 +45,14 @@ int	sh_run(char *cmmnd, t_prompt *lst_node, char **envp, int pipefd[2])
 
 static int	check_builtins(char *cmmnd)
 {
-	if (!ft_strncmp (cmmnd, "echo", 4)
-		|| !ft_strncmp (cmmnd, "cd", 2)
-		|| !ft_strncmp (cmmnd, "pwd", 3))
+	if (!ft_strncmp (cmmnd, "echo", ft_strlen (cmmnd))
+		|| !ft_strncmp (cmmnd, "cd", ft_strlen (cmmnd))
+		|| !ft_strncmp (cmmnd, "pwd", ft_strlen (cmmnd)))
 		return (1);
-	else if (!ft_strncmp (cmmnd, "export", 6)
-		|| !ft_strncmp (cmmnd, "unset", 5)
-		|| !ft_strncmp (cmmnd, "env", 3)
-		|| !ft_strncmp (cmmnd, "exit", 4))
+	else if (!ft_strncmp (cmmnd, "export", ft_strlen (cmmnd))
+		|| !ft_strncmp (cmmnd, "unset", ft_strlen (cmmnd))
+		|| !ft_strncmp (cmmnd, "env", ft_strlen (cmmnd))
+		|| !ft_strncmp (cmmnd, "exit", ft_strlen (cmmnd)))
 		return (2);
 	else
 		return (0);
