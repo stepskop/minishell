@@ -46,13 +46,13 @@ typedef enum e_token
 	OR,
 }	t_token;
 
-typedef struct s_cmd
+typedef struct s_ctx
 {
-	char	*path;
-	char	**cmd_line;
-	int		pid;
-	char	**envp;
-}	t_cmd;
+	int				stdin_fd;
+	int				*pipefd;
+	struct s_prompt	*node;
+	char			**envp;
+}	t_ctx;
 
 typedef struct s_args
 {
@@ -66,17 +66,12 @@ typedef struct s_prompt
 	int				out_fd;
 	char			*str_val;
 	t_token			token;
-	t_cmd			*cmd;
+	t_ctx			*cmd;
 	t_args			*args;
 	struct s_prompt	*next_cmd;
 	struct s_prompt	*next;
 	struct s_prompt	*prev;
 }	t_prompt;
-
-typedef struct s_pipeline
-{
-	int		in_file;
-}	t_pipeline;
 
 typedef struct s_pv
 {
@@ -157,7 +152,7 @@ t_list		*a_split_elem(char *str, size_t idx[]);
 void		a_split_clear(void *elem);
 
 // execve.c
-int			sh_run(char *cmmnd, t_prompt *lst_node, char **envp, int pipefd[2], int stdin_fd);
+int			sh_run(char *cmmnd, t_ctx ctx);
 int			sh_execve(char **argv, char **envp, int pipefd[2]);
 void		sp_print_cnf(char *cmmnd);
 
@@ -173,12 +168,9 @@ char		*sh_replace_dot(char *path);
 
 // run_builtins.c
 // int			run_builtins(char **argv, char **envp, t_prompt *lst_node);
-int			run_builtins_01(char **argv, char **envp,
-				t_prompt *lst_node, int pipefd[2], int stdin_fd);
-int			run_builtins_02(char **argv, char **envp,
-				t_prompt *lst_node, int pipefd[2], int stdin_fd);
-int			run_exit(char **argv, char **envp,
-				t_prompt *lst_node, int pipefd[2], int stdin_fd);
+int			run_builtins_01(char **argv, t_ctx ctx);
+int			run_builtins_02(char **argv, t_ctx ctx);
+int			run_exit(char **argv, t_ctx ctx);
 
 // echo.c
 void		echo(char **argv);

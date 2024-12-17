@@ -116,7 +116,7 @@ static int	ex_execute(t_prompt *node, int stdin_fd, char **envp)
 	if (node->in_fd > 0)
 		dup2(node->in_fd, STDIN_FILENO);
 	cmd = ex_cmdprep(node);
-	exit_code = sh_run(cmd, node, envp, c_pipe, stdin_fd);
+	exit_code = sh_run(cmd, (t_ctx){stdin_fd, c_pipe, node, envp});
 	if (node->next_cmd)
 	{
 		close(pipefd[1]);

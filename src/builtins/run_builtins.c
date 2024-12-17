@@ -12,54 +12,23 @@
 
 #include "minishell.h"
 
-// int	run_builtins(char **argv, char **envp, t_prompt *lst_node)
-// {
-// 	t_prompt	*curr;
-
-// 	if (!ft_strcmp (argv[0], "exit"))
-// 	{
-// 		curr = lst_node;
-// 		while (curr && curr->prev)
-// 			curr = curr->prev;
-// 		lx_free_tokens(curr);
-// 		sh_ppfree (argv);
-// 		exit (EXIT_SUCCESS);
-// 	}
-// 	else if (!ft_strcmp (argv[0], "echo")
-// 		|| !ft_strncmp (argv[0], "echo ", 5))
-// 		echo (argv);
-// 	else if (!ft_strcmp (argv[0], "pwd")
-// 		|| !ft_strncmp (argv[0], "pwd ", 4))
-// 		pwd ();
-// 	else if (!ft_strcmp (argv[0], "cd")
-// 		|| !ft_strncmp (argv[0], "cd ", 3))
-// 		cd (argv);
-// 	else if (!ft_strcmp (argv[0], "env")
-// 		|| !ft_strncmp (argv[0], "env ", 4))
-// 		env (argv, envp);
-// 	return (0);
-// }
-
 // echo, cd, pwd
-int	run_builtins_01(char **argv, char **envp, t_prompt *lst_node, int pipefd[2], int stdin_fd)
+int	run_builtins_01(char **argv, t_ctx ctx)
 {
 	int	pid;
 
-	(void)envp;
-	(void)lst_node;
-	(void)pipefd;
 	pid = fork();
 	if (pid == 0)
 	{
 		sh_ppfree (((t_pv *)sh_get_pv ())->envp);
-		sh_get_pv()->envp = envp;
-		if (pipefd[1] > 1)
-			dup2(pipefd[1], STDOUT_FILENO);
-		if (pipefd[1] > 1)
-			close(pipefd[1]);
-		if (pipefd[0] > 0)
-			close(pipefd[0]);
-		close(stdin_fd);
+		sh_get_pv()->envp = ctx.envp;
+		if (ctx.pipefd[1] > 1)
+			dup2(ctx.pipefd[1], STDOUT_FILENO);
+		if (ctx.pipefd[1] > 1)
+			close(ctx.pipefd[1]);
+		if (ctx.pipefd[0] > 0)
+			close(ctx.pipefd[0]);
+		close(ctx.stdin_fd);
 		if (!ft_strcmp (argv[0], "echo")
 			|| !ft_strncmp (argv[0], "echo ", 5))
 			echo (argv);
@@ -67,56 +36,54 @@ int	run_builtins_01(char **argv, char **envp, t_prompt *lst_node, int pipefd[2],
 			pwd ();
 		else if (!ft_strcmp (argv[0], "cd"))
 			cd (argv);
-		run_exit (argv, envp, lst_node, pipefd, stdin_fd);
+		run_exit (argv, ctx);
 	}
 	else
-		if (pipefd[0] > 0)
-			dup2(pipefd[0], STDIN_FILENO);
+		if (ctx.pipefd[0] > 0)
+			dup2(ctx.pipefd[0], STDIN_FILENO);
 	return (0);
 }
 
-int	run_builtins_02(char **argv, char **envp, t_prompt *lst_node, int pipefd[2], int stdin_fd)
+int	run_builtins_02(char **argv, t_ctx ctx)
 {
 	int	pid;
 
 	if (!ft_strcmp (argv[0], "exit"))
 	{
 		sh_ppfree (((t_pv *)sh_get_pv ())->envp);
-		run_exit (argv, envp, lst_node, pipefd, stdin_fd);
+		run_exit (argv, ctx);
 	}
 	pid = fork();
 	if (pid == 0)
 	{
 		// sh_ppfree (((t_pv *)sh_get_pv ())->envp);	// env - Invalid free() / delete / delete[] / realloc() 
-		sh_get_pv()->envp = envp;
-		if (pipefd[1] > 1)
-			dup2(pipefd[1], STDOUT_FILENO);
-		close(stdin_fd);
-		if (pipefd[1] > 1)
-			close(pipefd[1]);
-		if (pipefd[0] > 0)
-			close(pipefd[0]);
+		sh_get_pv()->envp = ctx.envp;
+		if (ctx.pipefd[1] > 1)
+			dup2(ctx.pipefd[1], STDOUT_FILENO);
+		close(ctx.stdin_fd);
+		if (ctx.pipefd[1] > 1)
+			close(ctx.pipefd[1]);
+		if (ctx.pipefd[0] > 0)
+			close(ctx.pipefd[0]);
 		if (!ft_strcmp (argv[0], "env")
 			|| !ft_strncmp (argv[0], "env ", 4))
-			env (argv, envp, stdin_fd);
-		run_exit (argv, envp, lst_node, pipefd, stdin_fd);
+			env (argv, ctx.envp, ctx.stdin_fd);
+		run_exit (argv, ctx);
 	}
 	else
 	{
-		if (pipefd[0] > 0)
-			dup2(pipefd[0], STDIN_FILENO);
+		if (ctx.pipefd[0] > 0)
+			dup2(ctx.pipefd[0], STDIN_FILENO);
 	}
 	return (0);
 }
 
-int	run_exit(char **argv, char **envp, t_prompt *lst_node, int pipefd[2], int stdin_fd)
+int	run_exit(char **argv, t_ctx ctx)
 {
 	t_prompt	*curr;
 
-	(void) envp;
-	(void) pipefd;
-	curr = lst_node;
-	close(stdin_fd);
+	curr = ctx.node;
+	close(ctx.stdin_fd);
 	while (curr && curr->prev)
 		curr = curr->prev;
 	lx_free_tokens(curr);

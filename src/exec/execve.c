@@ -14,7 +14,7 @@
 
 static int	check_builtins(char *cmmnd);
 
-int	sh_run(char *cmmnd, t_prompt *lst_node, char **envp, int pipefd[2], int	stdin_fd)
+int	sh_run(char *cmmnd, t_ctx ctx)
 {
 	char	**cmmnds_args[3];
 	int		exit_code;
@@ -27,18 +27,18 @@ int	sh_run(char *cmmnd, t_prompt *lst_node, char **envp, int pipefd[2], int	stdi
 	{
 		cmmnds_args[2] = sh_ud_rmbs (sh_split_q (*cmmnds_args[1], ' '));
 		if (check_builtins (cmmnds_args[2][0]) == 1)
-			run_builtins_01 (cmmnds_args[2], envp, lst_node, pipefd, stdin_fd);
+			run_builtins_01 (cmmnds_args[2], ctx);
 		else if (check_builtins (cmmnds_args[2][0]) == 2)
 		{
 			if (!ft_strncmp (cmmnds_args[2][0], "exit", 4))
 			{
-				close(stdin_fd);
+				close(ctx.stdin_fd);
 				sh_ppfree(cmmnds_args[0]);
 			}
-			run_builtins_02 (cmmnds_args[2], envp, lst_node, pipefd, stdin_fd);
+			run_builtins_02 (cmmnds_args[2], ctx);
 		}
 		else
-			exit_code = sh_execve (cmmnds_args[2], envp, pipefd);
+			exit_code = sh_execve (cmmnds_args[2], ctx.envp, ctx.pipefd);
 		sh_ppfree (cmmnds_args[2]);
 		cmmnds_args[1]++;
 	}
