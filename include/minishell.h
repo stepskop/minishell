@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/13 14:19:42 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/16 15:11:30 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,6 @@ typedef struct s_pipeline
 	int		in_file;
 }	t_pipeline;
 
-typedef struct s_counters_quotes
-{
-	unsigned int	single_quote;
-	unsigned int	double_quote;
-}	t_counters_quotes;
-
 typedef struct s_pv
 {
 	char	**envp;
@@ -142,6 +136,14 @@ char		**sh_pstrdup(char **pstr);
 
 // utils004.c
 int			sh_pstr_size(char **pstr);
+char		*sh_unquotes(char *arg);
+char		sh_bsq(char *arg, size_t idx);
+char		**sh_uq_args(char **args);
+
+// utils005.c
+char		*sh_rmbs(char *arg);
+char		**sh_rmbs_args(char **args);
+char		**sh_ud_rmbs(char **args);
 
 // sh_split_q.c
 char		**sh_split_q(char *str, char c);
@@ -174,6 +176,8 @@ char		*sh_replace_dot(char *path);
 int			run_builtins_01(char **argv, char **envp,
 				t_prompt *lst_node, int pipefd[2], int stdin_fd);
 int			run_builtins_02(char **argv, char **envp,
+				t_prompt *lst_node, int pipefd[2], int stdin_fd);
+int			run_exit(char **argv, char **envp,
 				t_prompt *lst_node, int pipefd[2], int stdin_fd);
 
 // echo.c

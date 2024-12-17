@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 23:53:25 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/13 14:20:42 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/16 16:04:59 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int	run_builtins_01(char **argv, char **envp, t_prompt *lst_node, int pipefd[2],
 	pid = fork();
 	if (pid == 0)
 	{
+		sh_ppfree (((t_pv *)sh_get_pv ())->envp);
 		sh_get_pv()->envp = envp;
 		if (pipefd[1] > 1)
 			dup2(pipefd[1], STDOUT_FILENO);
@@ -62,13 +63,11 @@ int	run_builtins_01(char **argv, char **envp, t_prompt *lst_node, int pipefd[2],
 		if (!ft_strcmp (argv[0], "echo")
 			|| !ft_strncmp (argv[0], "echo ", 5))
 			echo (argv);
-		else if (!ft_strcmp (argv[0], "pwd")
-			|| !ft_strncmp (argv[0], "pwd ", 4))
+		else if (!ft_strcmp (argv[0], "pwd"))
 			pwd ();
-		else if (!ft_strcmp (argv[0], "cd")
-			|| !ft_strncmp (argv[0], "cd ", 3))
+		else if (!ft_strcmp (argv[0], "cd"))
 			cd (argv);
-		exit(EXIT_SUCCESS);
+		run_exit (argv, envp, lst_node, pipefd, stdin_fd);
 	}
 	else
 		if (pipefd[0] > 0)
@@ -78,21 +77,17 @@ int	run_builtins_01(char **argv, char **envp, t_prompt *lst_node, int pipefd[2],
 
 int	run_builtins_02(char **argv, char **envp, t_prompt *lst_node, int pipefd[2], int stdin_fd)
 {
-	t_prompt	*curr;
-	int			pid;
+	int	pid;
 
 	if (!ft_strcmp (argv[0], "exit"))
 	{
-		curr = lst_node;
-		while (curr && curr->prev)
-			curr = curr->prev;
-		lx_free_tokens(curr);
-		sh_ppfree (argv);
-		exit (EXIT_SUCCESS);
+		sh_ppfree (((t_pv *)sh_get_pv ())->envp);
+		run_exit (argv, envp, lst_node, pipefd, stdin_fd);
 	}
 	pid = fork();
 	if (pid == 0)
 	{
+		// sh_ppfree (((t_pv *)sh_get_pv ())->envp);	// env - Invalid free() / delete / delete[] / realloc() 
 		sh_get_pv()->envp = envp;
 		if (pipefd[1] > 1)
 			dup2(pipefd[1], STDOUT_FILENO);
@@ -104,7 +99,7 @@ int	run_builtins_02(char **argv, char **envp, t_prompt *lst_node, int pipefd[2],
 		if (!ft_strcmp (argv[0], "env")
 			|| !ft_strncmp (argv[0], "env ", 4))
 			env (argv, envp, stdin_fd);
-		exit(EXIT_SUCCESS);
+		run_exit (argv, envp, lst_node, pipefd, stdin_fd);
 	}
 	else
 	{
@@ -112,4 +107,19 @@ int	run_builtins_02(char **argv, char **envp, t_prompt *lst_node, int pipefd[2],
 			dup2(pipefd[0], STDIN_FILENO);
 	}
 	return (0);
+}
+
+int	run_exit(char **argv, char **envp, t_prompt *lst_node, int pipefd[2])
+{
+	t_prompt	*curr;
+
+	(void) envp;
+	(void) pipefd;
+	curr = lst_node;
+	while (curr && curr->prev)
+		curr = curr->prev;
+	lx_free_tokens(curr);
+	sh_ppfree (argv);
+	rl_clear_history ();
+	exit (EXIT_SUCCESS);
 }

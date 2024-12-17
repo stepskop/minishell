@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/13 13:11:44 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/14 14:48:51 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,20 +68,13 @@ char	*str_join_env(char *str, char *part1, size_t idx[])
 
 	env_name = get_env_name (&str[idx[1]]);
 	env_var = sh_getenv(env_name);
+	if (!env_var)
+		env_var = ft_strdup ("");
 	len[0] = ft_strlen (env_name);
 	len[1] = 0;
-	if (env_var)
-	{
-		result = strs_cat (part1, str, env_var, idx);
-		idx[1] += len[0];
-		idx[0] = idx[1] + 1;
-	}
-	else
-	{
-		result = NULL;
-		if (part1)
-			result = ft_strdup (part1);
-	}
+	result = strs_cat (part1, str, env_var, idx);
+	idx[1] += len[0];
+	idx[0] = idx[1] + 1;
 	free (part1);
 	free (env_name);
 	return (result);
@@ -95,10 +88,11 @@ char	*get_env_name(char *dollar)
 	idx = 1;
 	if (!(ft_isalpha (dollar[idx]) || dollar[idx] == '_'))
 	{
-		env_name = (char *) malloc (sizeof (char));
+		env_name = ft_calloc ((idx + isdigit (dollar[idx])), sizeof (char));
 		if (!env_name)
 			return (NULL);
-		env_name[0] = '\0';
+		if (isdigit (dollar[idx]))
+			env_name[0] = dollar[idx];
 		return (env_name);
 	}
 	while (dollar[idx])
@@ -107,7 +101,7 @@ char	*get_env_name(char *dollar)
 			break ;
 	else
 		idx++;
-	env_name = (char *) malloc ((idx) * sizeof (char));
+	env_name = (char *) malloc (idx * sizeof (char));
 	if (!env_name)
 		return (NULL);
 	ft_memcpy (env_name, &dollar[1], idx - 1);

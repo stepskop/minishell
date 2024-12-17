@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 15:11:55 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/13 12:48:33 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/16 12:35:19 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,3 +38,17 @@ static void	echo_write(char *arg)
 {
 	write (1, arg, ft_strlen (arg));
 }
+
+// static void	echo_write(char *arg)
+// {
+// 	size_t	idx;
+
+// 	idx = 0;
+// 	while (arg[idx])
+// 	{
+// 		if (arg[idx] == '\\')
+// 			idx++;
+// 		write (1, &arg[idx], 1);
+// 		idx++;
+// 	}
+// }

@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:43:38 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/06 18:27:10 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/14 23:41:37 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,17 +89,3 @@ void	dirs_init(t_list *dirs[], char *pathes[], t_list *dir)
 	pathes[0] = ft_strdup (((t_de *)dir->content)->rel_name);
 	pathes[1] = ft_strdup (((t_de *)dir->content)->full_name);
 }
-
-// void	dirs_print(void *content)	//	delete this functin 
-// {
-// 	t_de	*de;
-
-// 	de = (t_de *) content;
-// 	printf ("(%u) %s\n\t%s\n\t%s\n", (unsigned int) de->d_type,
-// 		de->d_name, de->rel_name, de->full_name);
-// }
-
-// void	list_print(void *content)	//	delete this functin 
-// {
-// 	printf ("%s\n", (char *) content);
-// }
