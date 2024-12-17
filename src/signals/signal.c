@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:51:45 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/06 15:43:06 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/17 12:11:02 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ static void	sigact(int sig, siginfo_t *info, void *context)
 		if (info->si_pid)
 		{
 			write (1, "\n", 1);
+			rl_replace_line("", 0);
 			rl_on_new_line ();
 			rl_redisplay ();
 		}
