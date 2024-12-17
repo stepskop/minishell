@@ -109,13 +109,14 @@ int	run_builtins_02(char **argv, char **envp, t_prompt *lst_node, int pipefd[2],
 	return (0);
 }
 
-int	run_exit(char **argv, char **envp, t_prompt *lst_node, int pipefd[2])
+int	run_exit(char **argv, char **envp, t_prompt *lst_node, int pipefd[2], int stdin_fd)
 {
 	t_prompt	*curr;
 
 	(void) envp;
 	(void) pipefd;
 	curr = lst_node;
+	close(stdin_fd);
 	while (curr && curr->prev)
 		curr = curr->prev;
 	lx_free_tokens(curr);
