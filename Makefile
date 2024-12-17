@@ -1,7 +1,3 @@
-# Pipes, Redirections
-#PIPEX_DIR = pipex/
-#PIPEX_SRC = pipex.c
-
 # Commands, built-in stuff
 BUILTINS_DIR = builtins/
 BUILTINS_SRC = echo.c pwd.c cd.c env01.c  env02.c run_builtins.c
@@ -31,7 +27,7 @@ ERROR_DIR = error/
 ERROR_SRC = error.c
 
 PIPELINE_DIR = pipeline/
-PIPELINE_SRC = executor.c utils.c
+PIPELINE_SRC = executor.c utils.c pipe_utils.c
 
 SRC_DIR = ./src/
 SRCS = 	$(addprefix $(BUILTINS_DIR), $(BUILTINS_SRC)) \

@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/16 15:11:30 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/17 12:01:29 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,6 @@ t_token		lx_get_token(char *str);
 
 // Executor
 void		executor(t_prompt *lst, int stdin_fd, char **envp);
-int			ex_get_heredoc(t_args *args);
-int			ex_open_file(t_args *args, int oflag);
-size_t		ex_cmdlen(t_args *args);
 
 // utils001.c
 size_t		sh_strlen(const char *s);

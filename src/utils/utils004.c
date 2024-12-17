@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/16 13:32:56 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/17 12:30:58 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ char	sh_bsq(char *arg, size_t idx)
 	if (arg[idx] == '\'' || arg[idx] == '"')
 	{
 		i = 0;
-		if (idx > 0 )
+		if (idx > 0)
 		{
 			idx_ = idx - 1;
 			while (1)

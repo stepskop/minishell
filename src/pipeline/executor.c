@@ -6,11 +6,11 @@
 /*   By: username <your@email.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:00:57 by username          #+#    #+#             */
-/*   Updated: 2024/12/06 01:27:47 by username         ###   ########.fr       */
+/*   Updated: 2024/12/17 12:30:25 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "pipeline.h"
 
 static void	ex_handle_ionode(t_prompt *curr, int (*last_io)[2])
 {
@@ -62,21 +62,11 @@ static char	*ex_cmdprep(t_prompt *node)
 {
 	char	*res;
 	size_t	len;
-	char	*tmp;
 	t_args	*curr;
 	int		i;
 
-	curr = node->args;
-	while (curr)
-	{
-		tmp = curr->data;
-		curr->data = put_env(curr->data);
-		free(tmp);
-		tmp = curr->data;
-		curr->data = sh_asterisk(curr->data);
-		free(tmp);
-		curr = curr->next;
-	}
+	if (!ex_expand(node->args))
+		return (NULL);
 	len = ex_cmdlen(node->args) + ft_strlen(node->str_val);
 	res = malloc(sizeof(char) * (len + 1));
 	if (!res)
@@ -118,10 +108,7 @@ static int	ex_execute(t_prompt *node, int stdin_fd, char **envp)
 	cmd = ex_cmdprep(node);
 	exit_code = sh_run(cmd, (t_ctx){stdin_fd, c_pipe, node, envp});
 	if (node->next_cmd)
-	{
-		close(pipefd[1]);
-		close(pipefd[0]);
-	}
+		close_pipe(pipefd);
 	if (node->out_fd > 1)
 		close(node->out_fd);
 	return (exit_code);

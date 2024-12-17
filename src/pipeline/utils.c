@@ -6,11 +6,11 @@
 /*   By: username <your@email.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 16:25:32 by username          #+#    #+#             */
-/*   Updated: 2024/12/04 19:33:10 by username         ###   ########.fr       */
+/*   Updated: 2024/12/17 12:13:07 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "pipeline.h"
 
 static void	read_stdin(int *pipefd, char *limiter)
 {
@@ -80,4 +80,28 @@ int	ex_open_file(t_args *args, int oflag)
 	if (fd == -1)
 		return (perror("open"), -1);
 	return (fd);
+}
+
+int	ex_expand(t_args *args)
+{
+	t_args	*curr;
+	char	*tmp;
+
+	curr = args;
+	while (curr)
+	{
+		if (curr->data)
+		{
+			tmp = curr->data;
+			curr->data = put_env(curr->data);
+			free(tmp);
+			tmp = curr->data;
+			curr->data = sh_asterisk(curr->data);
+			free(tmp);
+			if (!curr->data)
+				return (0);
+			curr = curr->next;
+		}
+	}
+	return (1);
 }
