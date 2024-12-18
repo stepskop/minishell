@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 12:39:55 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/13 14:20:29 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/18 15:05:31 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 // env01.c
 void	env_print(char **envp);
-char	**env_prsng(char **argv, char **envp, int stdin_fd);
+int		env_prsng(char **argv, char ***envp, int stdin_fd);
 int		env_check_var(char *var);
 
 // env02.c

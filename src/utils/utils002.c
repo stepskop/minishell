@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/14 14:48:51 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/18 14:23:55 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*put_env(char *str)
 	idx[1] = 0;
 	while (str[idx[1]])
 	{
-		if (str[idx[1]] == '$')
+		if (str[idx[1]] == '$' && !sh_insq (str, idx[1]))
 			buffer = str_join_env(str, buffer, idx);
 		idx[1]++;
 	}
