@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 23:53:25 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/18 15:00:47 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/18 16:59:08 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,7 @@ int	run_builtins_01(char **argv, t_ctx ctx)
 		if (ctx.pipefd[0] > 0)
 			close(ctx.pipefd[0]);
 		close(ctx.stdin_fd);
-		if (!ft_strcmp (argv[0], "echo")
-			|| !ft_strncmp (argv[0], "echo ", 5))
+		if (!ft_strcmp (argv[0], "echo"))
 			echo (argv);
 		else if (!ft_strcmp (argv[0], "pwd"))
 			pwd ();
