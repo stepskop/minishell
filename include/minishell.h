@@ -151,6 +151,7 @@ void		a_split_clear(void *elem);
 // execve.c
 int			sh_run(char *cmmnd, t_ctx ctx);
 int			sh_execve(char **argv, char **envp, int pipefd[2]);
+void		sh_subprocess_pipes(int pipefd[2]);
 void		sp_print_cnf(char *cmmnd);
 
 // signal.c

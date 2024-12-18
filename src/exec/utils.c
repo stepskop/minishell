@@ -84,3 +84,13 @@ char	*get_cmd(char *cmd)
 		res = cmd_from_path(cmd);
 	return (res);
 }
+
+void	sh_subprocess_pipes(int pipefd[2])
+{
+	if (pipefd[1] > 1)
+		dup2(pipefd[1], STDOUT_FILENO);
+	if (pipefd[1] > 1)
+		close(pipefd[1]);
+	if (pipefd[0] > 0)
+		close(pipefd[0]);
+}

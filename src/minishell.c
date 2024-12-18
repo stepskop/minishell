@@ -43,7 +43,6 @@ void	_loop_(char **envp)
 	int			stdin_fd;
 	int			exit_code;
 
-	lst = NULL;
 	while (1)
 	{
 		cmmnd[1] = NULL;
@@ -75,7 +74,7 @@ char	*get_command(char **cmmnd)
 	{
 		wait(NULL);
 		line[0] = readline(line[1]);
-		if (!line[0][0] && !(*cmmnd))
+		if ((!line[0] || !line[0][0]) && !(*cmmnd))
 			return (NULL);
 		i = sh_backslash (&line[0]);
 		*cmmnd = sh_strjoin (*cmmnd, line[0]);

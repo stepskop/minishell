@@ -77,12 +77,7 @@ int	sh_execve(char **argv, char **envp, int pipefd[2])
 		rl_clear_history ();
 		rp = EXIT_SUCCESS;
 		cmmnd = get_cmd (argv[0]);
-		if (pipefd[1] > 1)
-			dup2(pipefd[1], STDOUT_FILENO);
-		if (pipefd[1] > 1)
-			close(pipefd[1]);
-		if (pipefd[0] > 0)
-			close(pipefd[0]);
+		sh_subprocess_pipes(pipefd);
 		if (cmmnd)
 			rp = execve (cmmnd, argv, envp);
 		else

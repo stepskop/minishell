@@ -22,12 +22,7 @@ int	run_builtins_01(char **argv, t_ctx ctx)
 	{
 		sh_ppfree (((t_pv *)sh_get_pv ())->envp);
 		sh_get_pv()->envp = ctx.envp;
-		if (ctx.pipefd[1] > 1)
-			dup2(ctx.pipefd[1], STDOUT_FILENO);
-		if (ctx.pipefd[1] > 1)
-			close(ctx.pipefd[1]);
-		if (ctx.pipefd[0] > 0)
-			close(ctx.pipefd[0]);
+		sh_subprocess_pipes(ctx.pipefd);
 		close(ctx.stdin_fd);
 		if (!ft_strcmp (argv[0], "echo")
 			|| !ft_strncmp (argv[0], "echo ", 5))
@@ -58,13 +53,8 @@ int	run_builtins_02(char **argv, t_ctx ctx)
 	{
 		// sh_ppfree (((t_pv *)sh_get_pv ())->envp);	// env - Invalid free() / delete / delete[] / realloc() 
 		sh_get_pv()->envp = ctx.envp;
-		if (ctx.pipefd[1] > 1)
-			dup2(ctx.pipefd[1], STDOUT_FILENO);
+		sh_subprocess_pipes(ctx.pipefd);
 		close(ctx.stdin_fd);
-		if (ctx.pipefd[1] > 1)
-			close(ctx.pipefd[1]);
-		if (ctx.pipefd[0] > 0)
-			close(ctx.pipefd[0]);
 		if (!ft_strcmp (argv[0], "env")
 			|| !ft_strncmp (argv[0], "env ", 4))
 			env (argv, ctx.envp, ctx.stdin_fd);

@@ -31,7 +31,8 @@ char	*sh_remove_last_c(char *str, char c)
 }
 
 /*
-*	sh_new_de creates a new structure with name, full name and relative name of a dir
+*	sh_new_de creates a new structure with name, 
+*	full name and relative name of a dir
 */
 t_de	*sh_new_de(unsigned char d_type, char *d_name, char *pathes[])
 {
