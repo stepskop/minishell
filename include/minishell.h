@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/17 12:01:29 by username         ###   ########.fr       */
+/*   Updated: 2024/12/18 17:21:47 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ typedef struct s_ctx
 	int				stdin_fd;
 	int				*pipefd;
 	struct s_prompt	*node;
-	char			**envp;
+	char			**to_free;
+	// char			**envp;
 }	t_ctx;
 
 typedef struct s_args
@@ -79,7 +80,7 @@ typedef struct s_pv
 }	t_pv;
 
 t_pv		*sh_get_pv(void);
-void		_loop_(char **envp);
+void		_loop_(void);
 
 // Lexer
 t_prompt	*lexer(char **cmd_line);
@@ -98,7 +99,7 @@ t_prompt	*lx_add(t_token token, t_prompt *prev, char *val);
 t_token		lx_get_token(char *str);
 
 // Executor
-void		executor(t_prompt *lst, int stdin_fd, char **envp);
+void		executor(t_prompt *lst, int stdin_fd);
 
 // utils001.c
 size_t		sh_strlen(const char *s);
@@ -136,6 +137,7 @@ char		**sh_uq_args(char **args);
 char		*sh_rmbs(char *arg);
 char		**sh_rmbs_args(char **args);
 char		**sh_ud_rmbs(char **args);
+int			sh_insq(char *arg, size_t pos);
 
 // sh_split_q.c
 char		**sh_split_q(char *str, char c);
@@ -150,7 +152,7 @@ void		a_split_clear(void *elem);
 
 // execve.c
 int			sh_run(char *cmmnd, t_ctx ctx);
-int			sh_execve(char **argv, char **envp, int pipefd[2]);
+int			sh_execve(char **argv, t_ctx ctx);
 void		sh_subprocess_pipes(int pipefd[2]);
 void		sp_print_cnf(char *cmmnd);
 
@@ -202,3 +204,4 @@ void		free_args(t_args *args);
 // --tool=drd
 // --read-var-info=yes
 // --show-reachable=yes
+// valgrind --trace-children=yes --leak-check=full --show-leak-kinds=all --suppressions=rl.supp ./minishell

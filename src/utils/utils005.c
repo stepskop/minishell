@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/16 12:33:22 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/18 14:27:23 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,23 @@ char	**sh_rmbs_args(char **args)
 char	**sh_ud_rmbs(char **args)
 {
 	return (sh_rmbs_args (sh_uq_args (args)));
+}
+
+int	sh_insq(char *arg, size_t pos)
+{
+	size_t	idx;
+	int		i[2];
+
+	idx = 0;
+	i[0] = 0;
+	i[1] = 0;
+	while (idx < pos)
+	{
+		if (arg[idx] == '"' && !sh_bsq (arg, idx))
+			i[0] = (i[0] + 1) % 2;
+		if (arg[idx] == '\'' && !sh_bsq (arg, idx) && !i[0])
+			i[1] = (i[1] + 1) % 2;
+		idx++;
+	}
+	return (i[1]);
 }

@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 15:34:17 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/16 15:45:01 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/18 17:30:52 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	sh_run(char *cmmnd, t_ctx ctx)
 	int		exit_code;
 
 	cmmnds_args[0] = sh_split_q (cmmnd, ';');
+	ctx.to_free = cmmnds_args[0];
 	free(cmmnd);
 	cmmnds_args[1] = cmmnds_args[0];
 	exit_code = EXIT_SUCCESS;
@@ -31,14 +32,11 @@ int	sh_run(char *cmmnd, t_ctx ctx)
 		else if (check_builtins (cmmnds_args[2][0]) == 2)
 		{
 			if (!ft_strncmp (cmmnds_args[2][0], "exit", 4))
-			{
 				close(ctx.stdin_fd);
-				sh_ppfree(cmmnds_args[0]);
-			}
 			run_builtins_02 (cmmnds_args[2], ctx);
 		}
 		else
-			exit_code = sh_execve (cmmnds_args[2], ctx.envp, ctx.pipefd);
+			exit_code = sh_execve (cmmnds_args[2], ctx);
 		sh_ppfree (cmmnds_args[2]);
 		cmmnds_args[1]++;
 	}
@@ -66,7 +64,7 @@ void	sp_print_cnf(char *cmmnd)
 	write (2, ": command not found\n", 20);
 }
 
-int	sh_execve(char **argv, char **envp, int pipefd[2])
+int	sh_execve(char **argv, t_ctx ctx)
 {
 	char	*cmmnd;
 	int		rp;
@@ -77,9 +75,9 @@ int	sh_execve(char **argv, char **envp, int pipefd[2])
 		rl_clear_history ();
 		rp = EXIT_SUCCESS;
 		cmmnd = get_cmd (argv[0]);
-		sh_subprocess_pipes(pipefd);
+		sh_subprocess_pipes(ctx.pipefd);
 		if (cmmnd)
-			rp = execve (cmmnd, argv, envp);
+			rp = execve (cmmnd, argv, sh_get_pv()->envp);
 		else
 			sp_print_cnf(argv[0]);
 		sh_ppfree (argv);
@@ -87,8 +85,8 @@ int	sh_execve(char **argv, char **envp, int pipefd[2])
 	}
 	else
 	{
-		if (pipefd[0] > 0)
-			dup2(pipefd[0], STDIN_FILENO);
+		if (ctx.pipefd[0] > 0)
+			dup2(ctx.pipefd[0], STDIN_FILENO);
 	}
 	return (WEXITSTATUS(rp));
 }

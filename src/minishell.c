@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/16 14:47:35 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/18 11:10:55 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,12 @@ char	*get_command(char **cmmnd);
 
 int	main(int argc, char **argv, char **envp)
 {
-	// envp_set_get (envp, SET);
-	((t_pv *)sh_get_pv ())->envp = sh_pstrdup (envp);
+	sh_get_pv ()->envp = sh_pstrdup (envp);
 	(void)argc;
 	(void)argv;
 	sig_init ();
-	_loop_ (envp);
-	sh_ppfree (((t_pv *)sh_get_pv ())->envp);
+	_loop_ ();
+	sh_ppfree (sh_get_pv ()->envp);
 	rl_clear_history ();
 	return (EXIT_SUCCESS);
 }
@@ -35,7 +34,7 @@ t_pv	*sh_get_pv(void)
 	return (&pv);
 }
 
-void	_loop_(char **envp)
+void	_loop_(void)
 {
 	char		*cmmnd[2];
 	t_prompt	*lst;
@@ -56,7 +55,7 @@ void	_loop_(char **envp)
 			lst = lexer(splitted);
 		free (cmmnd[1]);
 		stdin_fd = dup(STDIN_FILENO);
-		executor(lst, stdin_fd, envp);
+		executor(lst, stdin_fd);
 		wait(&exit_code);
 		lx_free_tokens(lst);
 		dup2(stdin_fd, STDIN_FILENO);

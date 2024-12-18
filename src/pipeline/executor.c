@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: username <your@email.com>                  +#+  +:+       +#+        */
+/*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:00:57 by username          #+#    #+#             */
-/*   Updated: 2024/12/17 12:30:25 by username         ###   ########.fr       */
+/*   Updated: 2024/12/18 11:50:16 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ static char	*ex_cmdprep(t_prompt *node)
 	return (res);
 }
 
-static int	ex_execute(t_prompt *node, int stdin_fd, char **envp)
+static int	ex_execute(t_prompt *node, int stdin_fd)
 {
 	int		exit_code;
 	int		pipefd[2];
@@ -106,7 +106,7 @@ static int	ex_execute(t_prompt *node, int stdin_fd, char **envp)
 	if (node->in_fd > 0)
 		dup2(node->in_fd, STDIN_FILENO);
 	cmd = ex_cmdprep(node);
-	exit_code = sh_run(cmd, (t_ctx){stdin_fd, c_pipe, node, envp});
+	exit_code = sh_run(cmd, (t_ctx){stdin_fd, c_pipe, node, NULL});
 	if (node->next_cmd)
 		close_pipe(pipefd);
 	if (node->out_fd > 1)
@@ -114,7 +114,7 @@ static int	ex_execute(t_prompt *node, int stdin_fd, char **envp)
 	return (exit_code);
 }
 
-void	executor(t_prompt *lst, int stdin_fd, char **envp)
+void	executor(t_prompt *lst, int stdin_fd)
 {
 	t_prompt	*curr;
 	int			last_status;
@@ -125,7 +125,7 @@ void	executor(t_prompt *lst, int stdin_fd, char **envp)
 	while (curr)
 	{
 		if (curr->token == CMD)
-			last_status = ex_execute(curr, stdin_fd, envp);
+			last_status = ex_execute(curr, stdin_fd);
 		if (curr->token == AND && last_status != 0)
 			break ;
 		if (curr->token == OR && last_status == 0)
