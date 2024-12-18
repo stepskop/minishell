@@ -87,6 +87,8 @@ char	*get_cmd(char *cmd)
 
 void	sh_subprocess_pipes(int pipefd[2])
 {
+	if (pipefd[0] > 0)
+		dup2(pipefd[0], STDIN_FILENO);
 	if (pipefd[1] > 1)
 		dup2(pipefd[1], STDOUT_FILENO);
 	if (pipefd[1] > 1)

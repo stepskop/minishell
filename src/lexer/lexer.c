@@ -32,28 +32,18 @@ static t_prompt	*lx_init(char *first)
 static t_prompt	*lx_create(char **cmd_raw, t_prompt *lst)
 {
 	t_prompt	*curr;
-	t_prompt	*l_cmd;
+	t_prompt	*last_cmd;
+	t_prompt	*last_par;
 	int			i;
 
 	i = 0;
 	curr = lst;
-	l_cmd = curr;
+	last_cmd = curr;
+	last_par = last_cmd;
 	while (cmd_raw[++i])
 	{
-		if (lx_get_token(cmd_raw[i]) == WORD && !lx_cmdend(*curr))
-		{
-			if (!lx_add_arg(cmd_raw[i], &lx_parent(curr, l_cmd)->args))
-				return (lx_free_tokens(lst), NULL);
-		}
-		else
-		{
-			curr->next = lx_add(lx_get_token(cmd_raw[i]), curr, cmd_raw[i]);
-			if (!curr->next)
-				return (lx_free_tokens(lst), NULL);
-			if (curr->next->token == CMD)
-				l_cmd = lx_lastcmd(l_cmd, curr->next);
-			curr = curr->next;
-		}
+		if (!lx_parse(cmd_raw[i], &curr, &last_par, &last_cmd))
+			return (lx_free_tokens(lst), NULL);
 	}
 	return (lst);
 }
@@ -81,7 +71,9 @@ void	print_lex_dbg(t_prompt *lst)
 	printf("------LEXER DBG-------\n");
 	while (curr)
 	{
-		printf("ITEM: %s, TOKEN: %i\n", curr->str_val, curr->token);
+		printf("[%p]\n", curr);
+		printf("ITEM: %s, TOKEN: %i, NEXT_CMD: %p\n", curr->str_val,
+			curr->token, curr->next_cmd);
 		printf("IN: %d, OUT: %d\n", curr->in_fd, curr->out_fd);
 		curr_arg = curr->args;
 		if (curr_arg)
@@ -92,6 +84,7 @@ void	print_lex_dbg(t_prompt *lst)
 				curr_arg = curr_arg->next;
 			}
 		}
+		printf("\n\n\n");
 		curr = curr->next;
 	}
 	printf("------LEXER DBG END-------\n");

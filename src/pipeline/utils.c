@@ -20,7 +20,7 @@ static void	read_stdin(int *pipefd, char *limiter)
 	delimiter = ft_strjoin(limiter, "\n");
 	while (1)
 	{
-		write(1, ">", 1);
+		write(1, "> ", 2);
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
 		{

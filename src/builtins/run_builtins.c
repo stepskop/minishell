@@ -23,7 +23,6 @@ int	run_builtins_01(char **argv, t_ctx ctx)
 		sh_ppfree (((t_pv *)sh_get_pv ())->envp);
 		sh_get_pv()->envp = ctx.envp;
 		sh_subprocess_pipes(ctx.pipefd);
-		close(ctx.stdin_fd);
 		if (!ft_strcmp (argv[0], "echo")
 			|| !ft_strncmp (argv[0], "echo ", 5))
 			echo (argv);
@@ -33,10 +32,7 @@ int	run_builtins_01(char **argv, t_ctx ctx)
 			cd (argv);
 		run_exit (argv, ctx);
 	}
-	else
-		if (ctx.pipefd[0] > 0)
-			dup2(ctx.pipefd[0], STDIN_FILENO);
-	return (0);
+	return (pid);
 }
 
 int	run_builtins_02(char **argv, t_ctx ctx)
@@ -54,18 +50,12 @@ int	run_builtins_02(char **argv, t_ctx ctx)
 		// sh_ppfree (((t_pv *)sh_get_pv ())->envp);	// env - Invalid free() / delete / delete[] / realloc() 
 		sh_get_pv()->envp = ctx.envp;
 		sh_subprocess_pipes(ctx.pipefd);
-		close(ctx.stdin_fd);
 		if (!ft_strcmp (argv[0], "env")
 			|| !ft_strncmp (argv[0], "env ", 4))
-			env (argv, ctx.envp, ctx.stdin_fd);
+			env (argv, ctx.envp);
 		run_exit (argv, ctx);
 	}
-	else
-	{
-		if (ctx.pipefd[0] > 0)
-			dup2(ctx.pipefd[0], STDIN_FILENO);
-	}
-	return (0);
+	return (pid);
 }
 
 int	run_exit(char **argv, t_ctx ctx)
@@ -73,7 +63,6 @@ int	run_exit(char **argv, t_ctx ctx)
 	t_prompt	*curr;
 
 	curr = ctx.node;
-	close(ctx.stdin_fd);
 	while (curr && curr->prev)
 		curr = curr->prev;
 	lx_free_tokens(curr);

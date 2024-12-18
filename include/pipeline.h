@@ -19,6 +19,6 @@ int			ex_get_heredoc(t_args *args);
 int			ex_open_file(t_args *args, int oflag);
 size_t		ex_cmdlen(t_args *args);
 int			ex_expand(t_args *args);
-void		close_pipe(int pipefd[2]);
+void		clean_pipes(t_prompt *node, int pipefd[2]);
 
 #endif

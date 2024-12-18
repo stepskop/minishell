@@ -15,7 +15,7 @@
 
 // env01.c
 void	env_print(char **envp);
-char	**env_prsng(char **argv, char **envp, int stdin_fd);
+char	**env_prsng(char **argv, char **envp);
 int		env_check_var(char *var);
 
 // env02.c

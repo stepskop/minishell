@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	lx_accept_sub(t_prompt node)
+int	lx_argcheck(t_prompt node)
 {
 	if (node.token == CMD)
 		return (1);
@@ -29,7 +29,7 @@ int	lx_cmdend(t_prompt curr)
 	return (0);
 }
 
-t_prompt	*lx_lastcmd(t_prompt *old, t_prompt *new)
+t_prompt	*lx_setnext(t_prompt *old, t_prompt *new)
 {
 	if (old && old->token == CMD)
 		old->next_cmd = new;
@@ -38,7 +38,7 @@ t_prompt	*lx_lastcmd(t_prompt *old, t_prompt *new)
 
 t_prompt	*lx_parent(t_prompt *curr, t_prompt *parent)
 {
-	if (!lx_accept_sub(*curr))
+	if (!lx_argcheck(*curr))
 		return (parent);
 	return (curr);
 }

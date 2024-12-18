@@ -33,7 +33,7 @@ t_prompt	*lx_add(t_token token, t_prompt *prev, char *val)
 	return (new);
 }
 
-int	lx_add_arg(char *str, t_args **args)
+static int	lx_add_arg(char *str, t_args **args)
 {
 	t_args	*new;
 	t_args	*curr;
@@ -70,4 +70,31 @@ t_token	lx_get_token(char *str)
 		return (GREATGREAT);
 	else
 		return (WORD);
+}
+
+int	lx_parse(char *str, t_prompt **curr, t_prompt **l_par, t_prompt **l_cmd)
+{
+	if (lx_get_token(str) == AND || lx_get_token(str) == OR)
+		*l_cmd = NULL;
+	if (lx_get_token(str) == WORD && !lx_cmdend(**curr) && lx_argcheck(**l_par))
+	{
+		if (!lx_add_arg(str, &(*l_par)->args))
+			return (0);
+	}
+	else
+	{
+		(*curr)->next = lx_add(lx_get_token(str), *curr, str);
+		if (!(*curr)->next)
+			return (0);
+		if (lx_argcheck(*(*curr)->next))
+			*l_par = (*curr)->next;
+		if ((*curr)->next->token == CMD)
+		{
+			if (*l_cmd)
+				(*l_cmd)->next_cmd = (*curr)->next;
+			*l_cmd = (*curr)->next;
+		}
+		*curr = (*curr)->next;
+	}
+	return (1);
 }

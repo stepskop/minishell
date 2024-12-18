@@ -17,32 +17,29 @@ static int	check_builtins(char *cmmnd);
 int	sh_run(char *cmmnd, t_ctx ctx)
 {
 	char	**cmmnds_args[3];
-	int		exit_code;
+	int		pid;
 
 	cmmnds_args[0] = sh_split_q (cmmnd, ';');
 	free(cmmnd);
 	cmmnds_args[1] = cmmnds_args[0];
-	exit_code = EXIT_SUCCESS;
+	pid = 0;
 	while (*cmmnds_args[1])
 	{
 		cmmnds_args[2] = sh_ud_rmbs (sh_split_q (*cmmnds_args[1], ' '));
 		if (check_builtins (cmmnds_args[2][0]) == 1)
-			run_builtins_01 (cmmnds_args[2], ctx);
+			pid = run_builtins_01 (cmmnds_args[2], ctx);
 		else if (check_builtins (cmmnds_args[2][0]) == 2)
 		{
 			if (!ft_strncmp (cmmnds_args[2][0], "exit", 4))
-			{
-				close(ctx.stdin_fd);
 				sh_ppfree(cmmnds_args[0]);
-			}
-			run_builtins_02 (cmmnds_args[2], ctx);
+			pid = run_builtins_02 (cmmnds_args[2], ctx);
 		}
 		else
-			exit_code = sh_execve (cmmnds_args[2], ctx.envp, ctx.pipefd);
+			pid = sh_execve (cmmnds_args[2], ctx.envp, ctx.pipefd);
 		sh_ppfree (cmmnds_args[2]);
 		cmmnds_args[1]++;
 	}
-	return (sh_ppfree (cmmnds_args[0]), exit_code);
+	return (sh_ppfree (cmmnds_args[0]), pid);
 }
 
 static int	check_builtins(char *cmmnd)
@@ -69,26 +66,20 @@ void	sp_print_cnf(char *cmmnd)
 int	sh_execve(char **argv, char **envp, int pipefd[2])
 {
 	char	*cmmnd;
-	int		rp;
+	int		pid;
 
-	rp = 0;
-	if (fork() == 0)
+	pid = fork();
+	if (pid == 0)
 	{
 		rl_clear_history ();
-		rp = EXIT_SUCCESS;
 		cmmnd = get_cmd (argv[0]);
 		sh_subprocess_pipes(pipefd);
 		if (cmmnd)
-			rp = execve (cmmnd, argv, envp);
+			execve (cmmnd, argv, envp);
 		else
 			sp_print_cnf(argv[0]);
 		sh_ppfree (argv);
 		exit (EXIT_FAILURE);
 	}
-	else
-	{
-		if (pipefd[0] > 0)
-			dup2(pipefd[0], STDIN_FILENO);
-	}
-	return (WEXITSTATUS(rp));
+	return (pid);
 }
