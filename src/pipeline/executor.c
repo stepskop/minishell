@@ -85,9 +85,9 @@ static char	*ex_cmdprep(t_prompt *node)
 	return (res);
 }
 
-static int	ex_execute(t_prompt *node, int stdin_fd)
+static int	ex_execute(t_prompt *node)
 {
-	int		exit_code;
+	int		pid;
 	int		pipefd[2];
 	int		c_pipe[2];
 	char	*cmd;
@@ -99,37 +99,43 @@ static int	ex_execute(t_prompt *node, int stdin_fd)
 		if (pipe(pipefd) == -1)
 			return (perror("pipe"), 1);
 		c_pipe[1] = pipefd[1];
-		c_pipe[0] = pipefd[0];
+		if (node->next_cmd->in_fd == 0)
+			node->next_cmd->in_fd = pipefd[0];
 	}
 	if (node->out_fd > 1)
 		c_pipe[1] = node->out_fd;
 	if (node->in_fd > 0)
-		dup2(node->in_fd, STDIN_FILENO);
+		c_pipe[0] = node->in_fd;
 	cmd = ex_cmdprep(node);
-	exit_code = sh_run(cmd, (t_ctx){stdin_fd, c_pipe, node, NULL});
-	if (node->next_cmd)
-		close_pipe(pipefd);
-	if (node->out_fd > 1)
-		close(node->out_fd);
-	return (exit_code);
+	pid = sh_run(cmd, (t_ctx){c_pipe, node, NULL});
+	clean_pipes(node, pipefd);
+	return (pid);
 }
 
-void	executor(t_prompt *lst, int stdin_fd)
+int	executor(t_prompt *lst)
 {
 	t_prompt	*curr;
-	int			last_status;
+	int			last_pid;
+	int			stat;
 
 	ex_ioprep(lst);
 	curr = lst;
-	last_status = 0;
+	last_pid = 0;
+	stat = EXIT_SUCCESS;
 	while (curr)
 	{
 		if (curr->token == CMD)
-			last_status = ex_execute(curr, stdin_fd);
-		if (curr->token == AND && last_status != 0)
-			break ;
-		if (curr->token == OR && last_status == 0)
-			break ;
+			last_pid = ex_execute(curr);
+		if (curr->token == AND || curr->token == OR)
+		{
+			waitpid(last_pid, &stat, 0);
+			if ((curr->token == AND && stat != 0) || \
+				(curr->token == OR && stat == 0))
+				break ;
+		}
 		curr = curr->next;
 	}
+	if (!curr && last_pid)
+		waitpid(last_pid, &stat, 0);
+	return (WEXITSTATUS(stat));
 }

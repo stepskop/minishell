@@ -12,8 +12,16 @@
 
 #include "pipeline.h"
 
-void	close_pipe(int pipefd[2])
+void	clean_pipes(t_prompt *node, int pipefd[2])
 {
-	close(pipefd[0]);
-	close(pipefd[1]);
+	if (node->next_cmd)
+	{
+		close(pipefd[1]);
+		if (node->next_cmd->in_fd != pipefd[0])
+			close(pipefd[0]);
+	}
+	if (node->out_fd > 1)
+		close(node->out_fd);
+	if (node->in_fd > 0)
+		close(node->in_fd);
 }

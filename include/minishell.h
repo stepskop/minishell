@@ -48,7 +48,6 @@ typedef enum e_token
 
 typedef struct s_ctx
 {
-	int				stdin_fd;
 	int				*pipefd;
 	struct s_prompt	*node;
 	char			**to_free;
@@ -87,19 +86,20 @@ t_prompt	*lexer(char **cmd_line);
 void		print_lex_dbg(t_prompt *lst);
 
 // Lexer - utils
+int			lx_argcheck(t_prompt node);
 void		lx_free_tokens(t_prompt *lst);
 t_prompt	*lx_parent(t_prompt *curr, t_prompt *parent);
-int			lx_accept_sub(t_prompt node);
 int			lx_cmdend(t_prompt curr);
-t_prompt	*lx_lastcmd(t_prompt *old, t_prompt *new);
+t_prompt	*lx_setnext(t_prompt *old, t_prompt *new);
+int			lx_parse(char *str, t_prompt **curr,
+				t_prompt **last_par, t_prompt **last_cmd);
 
 // Lexer - list_utils
-int			lx_add_arg(char *str, t_args **args);
 t_prompt	*lx_add(t_token token, t_prompt *prev, char *val);
 t_token		lx_get_token(char *str);
 
 // Executor
-void		executor(t_prompt *lst, int stdin_fd);
+int			executor(t_prompt *lst);
 
 // utils001.c
 size_t		sh_strlen(const char *s);
@@ -184,7 +184,7 @@ char		*cd_home(char **argv);
 
 // env01.c
 char		*sh_getenv(char *name);
-void		env(char **argv, char **envp, int stdin_fd);
+void		env(char **argv, char **envp);
 
 // Err
 void		sh_err(char *str);

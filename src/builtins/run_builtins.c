@@ -21,7 +21,6 @@ int	run_builtins_01(char **argv, t_ctx ctx)
 	if (pid == 0)
 	{
 		sh_subprocess_pipes(ctx.pipefd);
-		close(ctx.stdin_fd);
 		if (!ft_strcmp (argv[0], "echo"))
 			echo (argv);
 		else if (!ft_strcmp (argv[0], "pwd"))
@@ -30,10 +29,7 @@ int	run_builtins_01(char **argv, t_ctx ctx)
 			cd (argv);
 		run_exit (argv, ctx);
 	}
-	else
-		if (ctx.pipefd[0] > 0)
-			dup2(ctx.pipefd[0], STDIN_FILENO);
-	return (0);
+	return (pid);
 }
 
 int	run_builtins_02(char **argv, t_ctx ctx)
@@ -46,21 +42,12 @@ int	run_builtins_02(char **argv, t_ctx ctx)
 	if (pid == 0)
 	{
 		sh_subprocess_pipes(ctx.pipefd);
-		close(ctx.stdin_fd);
-		if (ctx.pipefd[1] > 1)
-			dup2(ctx.pipefd[1], STDOUT_FILENO);
-		close(ctx.stdin_fd);
 		if (!ft_strcmp (argv[0], "env")
 			|| !ft_strncmp (argv[0], "env ", 4))
-			env (argv, NULL, ctx.stdin_fd);
+			env (argv, NULL);
 		run_exit (argv, ctx);
 	}
-	else
-	{
-		if (ctx.pipefd[0] > 0)
-			dup2(ctx.pipefd[0], STDIN_FILENO);
-	}
-	return (0);
+	return (pid);
 }
 
 int	run_exit(char **argv, t_ctx ctx)
@@ -68,12 +55,12 @@ int	run_exit(char **argv, t_ctx ctx)
 	t_prompt	*curr;
 
 	curr = ctx.node;
-	close(ctx.stdin_fd);
 	while (curr && curr->prev)
 		curr = curr->prev;
 	lx_free_tokens(curr);
 	sh_ppfree (argv);
-	sh_ppfree (ctx.to_free);
+	//TODO: Invalid free
+	//sh_ppfree (ctx.to_free);
 	sh_ppfree (sh_get_pv()->envp);
 	rl_clear_history ();
 	exit (EXIT_SUCCESS);

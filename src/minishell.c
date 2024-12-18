@@ -39,8 +39,6 @@ void	_loop_(void)
 	char		*cmmnd[2];
 	t_prompt	*lst;
 	char		**splitted;
-	int			stdin_fd;
-	int			exit_code;
 
 	while (1)
 	{
@@ -54,12 +52,9 @@ void	_loop_(void)
 		if (splitted && splitted[0])
 			lst = lexer(splitted);
 		free (cmmnd[1]);
-		stdin_fd = dup(STDIN_FILENO);
-		executor(lst, stdin_fd);
-		wait(&exit_code);
+		executor(lst);
+		wait(NULL);
 		lx_free_tokens(lst);
-		dup2(stdin_fd, STDIN_FILENO);
-		close(stdin_fd);
 	}
 }
 
@@ -73,7 +68,7 @@ char	*get_command(char **cmmnd)
 	{
 		wait(NULL);
 		line[0] = readline(line[1]);
-		if ((!line[0] || !line[0][0]) && !(*cmmnd))
+		if (!line[0][0] && !(*cmmnd))
 			return (NULL);
 		i = sh_backslash (&line[0]);
 		*cmmnd = sh_strjoin (*cmmnd, line[0]);

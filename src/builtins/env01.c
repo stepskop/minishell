@@ -37,7 +37,7 @@ char	*sh_getenv(char *name)
 	return (NULL);
 }
 
-void	env(char **argv, char **envp, int stdin_fd)
+void	env(char **argv, char **envp)
 {
 	if (!envp)
 		envp = sh_pstrdup (sh_get_pv()->envp);
@@ -46,7 +46,7 @@ void	env(char **argv, char **envp, int stdin_fd)
 		env_print (envp);
 		return (sh_ppfree (envp));
 	}
-	env_prsng (argv, &envp, stdin_fd);
+	env_prsng (argv, &envp);
 	sh_ppfree (envp);
 }
 
@@ -63,7 +63,7 @@ void	env_print(char **envp)
 	}
 }
 
-int	env_prsng(char **argv, char ***envp, int stdin_fd)
+int	env_prsng(char **argv, char ***envp)
 {
 	char		**pstr[2];
 	int			idx[4];
@@ -81,7 +81,7 @@ int	env_prsng(char **argv, char ***envp, int stdin_fd)
 			pstr[0] = sh_get_pv ()->envp;
 			sh_get_pv ()->envp = *envp;
 			lst = lexer (sh_pstrdup (&argv[idx[0]]));
-			executor (lst, stdin_fd);
+			executor (lst);
 			wait (&idx[3]);
 			lx_free_tokens(lst);
 			sh_get_pv ()->envp = pstr[0];
@@ -89,7 +89,7 @@ int	env_prsng(char **argv, char ***envp, int stdin_fd)
 		}
 	}
 	pstr[1] = sh_split_q ("env", ' ');
-	return (env (pstr[1], *envp, stdin_fd), sh_ppfree (pstr[1]), 0);
+	return (env (pstr[1], *envp), sh_ppfree (pstr[1]), 0);
 }
 
 int	env_check_var(char *var)
