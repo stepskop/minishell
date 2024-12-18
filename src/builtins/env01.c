@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 13:41:06 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/18 16:00:25 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/18 16:10:58 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,14 @@ char	*sh_getenv(char *name)
 void	env(char **argv, char **envp, int stdin_fd)
 {
 	if (!envp)
-		envp = sh_pstrdup (sh_get_pv()->envp); // 0x444ec0
+		envp = sh_pstrdup (sh_get_pv()->envp);
 	if (!argv[1])
 	{
 		env_print (envp);
 		return (sh_ppfree (envp));
 	}
 	env_prsng (argv, &envp, stdin_fd);
+	sh_ppfree (envp);
 }
 
 void	env_print(char **envp)

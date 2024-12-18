@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:13:57 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/18 15:06:27 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/18 16:07:54 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,21 +28,6 @@ char	**envp_copy(char **envp1, char **envp2)
 	return (envp2);
 }
 
-// int	envp_size(char **envp)
-// {
-// 	char	**idx;
-// 	int		result;
-
-// 	result = 0;
-// 	idx = envp;
-// 	while (*idx)
-// 	{
-// 		result++;
-// 		idx++;
-// 	}
-// 	return (result);
-// }
-
 int	envp_set_var(char ***envp, char *sv)
 {
 	int		size;
@@ -55,7 +40,7 @@ int	envp_set_var(char ***envp, char *sv)
 	envp_copy (*envp, new_envp);
 	new_envp[size] = ft_strdup (sv);
 	new_envp[size + 1] = NULL;
-	sh_ppfree(*envp);
+	free(*envp);
 	*envp = new_envp;
 	return (1);
 }
