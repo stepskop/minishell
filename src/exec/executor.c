@@ -6,11 +6,12 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:00:57 by username          #+#    #+#             */
-/*   Updated: 2024/12/19 15:41:51 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/19 21:04:57 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipeline.h"
+#include "exec.h"
+#include "lexer.h"
 
 static void	ex_handle_ionode(t_prompt *curr, int (*last_io)[2])
 {

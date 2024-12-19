@@ -6,11 +6,11 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:43:38 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/14 23:41:37 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/19 21:50:37 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "path.h"
 #include "asterisk.h"
 
 /*

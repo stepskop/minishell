@@ -6,11 +6,11 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:43:38 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/19 12:01:12 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/19 21:50:26 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "path.h"
 #include "asterisk.h"
 
 char	*sh_asterisk(char *str)

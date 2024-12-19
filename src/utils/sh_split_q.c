@@ -6,11 +6,11 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/15 16:53:18 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/19 21:35:55 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "utils.h"
 
 static char	*sh_split_map(char *str, char c);
 static int	sh_split_couont(char *map, size_t len);

@@ -6,11 +6,11 @@
 /*   By: username <your@email.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 11:56:12 by username          #+#    #+#             */
-/*   Updated: 2024/12/17 12:29:10 by username         ###   ########.fr       */
+/*   Updated: 2024/12/19 21:47:18 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipeline.h"
+#include "exec.h"
 
 void	clean_pipes(t_prompt *node, int pipefd[2])
 {
@@ -24,4 +24,16 @@ void	clean_pipes(t_prompt *node, int pipefd[2])
 		close(node->out_fd);
 	if (node->in_fd > 0)
 		close(node->in_fd);
+}
+
+void	ex_subprocess_pipes(int pipefd[2])
+{
+	if (pipefd[0] > 0)
+		dup2(pipefd[0], STDIN_FILENO);
+	if (pipefd[1] > 1)
+		dup2(pipefd[1], STDOUT_FILENO);
+	if (pipefd[1] > 1)
+		close(pipefd[1]);
+	if (pipefd[0] > 0)
+		close(pipefd[0]);
 }

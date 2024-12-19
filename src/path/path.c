@@ -6,17 +6,11 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 12:24:25 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/02 17:57:26 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/19 21:49:55 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include "minishell.h"
-#include <linux/limits.h>
-#include <readline/readline.h>
-#include <stdio.h>
-#include <time.h>
-#include <unistd.h>
+#include "path.h"
 
 char	*get_sh_path(int absolute_path)
 {

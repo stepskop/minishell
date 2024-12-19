@@ -6,11 +6,12 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 14:52:22 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/18 17:22:29 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/19 21:45:13 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "builtins.h"
+#include "path.h"
 
 void	pwd(void)
 {

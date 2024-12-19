@@ -6,11 +6,11 @@
 /*   By: username <your@email.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 15:00:19 by username          #+#    #+#             */
-/*   Updated: 2024/12/06 00:30:15 by username         ###   ########.fr       */
+/*   Updated: 2024/12/19 21:59:55 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "lexer.h"
 
 static t_prompt	*lx_init(char *first)
 {
@@ -43,7 +43,7 @@ static t_prompt	*lx_create(char **cmd_raw, t_prompt *lst)
 	while (cmd_raw[++i])
 	{
 		if (!lx_parse(cmd_raw[i], &curr, &last_par, &last_cmd))
-			return (lx_free_tokens(lst), NULL);
+			return (free_prompt(lst), NULL);
 	}
 	return (lst);
 }

@@ -6,11 +6,11 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 16:06:47 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/06 18:47:09 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/19 21:35:59 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "utils.h"
 
 /*
 *	check_quot checks for quotation at begin and end of string

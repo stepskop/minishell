@@ -6,11 +6,11 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 15:11:55 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/16 12:35:19 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/19 21:13:42 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "builtins.h"
 
 static void	echo_write(char *arg);
 

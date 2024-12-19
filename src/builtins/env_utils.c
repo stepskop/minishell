@@ -1,41 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env01.c                                            :+:      :+:    :+:   */
+/*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 13:41:06 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/19 18:17:23 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/19 21:59:36 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include "env.h"
-
-char	*sh_getenv(char *name, char **envp)
-{
-	char	*str[3];
-	char	**envp_;
-	size_t	len;
-
-	if (!name)
-		return (NULL);
-	str[0] = ft_strjoin (name, "=");
-	len = ft_strlen (str[0]);
-	envp_ = envp;
-	while (*envp_)
-	{
-		if (ft_strlen (*envp_) > len && !ft_strncmp (*envp_, str[0], len))
-		{
-			str[1] = ft_strchr (*envp_, '=');
-			str[2] = ft_strdup (str[1] + 1);
-			return (free (str[0]), str[2]);
-		}
-		envp_++;
-	}
-	return (free (str[0]), NULL);
-}
+#include "builtins.h"
+#include "lexer.h"
+#include "exec.h"
 
 /*
 *	original envp in the parent process
@@ -84,7 +61,7 @@ int	env_prsng(char **argv, char ***penvp)
 			lst = lexer (sh_pstrdup (&argv[idx[0]]));
 			executor (lst, penvp);
 			wait (&idx[3]);
-			lx_free_tokens(lst);
+			free_prompt(lst);
 			return (sh_ppfree (*penvp), idx[3]);
 		}
 	}

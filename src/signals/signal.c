@@ -6,11 +6,11 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:51:45 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/17 12:11:02 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/19 21:39:38 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "signals.h"
 
 static void	sigact(int sig, siginfo_t *info, void *context);
 

@@ -6,11 +6,15 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/19 18:07:18 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/19 21:59:01 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "utils.h"
+#include "lexer.h"
+#include "exec.h"
+#include "signals.h"
+#include "path.h"
 
 static char	*get_command(char **cmmnd, char *pps);
 // int		check_eol(char *str, t_counters_quotes	*cq);
@@ -20,6 +24,8 @@ int	main(int argc, char **argv, char **envp)
 	char	**envp_;
 
 	envp_ = sh_pstrdup (envp);
+	if (!envp_)
+		return (perror("malloc"), EXIT_FAILURE);
 	(void)argc;
 	(void)argv;
 	sig_init ();
@@ -49,7 +55,7 @@ void	_loop_(char **envp)
 		free (cmmnd[1]);
 		executor(lst, &envp);
 		wait(NULL);
-		lx_free_tokens(lst);
+		free_prompt(lst);
 	}
 }
 

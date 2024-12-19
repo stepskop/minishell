@@ -1,6 +1,6 @@
 # Commands, built-in stuff
 BUILTINS_DIR = builtins/
-BUILTINS_SRC = echo.c pwd.c cd.c env01.c  env02.c run_builtins.c
+BUILTINS_SRC = echo.c pwd.c cd.c env.c  env_utils.c run_builtins.c
 
 # Signals
 SIGNALS_DIR = signals/
@@ -8,15 +8,15 @@ SIGNALS_SRC = signal.c
 
 # Exec
 EXEC_DIR = exec/
-EXEC_SRC = execve.c utils01.c  utils02.c
+EXEC_SRC = execve.c executor.c pipe_utils.c utils.c
 
 # Path
 PATH_DIR = path/
-PATH_SRC = path.c a_split.c asterisk01.c asterisk02.c asterisk03.c asterisk04.c
+PATH_SRC = path.c a_split.c asterisk01.c asterisk02.c asterisk03.c asterisk04.c utils.c
 
 # Utilites
 UTILS_DIR = utils/
-UTILS_SRC = sh_split_q.c utils001.c utils002.c utils003.c utils004.c utils005.c memory.c quotation.c
+UTILS_SRC = sh_split_q.c utils001.c utils002.c utils003.c utils004.c utils005.c memory.c quotation.c envars.c
 
 # Lexer
 LEXER_DIR = lexer/
@@ -26,9 +26,6 @@ LEXER_SRC = lexer.c utils.c list_utils.c
 ERROR_DIR = error/
 ERROR_SRC = error.c
 
-PIPELINE_DIR = pipeline/
-PIPELINE_SRC = executor.c utils.c pipe_utils.c
-
 SRC_DIR = ./src/
 SRCS = 	$(addprefix $(BUILTINS_DIR), $(BUILTINS_SRC)) \
 		$(addprefix $(UTILS_DIR), $(UTILS_SRC)) \
@@ -37,14 +34,13 @@ SRCS = 	$(addprefix $(BUILTINS_DIR), $(BUILTINS_SRC)) \
 		$(addprefix $(PATH_DIR), $(PATH_SRC)) \
 		$(addprefix $(LEXER_DIR), $(LEXER_SRC)) \
 		$(addprefix $(ERROR_DIR), $(ERROR_SRC)) \
-		$(addprefix $(PIPELINE_DIR), $(PIPELINE_SRC)) \
 		$(MAIN)
 
 MAIN = minishell.c
 
 # Included headers
 INCLUDE_DIR = ./include/
-INCLUDE_SRC = minishell.h asterisk.h
+INCLUDE_SRC = minishell.h asterisk.h asterisk.h builtins.h exec.h lexer.h path.h utils.h signals.h
 
 INCLUDES = $(addprefix $(INCLUDE_DIR), $(INCLUDE_SRC))
 
@@ -80,7 +76,6 @@ $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)$(PATH_DIR)
 	mkdir -p $(OBJ_DIR)$(LEXER_DIR)
 	mkdir -p $(OBJ_DIR)$(ERROR_DIR)
-	mkdir -p $(OBJ_DIR)$(PIPELINE_DIR)
 
 $(OBJ_DIR)%o: $(SRC_DIR)%c $(INCLUDES)
 	$(CC) $(CCFLAGS) $(HEADERS) $(LIB_HEADERS) -c $< -o $@

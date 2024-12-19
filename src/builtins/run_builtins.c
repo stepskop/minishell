@@ -6,46 +6,65 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 23:53:25 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/19 18:13:52 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/19 21:59:42 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "builtins.h"
+#include "exec.h"
+#include "lexer.h"
 
-// echo, cd, pwd
-int	run_builtins_01(char **argv, t_ctx ctx)
+static void	exec_builtin(char **argv, t_ctx ctx)
 {
-	int	pid;
-
-	pid = fork();
-	if (pid == 0)
-	{
-		sh_subprocess_pipes(ctx.pipefd);
-		if (!ft_strcmp (argv[0], "echo"))
-			echo (argv);
-		else if (!ft_strcmp (argv[0], "pwd"))
-			pwd ();
-		else if (!ft_strcmp (argv[0], "cd"))
-			cd (argv);
+	if (!ft_strcmp (argv[0], "echo"))
+		echo (argv);
+	else if (!ft_strcmp (argv[0], "pwd"))
+		pwd ();
+	else if (!ft_strcmp (argv[0], "env"))
+		env (argv, sh_pstrdup (*ctx.penvp));
+	else if (!ft_strcmp (argv[0], "exit"))
 		run_exit (argv, ctx);
-	}
-	return (pid);
+	else if (!ft_strcmp (argv[0], "cd"))
+		cd (argv);
 }
 
-int	run_builtins_02(char **argv, t_ctx ctx)
+static int	is_pipeline(t_prompt *node)
+{
+	t_prompt	*curr;
+
+	curr = node;
+	while (curr && curr->token != AND && curr->token != OR)
+	{
+		if (curr->token == PIPE)
+			return (1);
+		curr = curr->prev;
+	}
+	curr = node;
+	while (curr && curr->token != AND && curr->token != OR)
+	{
+		if (curr->token == PIPE)
+			return (1);
+		curr = curr->next;
+	}
+	return (0);
+}
+
+int	run_builtins(char **argv, t_ctx ctx)
 {
 	int	pid;
+	int	sub_proc;
 
-	if (!ft_strcmp (argv[0], "exit"))
-		run_exit (argv, ctx);
-	pid = fork();
+	pid = -1;
+	sub_proc = is_pipeline(ctx.node);
+	if (sub_proc)
+		pid = fork();
 	if (pid == 0)
 	{
-		sh_subprocess_pipes(ctx.pipefd);
-		if (!ft_strcmp (argv[0], "env"))
-			env (argv, sh_pstrdup (*ctx.penvp));
-		run_exit (argv, ctx);
+		ex_subprocess_pipes(ctx.pipefd);
+		exec_builtin(argv, ctx);
 	}
+	else if (!sub_proc)
+		exec_builtin(argv, ctx);
 	return (pid);
 }
 
@@ -56,7 +75,7 @@ int	run_exit(char **argv, t_ctx ctx)
 	curr = ctx.node;
 	while (curr && curr->prev)
 		curr = curr->prev;
-	lx_free_tokens(curr);
+	free_prompt(curr);
 	sh_ppfree (argv);
 	sh_ppfree (ctx.to_free);
 	sh_ppfree (*ctx.penvp);

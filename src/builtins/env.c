@@ -6,12 +6,11 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:13:57 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/18 16:07:54 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/19 21:43:58 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include "env.h"
+#include "builtins.h"
 
 char	**envp_copy(char **envp1, char **envp2)
 {

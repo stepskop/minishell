@@ -1,18 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils01.c                                          :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
+/*   By: username <your@email.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/26 15:49:36 by username          #+#    #+#             */
-/*   Updated: 2024/12/19 18:24:39 by ksorokol         ###   ########.fr       */
+/*   Created: 2024/12/19 21:22:45 by username          #+#    #+#             */
+/*   Updated: 2024/12/19 21:52:29 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include <linux/limits.h>
-#include <time.h>
+#include "path.h"
 
 static char	*cmd_from_path(char *cmd)
 {
@@ -80,7 +78,7 @@ static char	*cmd_from_root(char *cmd)
 	return (res);
 }
 
-char	*get_cmd(char *cmd)
+char	*path_resolve(char *cmd)
 {
 	char	*res;
 

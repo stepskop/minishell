@@ -1,42 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   memory.c                                           :+:      :+:    :+:   */
+/*   envars.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: username <your@email.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/28 17:34:46 by username          #+#    #+#             */
-/*   Updated: 2024/12/19 21:58:06 by username         ###   ########.fr       */
+/*   Created: 2024/12/19 21:29:04 by username          #+#    #+#             */
+/*   Updated: 2024/12/19 21:29:31 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-void	free_args(t_args *args)
+char	*sh_getenv(char *name, char **envp)
 {
-	t_args	*tmp;
+	char	*str[3];
+	char	**envp_;
+	size_t	len;
 
-	while (args)
+	if (!name)
+		return (NULL);
+	str[0] = ft_strjoin (name, "=");
+	len = ft_strlen (str[0]);
+	envp_ = envp;
+	while (*envp_)
 	{
-		tmp = args->next;
-		free(args->data);
-		free(args);
-		args = tmp;
+		if (ft_strlen (*envp_) > len && !ft_strncmp (*envp_, str[0], len))
+		{
+			str[1] = ft_strchr (*envp_, '=');
+			str[2] = ft_strdup (str[1] + 1);
+			return (free (str[0]), str[2]);
+		}
+		envp_++;
 	}
-}
-
-void	free_prompt(t_prompt *lst)
-{
-	t_prompt	*curr;
-	t_prompt	*tmp;
-
-	curr = lst;
-	while (curr)
-	{
-		tmp = curr->next;
-		free_args(curr->args);
-		free(curr->str_val);
-		free(curr);
-		curr = tmp;
-	}
+	return (free (str[0]), NULL);
 }

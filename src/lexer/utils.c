@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils001.c                                         :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: username <your@email.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 18:15:35 by username          #+#    #+#             */
-/*   Updated: 2024/12/06 00:29:56 by username         ###   ########.fr       */
+/*   Updated: 2024/12/19 21:57:45 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "lexer.h"
 
 int	lx_argcheck(t_prompt node)
 {
@@ -41,20 +41,4 @@ t_prompt	*lx_parent(t_prompt *curr, t_prompt *parent)
 	if (!lx_argcheck(*curr))
 		return (parent);
 	return (curr);
-}
-
-void	lx_free_tokens(t_prompt *lst)
-{
-	t_prompt	*curr;
-	t_prompt	*tmp;
-
-	curr = lst;
-	while (curr)
-	{
-		tmp = curr->next;
-		free_args(curr->args);
-		free(curr->str_val);
-		free(curr);
-		curr = tmp;
-	}
 }

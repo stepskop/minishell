@@ -1,0 +1,44 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtins.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: username <your@email.com>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/19 21:10:05 by username          #+#    #+#             */
+/*   Updated: 2024/12/19 21:31:54 by username         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef BUILTINS_H
+# define BUILTINS_H
+
+# include "minishell.h"
+# include "utils.h"
+
+// run_builtins.c
+int			run_builtins(char **argv, t_ctx ctx);
+int			run_exit(char **argv, t_ctx ctx);
+// echo.c
+void		echo(char **argv);
+
+// pwd.c
+void		pwd(void);
+
+// cd.c
+void		cd(char **argv);
+char		*cd_home(char **argv);
+
+// env01.c
+char		*sh_getenv(char *name, char **envp);
+void		env(char **argv, char **envp);
+// env01.c
+void		env_print(char **envp);
+int			env_prsng(char **argv, char ***penvp);
+int			env_check_var(char *var);
+
+// env02.c
+char		**envp_copy(char **envp1, char **envp2);
+int			envp_set_var(char ***envp, char *sv);
+
+#endif

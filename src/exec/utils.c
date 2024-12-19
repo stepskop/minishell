@@ -6,11 +6,12 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 16:25:32 by username          #+#    #+#             */
-/*   Updated: 2024/12/19 15:40:01 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/19 21:49:13 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipeline.h"
+#include "exec.h"
+#include "path.h"
 
 static void	read_stdin(int *pipefd, char *limiter)
 {
