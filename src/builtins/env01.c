@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 13:41:06 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/19 11:59:45 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/19 14:10:43 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void	env(char **argv, char **envp)
 		return (sh_ppfree (envp));
 	}
 	env_prsng (argv, &envp);
-	sh_ppfree (envp);
 }
 
 void	env_print(char **envp)
@@ -85,7 +84,7 @@ int	env_prsng(char **argv, char ***envp)
 			wait (&idx[3]);
 			lx_free_tokens(lst);
 			sh_get_pv ()->envp = pstr[0];
-			return (idx[3]);
+			return (sh_ppfree (*envp), idx[3]);
 		}
 	}
 	pstr[1] = sh_split_q ("env", ' ');
@@ -97,5 +96,3 @@ int	env_check_var(char *var)
 	(void)var;
 	return (-1);
 }
-
-// env ete=set1 env ete2=set3 env
