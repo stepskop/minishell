@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:00:57 by username          #+#    #+#             */
-/*   Updated: 2024/12/19 21:04:57 by username         ###   ########.fr       */
+/*   Updated: 2024/12/19 23:31:26 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,8 @@ static char	*ex_cmdprep(t_prompt *node, char ***penvp)
 	return (res);
 }
 
-static int	ex_execute(t_prompt *node, char ***penvp)
+static t_prompt	*ex_execute(t_prompt *node, char ***penvp)
 {
-	int		pid;
 	int		pipefd[2];
 	int		c_pipe[2];
 	char	*cmd;
@@ -98,7 +97,7 @@ static int	ex_execute(t_prompt *node, char ***penvp)
 	if (node->next_cmd)
 	{
 		if (pipe(pipefd) == -1)
-			return (perror("pipe"), 1);
+			return (perror("pipe"), NULL);
 		c_pipe[1] = pipefd[1];
 		if (node->next_cmd->in_fd == 0)
 			node->next_cmd->in_fd = pipefd[0];
@@ -108,35 +107,35 @@ static int	ex_execute(t_prompt *node, char ***penvp)
 	if (node->in_fd > 0)
 		c_pipe[0] = node->in_fd;
 	cmd = ex_cmdprep(node, penvp);
-	pid = sh_run(cmd, (t_ctx){c_pipe, node, NULL, penvp});
+	sh_run(cmd, (t_ctx){c_pipe, node, NULL, penvp});
 	clean_pipes(node, pipefd);
-	return (pid);
+	return (node);
 }
 
 int	executor(t_prompt *lst, char ***penvp)
 {
 	t_prompt	*curr;
-	int			last_pid;
+	t_prompt	*last_cmd;
 	int			stat;
 
 	ex_ioprep(lst);
 	curr = lst;
-	last_pid = 0;
 	stat = EXIT_SUCCESS;
 	while (curr)
 	{
 		if (curr->token == CMD)
-			last_pid = ex_execute(curr, penvp);
+			last_cmd = ex_execute(curr, penvp);
 		if (curr->token == AND || curr->token == OR)
 		{
-			waitpid(last_pid, &stat, 0);
+			stat = ex_get_exitcode(last_cmd);
 			if ((curr->token == AND && stat != 0) || \
 				(curr->token == OR && stat == 0))
 				break ;
 		}
 		curr = curr->next;
 	}
-	if (!curr && last_pid)
-		waitpid(last_pid, &stat, 0);
+	if (!curr && last_cmd)
+		stat = ex_get_exitcode(last_cmd);
+	printf("EXIT CODE: %i, PROC_LESS: %i, LAST CMD: %s, PID: %i\n", WEXITSTATUS(stat), last_cmd->proc_less, last_cmd->str_val, last_cmd->pid);
 	return (WEXITSTATUS(stat));
 }
