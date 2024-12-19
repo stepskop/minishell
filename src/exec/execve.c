@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 15:34:17 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/19 13:30:53 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/19 18:30:23 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,10 @@ int	sh_execve(char **argv, t_ctx ctx)
 		cmmnd = get_cmd (argv[0]);
 		sh_subprocess_pipes(ctx.pipefd);
 		if (cmmnd)
-			execve (cmmnd, argv, sh_get_pv()->envp);
+			execve (cmmnd, argv, *ctx.penvp);
 		else
 			sp_print_cnf(argv[0]);
-		sh_ppfree (argv);
+		run_exit (argv, ctx);
 		exit (EXIT_FAILURE);
 	}
 	return (pid);

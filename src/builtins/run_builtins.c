@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 23:53:25 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/19 13:30:43 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/19 18:13:52 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,8 @@ int	run_builtins_02(char **argv, t_ctx ctx)
 	if (pid == 0)
 	{
 		sh_subprocess_pipes(ctx.pipefd);
-		if (!ft_strcmp (argv[0], "env")
-			|| !ft_strncmp (argv[0], "env ", 4))
-			env (argv, NULL);
+		if (!ft_strcmp (argv[0], "env"))
+			env (argv, sh_pstrdup (*ctx.penvp));
 		run_exit (argv, ctx);
 	}
 	return (pid);
@@ -60,7 +59,7 @@ int	run_exit(char **argv, t_ctx ctx)
 	lx_free_tokens(curr);
 	sh_ppfree (argv);
 	sh_ppfree (ctx.to_free);
-	sh_ppfree (sh_get_pv()->envp);
+	sh_ppfree (*ctx.penvp);
 	rl_clear_history ();
 	exit (EXIT_SUCCESS);
 }

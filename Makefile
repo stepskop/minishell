@@ -8,7 +8,7 @@ SIGNALS_SRC = signal.c
 
 # Exec
 EXEC_DIR = exec/
-EXEC_SRC = execve.c utils.c
+EXEC_SRC = execve.c utils01.c  utils02.c
 
 # Path
 PATH_DIR = path/

@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/19 11:52:23 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/19 15:38:10 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*sh_strjoin(char *s1, char *s2)
 	return (result);
 }
 
-char	*put_env(char *str)
+char	*put_env(char *str, char **envp)
 {
 	char	*result;
 	char	*buffer;
@@ -51,7 +51,7 @@ char	*put_env(char *str)
 	while (str[idx[1]])
 	{
 		if (str[idx[1]] == '$' && !sh_insq (str, idx[1]))
-			buffer = str_join_env(str, buffer, idx);
+			buffer = str_join_env(str, buffer, idx, envp);
 		idx[1]++;
 	}
 	result = sh_strjoin(buffer, &str[idx[0]]);
@@ -59,7 +59,7 @@ char	*put_env(char *str)
 	return (result);
 }
 
-char	*str_join_env(char *str, char *part1, size_t idx[])
+char	*str_join_env(char *str, char *part1, size_t idx[], char **envp)
 {
 	char	*env_name;
 	char	*env_var;
@@ -67,7 +67,7 @@ char	*str_join_env(char *str, char *part1, size_t idx[])
 	char	*result;
 
 	env_name = get_env_name (&str[idx[1]]);
-	env_var = sh_getenv(env_name);
+	env_var = sh_getenv(env_name, envp);
 	if (!env_var)
 		env_var = ft_strdup ("");
 	len[0] = ft_strlen (env_name);

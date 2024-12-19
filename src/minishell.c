@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/19 13:01:08 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/19 18:07:18 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,19 @@ static char	*get_command(char **cmmnd, char *pps);
 
 int	main(int argc, char **argv, char **envp)
 {
-	sh_get_pv ()->envp = sh_pstrdup (envp);
+	char	**envp_;
+
+	envp_ = sh_pstrdup (envp);
 	(void)argc;
 	(void)argv;
 	sig_init ();
-	_loop_ ();
-	sh_ppfree (sh_get_pv ()->envp);
+	_loop_ (envp_);
+	sh_ppfree (envp_);
 	rl_clear_history ();
 	return (EXIT_SUCCESS);
 }
 
-t_pv	*sh_get_pv(void)
-{
-	static t_pv	pv = {NULL};
-
-	return (&pv);
-}
-
-void	_loop_(void)
+void	_loop_(char **envp)
 {
 	char		*cmmnd[2];
 	t_prompt	*lst;
@@ -52,7 +47,7 @@ void	_loop_(void)
 		if (splitted && splitted[0])
 			lst = lexer(splitted);
 		free (cmmnd[1]);
-		executor(lst);
+		executor(lst, &envp);
 		wait(NULL);
 		lx_free_tokens(lst);
 	}
@@ -67,6 +62,8 @@ static char	*get_command(char **cmmnd, char *pps)
 	{
 		wait(NULL);
 		line = readline(pps);
+		if (!line)
+			return (NULL);
 		if (!line[0] && !(*cmmnd))
 			return (NULL);
 		i = sh_backslash (&line);

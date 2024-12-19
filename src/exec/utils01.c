@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_utils.c                                        :+:      :+:    :+:   */
+/*   utils01.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: username <your@email.com>                  +#+  +:+       +#+        */
+/*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 15:49:36 by username          #+#    #+#             */
-/*   Updated: 2024/11/26 15:50:00 by username         ###   ########.fr       */
+/*   Updated: 2024/12/19 18:24:39 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,16 @@ static char	*cmd_from_curr(char *cmd)
 	return (res);
 }
 
+static char	*cmd_from_root(char *cmd)
+{
+	char	*res;
+
+	res = ft_strdup(cmd);
+	if (!res)
+		return (perror("malloc"), NULL);
+	return (res);
+}
+
 char	*get_cmd(char *cmd)
 {
 	char	*res;
@@ -80,19 +90,14 @@ char	*get_cmd(char *cmd)
 		res = cmd_from_home(cmd);
 	else if (cmd[0] == '.')
 		res = cmd_from_curr(cmd);
+	else if (cmd[0] == '/')
+		res = cmd_from_root(cmd);
 	else
 		res = cmd_from_path(cmd);
-	return (res);
-}
-
-void	sh_subprocess_pipes(int pipefd[2])
-{
-	if (pipefd[0] > 0)
-		dup2(pipefd[0], STDIN_FILENO);
-	if (pipefd[1] > 1)
-		dup2(pipefd[1], STDOUT_FILENO);
-	if (pipefd[1] > 1)
-		close(pipefd[1]);
-	if (pipefd[0] > 0)
-		close(pipefd[0]);
+	if (!res)
+		return (NULL);
+	if (access(res, F_OK | X_OK) == 0)
+		return (res);
+	free (res);
+	return (NULL);
 }

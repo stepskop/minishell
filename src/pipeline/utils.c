@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: username <your@email.com>                  +#+  +:+       +#+        */
+/*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 16:25:32 by username          #+#    #+#             */
-/*   Updated: 2024/12/17 12:13:07 by username         ###   ########.fr       */
+/*   Updated: 2024/12/19 15:40:01 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	ex_open_file(t_args *args, int oflag)
 	return (fd);
 }
 
-int	ex_expand(t_args *args)
+int	ex_expand(t_args *args, char **envp)
 {
 	t_args	*curr;
 	char	*tmp;
@@ -93,7 +93,7 @@ int	ex_expand(t_args *args)
 		if (curr->data)
 		{
 			tmp = curr->data;
-			curr->data = put_env(curr->data);
+			curr->data = put_env(curr->data, envp);
 			free(tmp);
 			tmp = curr->data;
 			curr->data = sh_asterisk(curr->data);

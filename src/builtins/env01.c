@@ -6,14 +6,14 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 13:41:06 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/19 14:10:43 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/19 18:17:23 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "env.h"
 
-char	*sh_getenv(char *name)
+char	*sh_getenv(char *name, char **envp)
 {
 	char	*str[3];
 	char	**envp_;
@@ -23,7 +23,7 @@ char	*sh_getenv(char *name)
 		return (NULL);
 	str[0] = ft_strjoin (name, "=");
 	len = ft_strlen (str[0]);
-	envp_ = sh_get_pv()->envp;
+	envp_ = envp;
 	while (*envp_)
 	{
 		if (ft_strlen (*envp_) > len && !ft_strncmp (*envp_, str[0], len))
@@ -37,10 +37,14 @@ char	*sh_getenv(char *name)
 	return (free (str[0]), NULL);
 }
 
+/*
+*	original envp in the parent process
+*	not freeing in env recursion process
+*	now keep it without freeing ( see the subject :) )
+*	this is not a leak, it's still reachable ...
+*/
 void	env(char **argv, char **envp)
 {
-	if (!envp)
-		envp = sh_pstrdup (sh_get_pv()->envp);
 	if (!argv[1])
 	{
 		env_print (envp);
@@ -62,7 +66,7 @@ void	env_print(char **envp)
 	}
 }
 
-int	env_prsng(char **argv, char ***envp)
+int	env_prsng(char **argv, char ***penvp)
 {
 	char		**pstr[2];
 	int			idx[4];
@@ -74,21 +78,18 @@ int	env_prsng(char **argv, char ***envp)
 	{
 		idx[2] = -1;
 		if (argv[idx[0]] && ft_strchr (argv[idx[0]], '='))
-			idx[2] = envp_set_var (envp, argv[idx[0]]);
+			idx[2] = envp_set_var (penvp, argv[idx[0]]);
 		else if (idx[2] == -1)
 		{
-			pstr[0] = sh_get_pv ()->envp;
-			sh_get_pv ()->envp = *envp;
 			lst = lexer (sh_pstrdup (&argv[idx[0]]));
-			executor (lst);
+			executor (lst, penvp);
 			wait (&idx[3]);
 			lx_free_tokens(lst);
-			sh_get_pv ()->envp = pstr[0];
-			return (sh_ppfree (*envp), idx[3]);
+			return (sh_ppfree (*penvp), idx[3]);
 		}
 	}
 	pstr[1] = sh_split_q ("env", ' ');
-	return (env (pstr[1], *envp), sh_ppfree (pstr[1]), 0);
+	return (env (pstr[1], *penvp), sh_ppfree (pstr[1]), 0);
 }
 
 int	env_check_var(char *var)

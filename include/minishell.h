@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/19 13:35:01 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/19 18:20:54 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ typedef struct s_ctx
 	int				*pipefd;
 	struct s_prompt	*node;
 	char			**to_free;
-	// char			**envp;
+	char			***penvp;
 }	t_ctx;
 
 typedef struct s_args
@@ -73,13 +73,7 @@ typedef struct s_prompt
 	struct s_prompt	*prev;
 }	t_prompt;
 
-typedef struct s_pv
-{
-	char	**envp;
-}	t_pv;
-
-t_pv		*sh_get_pv(void);
-void		_loop_(void);
+void		_loop_(char **envp);
 
 // Lexer
 t_prompt	*lexer(char **cmd_line);
@@ -99,7 +93,7 @@ t_prompt	*lx_add(t_token token, t_prompt *prev, char *val);
 t_token		lx_get_token(char *str);
 
 // Executor
-int			executor(t_prompt *lst);
+int			executor(t_prompt *lst, char ***penvp);
 
 // utils001.c
 size_t		sh_strlen(const char *s);
@@ -115,8 +109,8 @@ char		*del_quot(char *str);
 
 // utils002.c
 char		*sh_strjoin(char *s1, char *s2);
-char		*put_env(char *str);
-char		*str_join_env(char *str, char *part1, size_t idx[]);
+char		*put_env(char *str, char **envp);
+char		*str_join_env(char *str, char *part1, size_t idx[], char **envp);
 char		*get_env_name(char *dollar);
 char		*strs_cat(char *str_a, char *str_b, char *str_c, size_t idx_b[]);
 
@@ -184,7 +178,7 @@ void		cd(char **argv);
 char		*cd_home(char **argv);
 
 // env01.c
-char		*sh_getenv(char *name);
+char		*sh_getenv(char *name, char **envp);
 void		env(char **argv, char **envp);
 
 // Err
@@ -205,4 +199,4 @@ void		free_args(t_args *args);
 // --tool=drd
 // --read-var-info=yes
 // --show-reachable=yes
-// valgrind --trace-children=yes --suppressions=rl.supp ./minishellsize_t
+// valgrind --trace-children=yes --suppressions=rl.supp ./minishell

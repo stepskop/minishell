@@ -1,24 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipeline.h                                         :+:      :+:    :+:   */
+/*   utils02.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/17 11:58:14 by username          #+#    #+#             */
-/*   Updated: 2024/12/19 15:40:01 by ksorokol         ###   ########.fr       */
+/*   Created: 2024/11/26 15:49:36 by username          #+#    #+#             */
+/*   Updated: 2024/12/19 17:38:37 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPELINE_H
-# define PIPELINE_H
+#include "minishell.h"
 
-# include "minishell.h"
-
-int			ex_get_heredoc(t_args *args);
-int			ex_open_file(t_args *args, int oflag);
-size_t		ex_cmdlen(t_args *args);
-int			ex_expand(t_args *args, char **envp);
-void		clean_pipes(t_prompt *node, int pipefd[2]);
-
-#endif
+void	sh_subprocess_pipes(int pipefd[2])
+{
+	if (pipefd[0] > 0)
+		dup2(pipefd[0], STDIN_FILENO);
+	if (pipefd[1] > 1)
+		dup2(pipefd[1], STDOUT_FILENO);
+	if (pipefd[1] > 1)
+		close(pipefd[1]);
+	if (pipefd[0] > 0)
+		close(pipefd[0]);
+}

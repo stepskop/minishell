@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:00:57 by username          #+#    #+#             */
-/*   Updated: 2024/12/18 11:50:16 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/19 15:41:51 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,14 @@ static void	ex_ioprep(t_prompt *lst)
 	}
 }
 
-static char	*ex_cmdprep(t_prompt *node)
+static char	*ex_cmdprep(t_prompt *node, char ***penvp)
 {
 	char	*res;
 	size_t	len;
 	t_args	*curr;
 	int		i;
 
-	if (!ex_expand(node->args))
+	if (!ex_expand(node->args, *penvp))
 		return (NULL);
 	len = ex_cmdlen(node->args) + ft_strlen(node->str_val);
 	res = malloc(sizeof(char) * (len + 1));
@@ -85,7 +85,7 @@ static char	*ex_cmdprep(t_prompt *node)
 	return (res);
 }
 
-static int	ex_execute(t_prompt *node)
+static int	ex_execute(t_prompt *node, char ***penvp)
 {
 	int		pid;
 	int		pipefd[2];
@@ -106,13 +106,13 @@ static int	ex_execute(t_prompt *node)
 		c_pipe[1] = node->out_fd;
 	if (node->in_fd > 0)
 		c_pipe[0] = node->in_fd;
-	cmd = ex_cmdprep(node);
-	pid = sh_run(cmd, (t_ctx){c_pipe, node, NULL});
+	cmd = ex_cmdprep(node, penvp);
+	pid = sh_run(cmd, (t_ctx){c_pipe, node, NULL, penvp});
 	clean_pipes(node, pipefd);
 	return (pid);
 }
 
-int	executor(t_prompt *lst)
+int	executor(t_prompt *lst, char ***penvp)
 {
 	t_prompt	*curr;
 	int			last_pid;
@@ -125,7 +125,7 @@ int	executor(t_prompt *lst)
 	while (curr)
 	{
 		if (curr->token == CMD)
-			last_pid = ex_execute(curr);
+			last_pid = ex_execute(curr, penvp);
 		if (curr->token == AND || curr->token == OR)
 		{
 			waitpid(last_pid, &stat, 0);
