@@ -6,13 +6,13 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/18 11:10:55 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/19 13:01:08 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_command(char **cmmnd);
+static char	*get_command(char **cmmnd, char *pps);
 // int		check_eol(char *str, t_counters_quotes	*cq);
 
 int	main(int argc, char **argv, char **envp)
@@ -44,7 +44,7 @@ void	_loop_(void)
 	{
 		cmmnd[1] = NULL;
 		rl_on_new_line ();
-		cmmnd[0] = get_command (&cmmnd[1]);
+		cmmnd[0] = get_command (&cmmnd[1], get_sh_pps ());
 		if (!cmmnd[0])
 			continue ;
 		add_history (cmmnd[1]);
@@ -58,34 +58,27 @@ void	_loop_(void)
 	}
 }
 
-char	*get_command(char **cmmnd)
+static char	*get_command(char **cmmnd, char *pps)
 {
-	char	*line[2];
+	char	*line;
 	int		i;
 
-	line[1] = get_sh_pps ();
 	while (1)
 	{
 		wait(NULL);
-		line[0] = readline(line[1]);
-		if (!line[0][0] && !(*cmmnd))
+		line = readline(pps);
+		if (!line[0] && !(*cmmnd))
 			return (NULL);
-		i = sh_backslash (&line[0]);
-		*cmmnd = sh_strjoin (*cmmnd, line[0]);
-		free(line[0]);
+		i = sh_backslash (&line);
+		*cmmnd = sh_strjoin_free(*cmmnd, line, 3);
 		if (!i)
 		{
 			if (sh_check_eol (*cmmnd))
-			{
-				if (line[1] && ft_strcmp (line[1], ">"))
-					free (line[1]);
-				return (*cmmnd);
-			}
-			*cmmnd = sh_strjoin (*cmmnd, ft_strdup ("\n"));
+				return (free (pps), *cmmnd);
+			*cmmnd = sh_strjoin_free (*cmmnd, ft_strdup ("\n"), 3);
 		}
-		if (line[1] && ft_strcmp (line[1], ">"))
-			free (line[1]);
-		line[1] = ">";
+		free (pps);
+		pps = ft_strdup (">");
 	}
-	return (*cmmnd);
+	return (free (pps), *cmmnd);
 }

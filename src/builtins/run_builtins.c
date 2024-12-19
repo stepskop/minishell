@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 23:53:25 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/18 17:30:28 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/19 13:30:43 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,7 @@ int	run_exit(char **argv, t_ctx ctx)
 		curr = curr->prev;
 	lx_free_tokens(curr);
 	sh_ppfree (argv);
-	//TODO: Invalid free
-	//sh_ppfree (ctx.to_free);
+	sh_ppfree (ctx.to_free);
 	sh_ppfree (sh_get_pv()->envp);
 	rl_clear_history ();
 	exit (EXIT_SUCCESS);

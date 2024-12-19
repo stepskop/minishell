@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/18 14:22:38 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/19 12:55:40 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*sh_unquotes(char *arg)
 {
 	char	*str;
 	char	c[2];
-	size_t	idx[3];
+	size_t	idx[2];
 
 	if (!arg)
 		return (NULL);
@@ -43,16 +43,8 @@ char	*sh_unquotes(char *arg)
 	c[0] = '\0';
 	while (arg[idx[0]])
 	{
-		// if (sh_bsq (arg, idx[0]))
-		// {
-		// 	str[idx[1]] = arg[idx[0]];
-		// 	idx[1]++;
-		// }
 		if (sh_bsq (arg, idx[0]) || (c[0] && c[0] != arg[idx[0]]))
-		{
-			str[idx[1]] = arg[idx[0]];
-			idx[1]++;
-		}
+			idx[1] = sh_setchstr (str, idx[1], arg, idx[0]) + 1;
 		else if (c[0])
 			c[0] = '\0';
 		else

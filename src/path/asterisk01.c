@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:43:38 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/07 16:06:19 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/19 12:01:12 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,6 @@ t_list	*get_dirs(char *pattern)
 	char	*str[2];
 
 	result = NULL;
-	// if (!pattern)
-	// 	return (NULL);
-	// else if (pattern[0] == '/')
-	// 	result = aster_slash (pattern);
-	// else if (pattern[0] == '.' && (pattern[0] == '/' || pattern[0] == '\0'))
-	// 	result = aster_dot (pattern);
-	// if (result)
-	// 	return (result);
 	str[0] = ft_strdup ("");
 	if (ft_strchr (pattern, '*'))
 	{

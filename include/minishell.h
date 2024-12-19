@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/18 17:21:47 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/19 13:35:01 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ char		*sh_rmbs(char *arg);
 char		**sh_rmbs_args(char **args);
 char		**sh_ud_rmbs(char **args);
 int			sh_insq(char *arg, size_t pos);
+size_t		sh_setchstr(char *str_d, size_t idx_d, char *str_s, size_t idx_s);
 
 // sh_split_q.c
 char		**sh_split_q(char *str, char c);
@@ -204,4 +205,4 @@ void		free_args(t_args *args);
 // --tool=drd
 // --read-var-info=yes
 // --show-reachable=yes
-// valgrind --trace-children=yes --leak-check=full --show-leak-kinds=all --suppressions=rl.supp ./minishell
+// valgrind --trace-children=yes --suppressions=rl.supp ./minishellsize_t

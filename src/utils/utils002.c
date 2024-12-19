@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/18 14:23:55 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/19 11:52:23 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ char	*str_join_env(char *str, char *part1, size_t idx[])
 	idx[0] = idx[1] + 1;
 	free (part1);
 	free (env_name);
+	free (env_var);
 	return (result);
 }
 

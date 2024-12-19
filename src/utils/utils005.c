@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/18 14:27:23 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/19 12:57:27 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,12 @@ int	sh_insq(char *arg, size_t pos)
 		idx++;
 	}
 	return (i[1]);
+}
+
+size_t	sh_setchstr(char *str_d, size_t idx_d, char *str_s, size_t idx_s)
+{
+	if (!str_d || !str_s)
+		return (0);
+	str_d[idx_d] = str_s[idx_s];
+	return (idx_d);
 }

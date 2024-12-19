@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 13:41:06 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/18 16:10:58 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/19 11:59:45 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*sh_getenv(char *name)
 		}
 		envp_++;
 	}
-	return (NULL);
+	return (free (str[0]), NULL);
 }
 
 void	env(char **argv, char **envp)
