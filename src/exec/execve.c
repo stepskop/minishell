@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 15:34:17 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/19 21:47:46 by username         ###   ########.fr       */
+/*   Updated: 2024/12/20 12:34:32 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	sh_execve(char **argv, t_ctx ctx)
 			execve (cmmnd, argv, *ctx.penvp);
 		else
 			sp_print_cnf(argv[0]);
-		run_exit (argv, ctx);
+		run_exit (argv, ctx, NULL);
 		exit (EXIT_FAILURE);
 	}
 	return (pid);

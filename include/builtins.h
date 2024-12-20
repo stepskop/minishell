@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: username <your@email.com>                  +#+  +:+       +#+        */
+/*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 21:10:05 by username          #+#    #+#             */
-/*   Updated: 2024/12/19 21:31:54 by username         ###   ########.fr       */
+/*   Updated: 2024/12/20 12:32:56 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 // run_builtins.c
 int			run_builtins(char **argv, t_ctx ctx);
-int			run_exit(char **argv, t_ctx ctx);
+int			run_exit(char **argv, t_ctx ctx, char *str);
 // echo.c
 void		echo(char **argv);
 
