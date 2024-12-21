@@ -57,7 +57,6 @@ void	_loop_(char **envp)
 			lst = lexer(splitted);
 		free (cmmnd[1]);
 		executor(lst, &envp);
-		wait(NULL);
 		free_prompt(lst);
 	}
 }

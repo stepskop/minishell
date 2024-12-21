@@ -12,7 +12,6 @@
 
 #include "builtins.h"
 #include "exec.h"
-#include "lexer.h"
 
 static int	exec_builtin(char **argv, t_ctx ctx)
 {
