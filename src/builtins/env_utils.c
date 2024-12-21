@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:13:57 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/21 12:14:58 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/21 13:51:37 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,13 +80,13 @@ int	env_check_var(char *var)
 	size_t	idx;
 
 	if (!(ft_isalpha (var[0]) || var[0] == '_'))
-		return (sh_err ("var's name - [a-zA-Z_]{1,}[a-zA-Z0-9_]*\n"), 0);
+		return (sh_err ("Env var's name: [a-zA-Z_]{1,}[a-zA-Z0-9_]*\n"), 0);
 	idx = 1;
 	while (var[idx] && var[idx] != '=')
 	{
 		if (!(ft_isalpha (var[idx]) || var[idx] == '_'
 				|| ft_isdigit (var[idx])))
-			return (sh_err ("var's name - [a-zA-Z_]{1,}[a-zA-Z0-9_]*\n"), 0);
+			return (sh_err ("Env var's name: [a-zA-Z_]{1,}[a-zA-Z0-9_]*\n"), 0);
 		idx++;
 	}
 	return (1);

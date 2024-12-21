@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/20 13:33:46 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/21 14:50:01 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,6 @@ typedef struct s_prompt
 	struct s_prompt	*next;
 	struct s_prompt	*prev;
 }	t_prompt;
-
-void		_loop_(char **envp);
 
 #endif
 

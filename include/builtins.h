@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 21:10:05 by username          #+#    #+#             */
-/*   Updated: 2024/12/21 11:59:26 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/21 14:37:25 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,8 @@ int			envp_set_var(char ***envp, char *sv);
 
 // export.c
 void		export(char **argv, char ***envp);
+
+// unset.c
+void		unset(char **argv, char ***envp);
 
 #endif
