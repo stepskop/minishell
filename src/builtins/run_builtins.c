@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 23:53:25 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/21 16:10:56 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/21 16:25:31 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	exec_builtin(char **argv, t_ctx ctx)
 		result = export (argv, ctx.penvp);
 	else if (!ft_strcmp (argv[0], "unset"))
 		result = unset (argv, ctx.penvp);
-	return (EXIT_SUCCESS);
+	return (result);
 }
 
 static int	is_pipeline(t_prompt *node)
