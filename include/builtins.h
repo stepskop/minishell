@@ -37,11 +37,11 @@ void		env(char **argv, char **envp);
 // env01.c
 void		env_print(char **envp);
 int			env_prsng(char **argv, char ***penvp);
-int			env_check_var(char *var);
+int			env_check_var(char *var, int e_code);
 
 // env02.c
 char		**envp_copy(char **envp1, char **envp2);
-int			envp_set_var(char ***envp, char *sv);
+int			envp_set_var(char ***envp, char *sv, int e_code);
 
 // export.c
 void		export(char **argv, char ***envp);

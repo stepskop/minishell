@@ -55,7 +55,7 @@ int	env_prsng(char **argv, char ***penvp)
 	{
 		idx[2] = -1;
 		if (argv[idx[0]] && ft_strchr (argv[idx[0]], '='))
-			idx[2] = envp_set_var (penvp, argv[idx[0]]);
+			idx[2] = envp_set_var (penvp, argv[idx[0]], 0);
 		else if (idx[2] == -1)
 		{
 			lst = lexer (sh_pstrdup (&argv[idx[0]]));
