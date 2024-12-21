@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 23:53:25 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/20 12:34:21 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/21 15:37:14 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,10 @@ static int	exec_builtin(char **argv, t_ctx ctx)
 		run_exit (argv, ctx, "exit\n", EXIT_SUCCESS);
 	else if (!ft_strcmp (argv[0], "cd"))
 		cd (argv);
+	else if (!ft_strcmp (argv[0], "export"))
+		export (argv, ctx.penvp);
+	else if (!ft_strcmp (argv[0], "unset"))
+		unset (argv, ctx.penvp);
 	return (EXIT_SUCCESS);
 }
 

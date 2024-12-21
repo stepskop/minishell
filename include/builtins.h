@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 21:10:05 by username          #+#    #+#             */
-/*   Updated: 2024/12/20 23:58:15 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/21 15:33:51 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,9 @@ char		**envp_copy(char **envp1, char **envp2);
 int			envp_set_var(char ***envp, char *sv);
 
 // export.c
-void		export(char **argv, char **envp);
+void		export(char **argv, char ***envp);
+
+// unset.c
+void		unset(char **argv, char ***envp);
 
 #endif

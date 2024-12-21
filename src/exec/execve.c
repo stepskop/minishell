@@ -78,7 +78,6 @@ int	sh_execve(char **argv, t_ctx ctx)
 		else
 			sp_print_cnf(argv[0]);
 		run_exit (argv, ctx, NULL, EXIT_FAILURE);
-		exit (EXIT_FAILURE);
 	}
 	ctx.node->pid = pid;
 	return (pid);

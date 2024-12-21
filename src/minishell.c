@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/20 15:55:45 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/21 15:43:19 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "signals.h"
 #include "path.h"
 
+static void	_loop_(char ***envp);
 static char	*get_command(char **cmmnd, char *pps);
 static void	ctrl_d(char *cmmnd, char **envp);
 // int		check_eol(char *str, t_counters_quotes	*cq);
@@ -30,13 +31,13 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	sig_init ();
-	_loop_ (envp_);
+	_loop_ (&envp_);
 	sh_ppfree (envp_);
 	rl_clear_history ();
 	return (EXIT_SUCCESS);
 }
 
-void	_loop_(char **envp)
+static void	_loop_(char ***envp)
 {
 	char		*cmmnd[2];
 	t_prompt	*lst;
@@ -48,7 +49,7 @@ void	_loop_(char **envp)
 		rl_on_new_line ();
 		cmmnd[0] = get_command (&cmmnd[1], get_sh_pps ());
 		if (!cmmnd[0])
-			ctrl_d (cmmnd[1], envp);
+			ctrl_d (cmmnd[1], *envp);
 		else if (!cmmnd[0][0])
 			continue ;
 		add_history (cmmnd[1]);
@@ -56,7 +57,7 @@ void	_loop_(char **envp)
 		if (splitted && splitted[0])
 			lst = lexer(splitted);
 		free (cmmnd[1]);
-		executor(lst, &envp);
+		executor(lst, envp);
 		free_prompt(lst);
 	}
 }

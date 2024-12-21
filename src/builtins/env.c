@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 13:41:06 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/21 08:30:51 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/21 13:49:59 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	env_prsng(char **argv, char ***penvp)
 			return (sh_ppfree (*penvp), idx[3]);
 		}
 		if (!idx[2])
-			return (0);
+			return (sh_ppfree (*penvp), 0);
 	}
 	pstr[1] = sh_split_q ("env", ' ');
 	return (env (pstr[1], *penvp), sh_ppfree (pstr[1]), 1);

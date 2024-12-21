@@ -6,11 +6,13 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:13:57 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/21 09:16:38 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/21 13:51:37 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
+
+static int	env_replace_var(char **envp, char *sv);
 
 char	**envp_copy(char **envp1, char **envp2)
 {
@@ -34,6 +36,8 @@ int	envp_set_var(char ***envp, char *sv)
 
 	if (!env_check_var (sv))
 		return (0);
+	if (env_replace_var (*envp, sv))
+		return (1);
 	size = sh_pstr_size (*envp);
 	new_envp = (char **) malloc ((size + 2) * sizeof (char *));
 	if (!new_envp)
@@ -46,10 +50,44 @@ int	envp_set_var(char ***envp, char *sv)
 	return (1);
 }
 
-// https://pubs.opengroup.org/onlinepubs/7908799/xbd/envvar.html
+static int	env_replace_var(char **envp, char *sv)
+{
+	char	**envp_;
+	char	*sv_;
+	size_t	len;
+
+	envp_ = envp;
+	sv_ = get_env_name (sv);
+	sv_ = sh_strjoin_free (sv_, "=", 1);
+	len = sh_strlen (sv_);
+	while (len && *envp_)
+	{
+		if (ft_strlen (*envp_) > len && !ft_strncmp (*envp_, sv_, len))
+		{
+			free (*envp_);
+			*envp_ = ft_strdup (sv);
+			return (free (sv_), 1);
+		}
+		envp_++;
+	}
+	free (sv_);
+	return (0);
+}
+
+// https://pubs.opengroup.org/onlinepubs/9699919799.2018edition/
 int	env_check_var(char *var)
 {
+	size_t	idx;
+
 	if (!(ft_isalpha (var[0]) || var[0] == '_'))
-		return (sh_err ("Environment variable's name should be [a-zA-Z_]{1,}[a-zA-Z0-9_]*\n"), 0);
+		return (sh_err ("Env var's name: [a-zA-Z_]{1,}[a-zA-Z0-9_]*\n"), 0);
+	idx = 1;
+	while (var[idx] && var[idx] != '=')
+	{
+		if (!(ft_isalpha (var[idx]) || var[idx] == '_'
+				|| ft_isdigit (var[idx])))
+			return (sh_err ("Env var's name: [a-zA-Z_]{1,}[a-zA-Z0-9_]*\n"), 0);
+		idx++;
+	}
 	return (1);
 }
