@@ -6,13 +6,13 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 15:11:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/20 16:24:38 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/21 16:18:40 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
-void	cd(char **argv)
+int	cd(char **argv)
 {
 	DIR		*dir;
 	char	*path;
@@ -20,7 +20,7 @@ void	cd(char **argv)
 	if (argv[1] && argv[2])
 	{
 		sh_err ("cd: too many arguments\n");
-		return ;
+		return (EXIT_SUCCESS);
 	}
 	path = NULL;
 	if (argv[1] && ft_strncmp (argv[1], "~", 1))
@@ -34,6 +34,7 @@ void	cd(char **argv)
 		chdir (path);
 	closedir (dir);
 	free (path);
+	return (EXIT_SUCCESS);
 }
 
 char	*cd_home(char **argv)

@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 12:32:01 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/21 15:29:02 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/21 16:19:40 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static char	**unset_var(char ***envp, char *uv);
 
-void	unset(char **argv, char ***envp)
+int	unset(char **argv, char ***envp)
 {
 	char	**argv_;
 	char	**argv_new;
@@ -38,6 +38,7 @@ void	unset(char **argv, char ***envp)
 		}
 		argv_++;
 	}
+	return (EXIT_SUCCESS);
 }
 
 static char	**unset_var(char ***envp, char *uv)
