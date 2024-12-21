@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/21 15:43:19 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/21 17:17:47 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,9 @@ static char	*get_command(char **cmmnd, char *pps)
 		line = readline(pps);
 		if (!line)
 			return (free (pps), NULL);
+		line = sh_strtrim (line, " ");
 		if (!line[0] && !(*cmmnd))
-			return (free (pps), line);
+			return (free (pps), free (line), "");
 		i = sh_backslash (&line);
 		*cmmnd = sh_strjoin_free(*cmmnd, line, 3);
 		if (!i)

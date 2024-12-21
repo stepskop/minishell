@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: username <your@email.com>                  +#+  +:+       +#+        */
+/*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 21:16:25 by username          #+#    #+#             */
-/*   Updated: 2024/12/19 21:59:29 by username         ###   ########.fr       */
+/*   Updated: 2024/12/21 17:03:37 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int			sh_pstr_size(char **pstr);
 char		*sh_unquotes(char *arg);
 char		sh_bsq(char *arg, size_t idx);
 char		**sh_uq_args(char **args);
+char		*sh_strtrim(char *s1, char *set);
 
 // utils005.c
 char		*sh_rmbs(char *arg);

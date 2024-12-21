@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/19 21:35:40 by username         ###   ########.fr       */
+/*   Updated: 2024/12/21 17:03:49 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,4 +102,13 @@ char	**sh_uq_args(char **args)
 		arg++;
 	}
 	return (args);
+}
+
+char	*sh_strtrim(char *s1, char *set)
+{
+	char	*str;
+
+	str = ft_strtrim (s1, set);
+	free (s1);
+	return (str);
 }
