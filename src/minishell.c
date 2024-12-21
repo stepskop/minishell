@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/20 15:55:45 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/21 12:26:59 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static char	*get_command(char **cmmnd, char *pps)
 	return (free (pps), *cmmnd);
 }
 
-static void	ctrl_d (char *cmmnd, char **envp)
+static void	ctrl_d(char *cmmnd, char **envp)
 {
 	if (cmmnd)
 		free (cmmnd);

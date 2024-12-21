@@ -1,6 +1,6 @@
 # Commands, built-in stuff
 BUILTINS_DIR = builtins/
-BUILTINS_SRC = echo.c pwd.c cd.c env.c  env_utils.c run_builtins.c
+BUILTINS_SRC = echo.c pwd.c cd.c env.c  env_utils.c export.c run_builtins.c
 
 # Signals
 SIGNALS_DIR = signals/
