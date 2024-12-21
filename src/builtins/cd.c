@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 15:11:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/19 21:11:48 by username         ###   ########.fr       */
+/*   Updated: 2024/12/20 16:24:38 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,21 @@ void	cd(char **argv)
 
 	if (argv[1] && argv[2])
 	{
-		sh_err ("cd: too many arguments");
+		sh_err ("cd: too many arguments\n");
 		return ;
 	}
 	path = NULL;
-	if (!argv[1] || !ft_strncmp (argv[1], "~", 1))
-		path = cd_home (argv);
-	if (path)
-	{
-		free (argv[1]);
-		argv[1] = path;
-	}
-	dir = opendir (argv[1]);
-	if (dir == NULL)
-		perror (argv[1]);
+	if (argv[1] && ft_strncmp (argv[1], "~", 1))
+		path = ft_strdup (argv[1]);
 	else
-		chdir (argv[1]);
+		path = cd_home (argv);
+	dir = opendir (path);
+	if (dir == NULL)
+		perror (path);
+	else
+		chdir (path);
 	closedir (dir);
+	free (path);
 }
 
 char	*cd_home(char **argv)

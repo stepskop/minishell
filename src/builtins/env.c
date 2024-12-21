@@ -1,45 +1,72 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env02.c                                            :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/05 17:13:57 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/19 21:43:58 by username         ###   ########.fr       */
+/*   Created: 2024/11/27 13:41:06 by ksorokol          #+#    #+#             */
+/*   Updated: 2024/12/21 08:30:51 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
+#include "lexer.h"
+#include "exec.h"
 
-char	**envp_copy(char **envp1, char **envp2)
+/*
+*	original envp in the parent process
+*	not freeing in env recursion process
+*	now keep it without freeing ( see the subject :) )
+*	this is not a leak, it's still reachable ...
+*/
+void	env(char **argv, char **envp)
 {
-	char	**idx[2];
-
-	idx[0] = envp1;
-	idx[1] = envp2;
-	while (*idx[0])
+	if (!argv[1])
 	{
-		*idx[1] = *idx[0];
-		idx[0]++;
-		idx[1]++;
+		env_print (envp);
+		return (sh_ppfree (envp));
 	}
-	return (envp2);
+	env_prsng (argv, &envp);
 }
 
-int	envp_set_var(char ***envp, char *sv)
+void	env_print(char **envp)
 {
-	int		size;
-	char	**new_envp;
+	char	**pstr;
 
-	size = sh_pstr_size (*envp);
-	new_envp = (char **) malloc ((size + 2) * sizeof (char *));
-	if (!new_envp)
-		return (sh_err ("envp_set_var - malloc error"), 0);
-	envp_copy (*envp, new_envp);
-	new_envp[size] = ft_strdup (sv);
-	new_envp[size + 1] = NULL;
-	free(*envp);
-	*envp = new_envp;
-	return (1);
+	pstr = envp;
+	while (*pstr)
+	{
+		write (1, *pstr, ft_strlen (*pstr));
+		write (1, "\n", 1);
+		pstr++;
+	}
+}
+
+int	env_prsng(char **argv, char ***penvp)
+{
+	char		**pstr[2];
+	int			idx[4];
+	t_prompt	*lst;
+
+	idx[0] = 0;
+	idx[1] = sh_pstr_size (argv);
+	while (++idx[0] < idx[1])
+	{
+		idx[2] = -1;
+		if (argv[idx[0]] && ft_strchr (argv[idx[0]], '='))
+			idx[2] = envp_set_var (penvp, argv[idx[0]]);
+		else if (idx[2] == -1)
+		{
+			lst = lexer (sh_pstrdup (&argv[idx[0]]));
+			executor (lst, penvp);
+			wait (&idx[3]);
+			free_prompt(lst);
+			return (sh_ppfree (*penvp), idx[3]);
+		}
+		if (!idx[2])
+			return (0);
+	}
+	pstr[1] = sh_split_q ("env", ' ');
+	return (env (pstr[1], *penvp), sh_ppfree (pstr[1]), 1);
 }

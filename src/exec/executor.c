@@ -136,6 +136,5 @@ int	executor(t_prompt *lst, char ***penvp)
 	}
 	if (!curr && last_cmd)
 		stat = ex_get_exitcode(last_cmd);
-	printf("EXIT CODE: %i, PROC_LESS: %i, LAST CMD: %s, PID: %i\n", WEXITSTATUS(stat), last_cmd->proc_less, last_cmd->str_val, last_cmd->pid);
 	return (WEXITSTATUS(stat));
 }

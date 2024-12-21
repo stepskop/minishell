@@ -5,72 +5,51 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/27 13:41:06 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/19 21:59:36 by username         ###   ########.fr       */
+/*   Created: 2024/12/05 17:13:57 by ksorokol          #+#    #+#             */
+/*   Updated: 2024/12/21 09:16:38 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
-#include "lexer.h"
-#include "exec.h"
 
-/*
-*	original envp in the parent process
-*	not freeing in env recursion process
-*	now keep it without freeing ( see the subject :) )
-*	this is not a leak, it's still reachable ...
-*/
-void	env(char **argv, char **envp)
+char	**envp_copy(char **envp1, char **envp2)
 {
-	if (!argv[1])
+	char	**idx[2];
+
+	idx[0] = envp1;
+	idx[1] = envp2;
+	while (*idx[0])
 	{
-		env_print (envp);
-		return (sh_ppfree (envp));
+		*idx[1] = *idx[0];
+		idx[0]++;
+		idx[1]++;
 	}
-	env_prsng (argv, &envp);
+	return (envp2);
 }
 
-void	env_print(char **envp)
+int	envp_set_var(char ***envp, char *sv)
 {
-	char	**pstr;
+	int		size;
+	char	**new_envp;
 
-	pstr = envp;
-	while (*pstr)
-	{
-		write (1, *pstr, ft_strlen (*pstr));
-		write (1, "\n", 1);
-		pstr++;
-	}
+	if (!env_check_var (sv))
+		return (0);
+	size = sh_pstr_size (*envp);
+	new_envp = (char **) malloc ((size + 2) * sizeof (char *));
+	if (!new_envp)
+		return (sh_err ("envp_set_var - malloc error"), 0);
+	envp_copy (*envp, new_envp);
+	new_envp[size] = ft_strdup (sv);
+	new_envp[size + 1] = NULL;
+	free(*envp);
+	*envp = new_envp;
+	return (1);
 }
 
-int	env_prsng(char **argv, char ***penvp)
-{
-	char		**pstr[2];
-	int			idx[4];
-	t_prompt	*lst;
-
-	idx[0] = 0;
-	idx[1] = sh_pstr_size (argv);
-	while (++idx[0] < idx[1])
-	{
-		idx[2] = -1;
-		if (argv[idx[0]] && ft_strchr (argv[idx[0]], '='))
-			idx[2] = envp_set_var (penvp, argv[idx[0]]);
-		else if (idx[2] == -1)
-		{
-			lst = lexer (sh_pstrdup (&argv[idx[0]]));
-			executor (lst, penvp);
-			wait (&idx[3]);
-			free_prompt(lst);
-			return (sh_ppfree (*penvp), idx[3]);
-		}
-	}
-	pstr[1] = sh_split_q ("env", ' ');
-	return (env (pstr[1], *penvp), sh_ppfree (pstr[1]), 0);
-}
-
+// https://pubs.opengroup.org/onlinepubs/7908799/xbd/envvar.html
 int	env_check_var(char *var)
 {
-	(void)var;
-	return (-1);
+	if (!(ft_isalpha (var[0]) || var[0] == '_'))
+		return (sh_err ("Environment variable's name should be [a-zA-Z_]{1,}[a-zA-Z0-9_]*\n"), 0);
+	return (1);
 }

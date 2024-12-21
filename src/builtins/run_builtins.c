@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 23:53:25 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/19 23:05:23 by username         ###   ########.fr       */
+/*   Updated: 2024/12/20 12:34:21 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	exec_builtin(char **argv, t_ctx ctx)
 	else if (!ft_strcmp (argv[0], "env"))
 		env (argv, sh_pstrdup (*ctx.penvp));
 	else if (!ft_strcmp (argv[0], "exit"))
-		run_exit (argv, ctx, EXIT_SUCCESS);
+		run_exit (argv, ctx, "exit\n", EXIT_SUCCESS);
 	else if (!ft_strcmp (argv[0], "cd"))
 		cd (argv);
 	return (EXIT_SUCCESS);
@@ -89,10 +89,12 @@ int	run_builtins(char **argv, t_ctx ctx)
 	return (pid);
 }
 
-int	run_exit(char **argv, t_ctx ctx, int exit_code)
+int	run_exit(char **argv, t_ctx ctx, char *str, int exit_code)
 {
 	t_prompt	*curr;
 
+	if (str)
+		write (1, str, ft_strlen (str));
 	curr = ctx.node;
 	while (curr && curr->prev)
 		curr = curr->prev;

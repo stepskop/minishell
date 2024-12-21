@@ -6,13 +6,14 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 15:11:55 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/19 21:13:42 by username         ###   ########.fr       */
+/*   Updated: 2024/12/20 13:38:32 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
 static void	echo_write(char *arg);
+static int	echo_n_check(char *arg);
 
 void	echo(char **argv)
 {
@@ -20,9 +21,15 @@ void	echo(char **argv)
 	char	**arg;
 
 	nnl = 0;
-	if (argv[1] && !ft_strcmp (argv[1], "-n"))
-		nnl = 1;
-	arg = argv + 1 + nnl;
+	arg = argv + 1;
+	while (*arg)
+	{
+		if (echo_n_check (*arg))
+			nnl = 1;
+		else
+			break ;
+		arg++;
+	}
 	while (*arg)
 	{
 		echo_write (*arg);
@@ -37,6 +44,22 @@ void	echo(char **argv)
 static void	echo_write(char *arg)
 {
 	write (1, arg, ft_strlen (arg));
+}
+
+static int	echo_n_check(char *arg)
+{
+	size_t	idx;
+
+	if (arg[0] != '-')
+		return (0);
+	idx = 1;
+	while (arg[idx])
+	{
+		if (arg[idx] != 'n')
+			return (0);
+		idx ++;
+	}
+	return (1);
 }
 
 // static void	echo_write(char *arg)

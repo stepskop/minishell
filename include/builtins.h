@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: username <your@email.com>                  +#+  +:+       +#+        */
+/*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 21:10:05 by username          #+#    #+#             */
-/*   Updated: 2024/12/19 22:53:51 by username         ###   ########.fr       */
+/*   Updated: 2024/12/20 23:58:15 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 // run_builtins.c
 int			is_builtin(char *cmmnd);
 int			run_builtins(char **argv, t_ctx ctx);
-int			run_exit(char **argv, t_ctx ctx, int exit_code);
+int			run_exit(char **argv, t_ctx ctx, char *str, int exit_code);
 // echo.c
 void		echo(char **argv);
 
@@ -30,9 +30,10 @@ void		pwd(void);
 void		cd(char **argv);
 char		*cd_home(char **argv);
 
-// env01.c
+// env.c
 char		*sh_getenv(char *name, char **envp);
 void		env(char **argv, char **envp);
+
 // env01.c
 void		env_print(char **envp);
 int			env_prsng(char **argv, char ***penvp);
@@ -41,5 +42,8 @@ int			env_check_var(char *var);
 // env02.c
 char		**envp_copy(char **envp1, char **envp2);
 int			envp_set_var(char ***envp, char *sv);
+
+// export.c
+void		export(char **argv, char **envp);
 
 #endif

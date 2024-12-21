@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/19 22:48:35 by username         ###   ########.fr       */
+/*   Updated: 2024/12/20 15:55:45 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "path.h"
 
 static char	*get_command(char **cmmnd, char *pps);
+static void	ctrl_d(char *cmmnd, char **envp);
 // int		check_eol(char *str, t_counters_quotes	*cq);
 
 int	main(int argc, char **argv, char **envp)
@@ -47,6 +48,8 @@ void	_loop_(char **envp)
 		rl_on_new_line ();
 		cmmnd[0] = get_command (&cmmnd[1], get_sh_pps ());
 		if (!cmmnd[0])
+			ctrl_d (cmmnd[1], envp);
+		else if (!cmmnd[0][0])
 			continue ;
 		add_history (cmmnd[1]);
 		splitted = sh_split_q(cmmnd[0], ' ');
@@ -69,9 +72,9 @@ static char	*get_command(char **cmmnd, char *pps)
 		wait(NULL);
 		line = readline(pps);
 		if (!line)
-			return (NULL);
+			return (free (pps), NULL);
 		if (!line[0] && !(*cmmnd))
-			return (NULL);
+			return (free (pps), line);
 		i = sh_backslash (&line);
 		*cmmnd = sh_strjoin_free(*cmmnd, line, 3);
 		if (!i)
@@ -84,4 +87,14 @@ static char	*get_command(char **cmmnd, char *pps)
 		pps = ft_strdup (">");
 	}
 	return (free (pps), *cmmnd);
+}
+
+static void	ctrl_d(char *cmmnd, char **envp)
+{
+	if (cmmnd)
+		free (cmmnd);
+	else
+		write (1, "exit\n", 5);
+	sh_ppfree (envp);
+	exit (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/19 22:16:34 by username         ###   ########.fr       */
+/*   Updated: 2024/12/20 13:33:46 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,4 +89,9 @@ void		_loop_(char **envp);
 // --tool=drd
 // --read-var-info=yes
 // --show-reachable=yes
-// valgrind --trace-children=yes --suppressions=rl.supp ./minishell
+/*
+valgrind --trace-children=yes \
+--leak-check=full \
+--show-leak-kinds=all \
+--suppressions=rl.supp ./minishell
+*/

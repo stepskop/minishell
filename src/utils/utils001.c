@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/19 21:31:36 by username         ###   ########.fr       */
+/*   Updated: 2024/12/20 16:03:00 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ void	sh_ppfree(char	**pp)
 {
 	char	**pp_;
 
+	if (!pp)
+		return ;
 	pp_ = pp;
 	while (*pp_)
 	{
