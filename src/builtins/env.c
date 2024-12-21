@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 13:41:06 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/21 13:49:59 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/21 16:17:55 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,25 @@
 *	now keep it without freeing ( see the subject :) )
 *	this is not a leak, it's still reachable ...
 */
-void	env(char **argv, char **envp)
+int	env(char **argv, char **envp)
 {
+	int	result;
+
 	if (!argv[1])
 	{
 		env_print (envp);
-		return (sh_ppfree (envp));
+		return (sh_ppfree (envp), EXIT_SUCCESS);
 	}
-	env_prsng (argv, &envp);
+	result = env_prsng (argv, &envp);
+	return (result);
 }
 
 void	env_print(char **envp)
 {
 	char	**pstr;
 
+	if (!envp)
+		return ;
 	pstr = envp;
 	while (*pstr)
 	{
@@ -65,8 +70,9 @@ int	env_prsng(char **argv, char ***penvp)
 			return (sh_ppfree (*penvp), idx[3]);
 		}
 		if (!idx[2])
-			return (sh_ppfree (*penvp), 0);
+			return (sh_ppfree (*penvp), EXIT_SUCCESS);
 	}
 	pstr[1] = sh_split_q ("env", ' ');
-	return (env (pstr[1], *penvp), sh_ppfree (pstr[1]), 1);
+	idx[3] = env (pstr[1], *penvp);
+	return (sh_ppfree (pstr[1]), idx[3]);
 }

@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 23:53:25 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/21 15:37:14 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/21 16:10:56 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,23 @@
 
 static int	exec_builtin(char **argv, t_ctx ctx)
 {
+	int	result;
+
+	result = 0;
 	if (!ft_strcmp (argv[0], "echo"))
-		echo (argv);
+		result = echo (argv);
 	else if (!ft_strcmp (argv[0], "pwd"))
-		pwd ();
+		result = pwd ();
 	else if (!ft_strcmp (argv[0], "env"))
-		env (argv, sh_pstrdup (*ctx.penvp));
+		result = env (argv, sh_pstrdup (*ctx.penvp));
 	else if (!ft_strcmp (argv[0], "exit"))
-		run_exit (argv, ctx, "exit\n", EXIT_SUCCESS);
+		result = run_exit (argv, ctx, "exit\n", EXIT_SUCCESS);
 	else if (!ft_strcmp (argv[0], "cd"))
-		cd (argv);
+		result = cd (argv);
 	else if (!ft_strcmp (argv[0], "export"))
-		export (argv, ctx.penvp);
+		result = export (argv, ctx.penvp);
 	else if (!ft_strcmp (argv[0], "unset"))
-		unset (argv, ctx.penvp);
+		result = unset (argv, ctx.penvp);
 	return (EXIT_SUCCESS);
 }
 

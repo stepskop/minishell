@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 15:11:55 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/20 13:38:32 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/21 16:08:59 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	echo_write(char *arg);
 static int	echo_n_check(char *arg);
 
-void	echo(char **argv)
+int	echo(char **argv)
 {
 	int		nnl;
 	char	**arg;
@@ -39,6 +39,7 @@ void	echo(char **argv)
 	}
 	if (!nnl)
 		write (1, "\n", 1);
+	return (EXIT_SUCCESS);
 }
 
 static void	echo_write(char *arg)
@@ -61,17 +62,3 @@ static int	echo_n_check(char *arg)
 	}
 	return (1);
 }
-
-// static void	echo_write(char *arg)
-// {
-// 	size_t	idx;
-
-// 	idx = 0;
-// 	while (arg[idx])
-// 	{
-// 		if (arg[idx] == '\\')
-// 			idx++;
-// 		write (1, &arg[idx], 1);
-// 		idx++;
-// 	}
-// }
