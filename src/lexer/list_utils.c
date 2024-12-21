@@ -6,7 +6,7 @@
 /*   By: username <your@email.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 00:26:09 by username          #+#    #+#             */
-/*   Updated: 2024/12/19 21:51:12 by username         ###   ########.fr       */
+/*   Updated: 2024/12/19 22:32:24 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ t_prompt	*lx_add(t_token token, t_prompt *prev, char *val)
 	new->cmd = NULL;
 	new->in_fd = 0;
 	new->out_fd = 1;
+	new->proc_less = 0;
 	return (new);
 }
 

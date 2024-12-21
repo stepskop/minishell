@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/21 14:50:01 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/21 15:34:40 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,10 @@ typedef struct s_prompt
 	int				in_fd;
 	int				out_fd;
 	char			*str_val;
-	int				*is_pipeline;
 	t_token			token;
 	t_ctx			*cmd;
+	int				proc_less;
+	int				pid;
 	t_args			*args;
 	struct s_prompt	*next_cmd;
 	struct s_prompt	*next;

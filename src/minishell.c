@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/21 14:50:25 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/21 15:35:41 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,7 @@ static void	_loop_(char ***envp)
 		if (splitted && splitted[0])
 			lst = lexer(splitted);
 		free (cmmnd[1]);
-		executor(lst, envp);
-		wait(NULL);
+		executor(lst, &envp);
 		free_prompt(lst);
 	}
 }

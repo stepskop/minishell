@@ -6,15 +6,14 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 23:53:25 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/21 14:36:52 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/21 15:37:14 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 #include "exec.h"
-#include "lexer.h"
 
-static void	exec_builtin(char **argv, t_ctx ctx)
+static int	exec_builtin(char **argv, t_ctx ctx)
 {
 	if (!ft_strcmp (argv[0], "echo"))
 		echo (argv);
@@ -23,13 +22,14 @@ static void	exec_builtin(char **argv, t_ctx ctx)
 	else if (!ft_strcmp (argv[0], "env"))
 		env (argv, sh_pstrdup (*ctx.penvp));
 	else if (!ft_strcmp (argv[0], "exit"))
-		run_exit (argv, ctx, "exit\n");
+		run_exit (argv, ctx, "exit\n", EXIT_SUCCESS);
 	else if (!ft_strcmp (argv[0], "cd"))
 		cd (argv);
 	else if (!ft_strcmp (argv[0], "export"))
 		export (argv, ctx.penvp);
 	else if (!ft_strcmp (argv[0], "unset"))
 		unset (argv, ctx.penvp);
+	return (EXIT_SUCCESS);
 }
 
 static int	is_pipeline(t_prompt *node)
@@ -53,10 +53,24 @@ static int	is_pipeline(t_prompt *node)
 	return (0);
 }
 
+int	is_builtin(char *cmmnd)
+{
+	if (!ft_strcmp (cmmnd, "echo")
+		|| !ft_strcmp (cmmnd, "env")
+		|| !ft_strcmp (cmmnd, "pwd")
+		|| !ft_strcmp (cmmnd, "export")
+		|| !ft_strcmp (cmmnd, "unset")
+		|| !ft_strcmp (cmmnd, "cd")
+		|| !ft_strcmp (cmmnd, "exit"))
+		return (1);
+	return (0);
+}
+
 int	run_builtins(char **argv, t_ctx ctx)
 {
 	int	pid;
 	int	sub_proc;
+	int	status;
 
 	pid = -1;
 	sub_proc = is_pipeline(ctx.node);
@@ -65,14 +79,20 @@ int	run_builtins(char **argv, t_ctx ctx)
 	if (pid == 0)
 	{
 		ex_subprocess_pipes(ctx.pipefd);
-		exec_builtin(argv, ctx);
+		exit(exec_builtin(argv, ctx));
 	}
 	else if (!sub_proc)
-		exec_builtin(argv, ctx);
+	{
+		status = exec_builtin(argv, ctx);
+		ctx.node->proc_less = 1;
+		ctx.node->pid = status;
+		return (status);
+	}
+	ctx.node->pid = pid;
 	return (pid);
 }
 
-int	run_exit(char **argv, t_ctx ctx, char *str)
+int	run_exit(char **argv, t_ctx ctx, char *str, int exit_code)
 {
 	t_prompt	*curr;
 
@@ -86,5 +106,5 @@ int	run_exit(char **argv, t_ctx ctx, char *str)
 	sh_ppfree (ctx.to_free);
 	sh_ppfree (*ctx.penvp);
 	rl_clear_history ();
-	exit (EXIT_SUCCESS);
+	exit (exit_code);
 }

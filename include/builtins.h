@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 21:10:05 by username          #+#    #+#             */
-/*   Updated: 2024/12/21 14:37:25 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/21 15:33:51 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,9 @@
 # include "utils.h"
 
 // run_builtins.c
+int			is_builtin(char *cmmnd);
 int			run_builtins(char **argv, t_ctx ctx);
-int			run_exit(char **argv, t_ctx ctx, char *str);
+int			run_exit(char **argv, t_ctx ctx, char *str, int exit_code);
 // echo.c
 void		echo(char **argv);
 
