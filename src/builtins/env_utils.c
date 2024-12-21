@@ -29,12 +29,12 @@ char	**envp_copy(char **envp1, char **envp2)
 	return (envp2);
 }
 
-int	envp_set_var(char ***envp, char *sv)
+int	envp_set_var(char ***envp, char *sv, int e_code)
 {
 	int		size;
 	char	**new_envp;
 
-	if (!env_check_var (sv))
+	if (!env_check_var (sv, e_code))
 		return (0);
 	if (env_replace_var (*envp, sv))
 		return (1);
@@ -75,11 +75,11 @@ static int	env_replace_var(char **envp, char *sv)
 }
 
 // https://pubs.opengroup.org/onlinepubs/9699919799.2018edition/
-int	env_check_var(char *var)
+int	env_check_var(char *var, int e_code)
 {
 	size_t	idx;
 
-	if (!(ft_isalpha (var[0]) || var[0] == '_'))
+	if (!(ft_isalpha (var[0]) || var[0] == '_' || (var[0] == '?' && e_code)))
 		return (sh_err ("Env var's name: [a-zA-Z_]{1,}[a-zA-Z0-9_]*\n"), 0);
 	idx = 1;
 	while (var[idx] && var[idx] != '=')

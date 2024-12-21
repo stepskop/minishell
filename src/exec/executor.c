@@ -12,6 +12,7 @@
 
 #include "exec.h"
 #include "lexer.h"
+#include "builtins.h"
 
 static void	ex_handle_ionode(t_prompt *curr, int (*last_io)[2])
 {
@@ -115,8 +116,8 @@ static t_prompt	*ex_execute(t_prompt *node, char ***penvp)
 int	executor(t_prompt *lst, char ***penvp)
 {
 	t_prompt	*curr;
-	t_prompt	*last_cmd;
 	int			stat;
+	char		*status_var;
 
 	ex_ioprep(lst);
 	curr = lst;
@@ -124,7 +125,7 @@ int	executor(t_prompt *lst, char ***penvp)
 	while (curr)
 	{
 		if (curr->token == CMD)
-			last_cmd = ex_execute(curr, penvp);
+			ex_execute(curr, penvp);
 		/*
 		if (curr->token == AND || curr->token == OR)
 		{
@@ -136,8 +137,8 @@ int	executor(t_prompt *lst, char ***penvp)
 		*/
 		curr = curr->next;
 	}
-	if (!curr && last_cmd)
-		stat = ex_get_exitcode(last_cmd);
-	printf("EXIT CODE: %i, PROC_LESS: %i, LAST CMD: %s, PID: %i\n", WEXITSTATUS(stat), last_cmd->proc_less, last_cmd->str_val, last_cmd->pid);
-	return (WEXITSTATUS(stat));
+	stat = ex_get_exitcode(lst);
+	status_var = sh_strjoin_free("?=", ft_itoa(stat), 2);
+	envp_set_var(penvp, status_var, 1);
+	return (stat);
 }
