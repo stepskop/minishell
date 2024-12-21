@@ -23,7 +23,7 @@ int	export(char **argv, char ***envp)
 	{
 		if (!ft_strchr (*argv_, '='))
 			*argv_ = sh_strjoin_free (*argv_, "=", 1);
-		envp_set_var (envp, *argv_);
+		envp_set_var (envp, *argv_, 0);
 		argv_++;
 	}
 	return (EXIT_SUCCESS);

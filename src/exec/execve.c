@@ -59,6 +59,10 @@ int	ex_get_exitcode(t_prompt *lst)
 		}
 		curr = curr->next;
 	}
+	if (WIFEXITED(status))
+		status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		status = 128 + WTERMSIG(status);
 	return (status);
 }
 
