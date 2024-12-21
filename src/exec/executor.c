@@ -140,5 +140,6 @@ int	executor(t_prompt *lst, char ***penvp)
 	stat = ex_get_exitcode(lst);
 	status_var = sh_strjoin_free("?=", ft_itoa(stat), 2);
 	envp_set_var(penvp, status_var, 1);
+	free(status_var);
 	return (stat);
 }
