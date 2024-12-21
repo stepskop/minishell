@@ -28,6 +28,9 @@ void		clean_pipes(t_prompt *node, int pipefd[2]);
 int			sh_run(char *cmmnd, t_ctx ctx);
 int			sh_execve(char **argv, t_ctx ctx);
 void		ex_subprocess_pipes(int pipefd[2]);
+void		ex_processless_pipes(int pipefd[2], int std_backup[2]);
+void		close_pipe(int pipefd[2]);
+void		restore_stdfd(int pipefd[2]);
 void		sp_print_cnf(char *cmmnd);
 int			ex_get_exitcode(t_prompt *node);
 

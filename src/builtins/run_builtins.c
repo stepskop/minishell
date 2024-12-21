@@ -13,7 +13,7 @@
 #include "builtins.h"
 #include "exec.h"
 
-static int	exec_builtin(char **argv, t_ctx ctx)
+static int	exec_builtin(char **argv, t_ctx ctx, int std_backup[2])
 {
 	int	result;
 
@@ -24,14 +24,18 @@ static int	exec_builtin(char **argv, t_ctx ctx)
 		result = pwd ();
 	else if (!ft_strcmp (argv[0], "env"))
 		result = env (argv, sh_pstrdup (*ctx.penvp));
-	else if (!ft_strcmp (argv[0], "exit"))
-		result = run_exit (argv, ctx, "exit\n", EXIT_SUCCESS);
 	else if (!ft_strcmp (argv[0], "cd"))
 		result = cd (argv);
 	else if (!ft_strcmp (argv[0], "export"))
 		result = export (argv, ctx.penvp);
 	else if (!ft_strcmp (argv[0], "unset"))
 		result = unset (argv, ctx.penvp);
+	else if (!ft_strcmp (argv[0], "exit"))
+	{
+		if (std_backup)
+			close_pipe(std_backup);
+		result = run_exit (argv, ctx, "exit\n", EXIT_SUCCESS);
+	}
 	return (result);
 }
 
@@ -74,6 +78,7 @@ int	run_builtins(char **argv, t_ctx ctx)
 	int	pid;
 	int	sub_proc;
 	int	status;
+	int	std_backup[2];
 
 	pid = -1;
 	sub_proc = is_pipeline(ctx.node);
@@ -82,13 +87,15 @@ int	run_builtins(char **argv, t_ctx ctx)
 	if (pid == 0)
 	{
 		ex_subprocess_pipes(ctx.pipefd);
-		exit(exec_builtin(argv, ctx));
+		exit(exec_builtin(argv, ctx, NULL));
 	}
 	else if (!sub_proc)
 	{
-		status = exec_builtin(argv, ctx);
+		ex_processless_pipes(ctx.pipefd, std_backup);
+		status = exec_builtin(argv, ctx, std_backup);
 		ctx.node->proc_less = 1;
 		ctx.node->pid = status;
+		restore_stdfd(std_backup);
 		return (status);
 	}
 	ctx.node->pid = pid;
