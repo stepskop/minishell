@@ -6,11 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/12/21 15:43:19 by ksorokol         ###   ########.fr       */
-=======
 /*   Updated: 2024/12/19 22:48:35 by username         ###   ########.fr       */
->>>>>>> b2887ec (chore: exit builtins correctly, try to capture exit code)
 /*                                                                            */
 /* ************************************************************************** */
 
