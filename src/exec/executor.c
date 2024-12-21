@@ -125,6 +125,7 @@ int	executor(t_prompt *lst, char ***penvp)
 	{
 		if (curr->token == CMD)
 			last_cmd = ex_execute(curr, penvp);
+		/*
 		if (curr->token == AND || curr->token == OR)
 		{
 			stat = ex_get_exitcode(last_cmd);
@@ -132,10 +133,14 @@ int	executor(t_prompt *lst, char ***penvp)
 				(curr->token == OR && stat == 0))
 				break ;
 		}
+		*/
 		curr = curr->next;
 	}
-	if (!curr && last_cmd)
-		stat = ex_get_exitcode(last_cmd);
-	printf("EXIT CODE: %i, PROC_LESS: %i, LAST CMD: %s, PID: %i\n", WEXITSTATUS(stat), last_cmd->proc_less, last_cmd->str_val, last_cmd->pid);
-	return (WEXITSTATUS(stat));
+	stat = ex_get_exitcode(lst);
+	(void)last_cmd;
+	if (WIFEXITED(stat))
+		printf("[%i] AWAITED STATUS: %i\n", last_cmd->pid, WEXITSTATUS(stat));
+	if (WIFSIGNALED(stat))
+		printf("[%i] SIGNALED STATUS: %i\n", last_cmd->pid, 128 + WTERMSIG(stat));
+	return (stat);
 }

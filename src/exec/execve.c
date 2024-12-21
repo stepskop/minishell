@@ -43,18 +43,22 @@ void	sp_print_cnf(char *cmmnd)
 	write (2, ": command not found\n", 20);
 }
 
-int	ex_get_exitcode(t_prompt *node)
+int	ex_get_exitcode(t_prompt *lst)
 {
-	int	status;
+	int			status;
+	t_prompt	*curr;
 
-	if (node->proc_less)
-		return (node->pid);
-	waitpid(node->pid, &status, 0);
-	//TODO: WHY THE FUCK THEY ARE TERMINATED BY SIGNAL
-	if (WIFEXITED(status))
-		printf("[%i] AWAITED STATUS: %i\n", node->pid, WEXITSTATUS(status));
-	if (WIFSIGNALED(status))
-		printf("[%i] SIGNALED STATUS: %i\n", node->pid, WTERMSIG(status));
+	curr = lst;
+	while (curr)
+	{
+		if (curr->token == CMD)
+		{
+			if (curr->proc_less)
+				return (curr->pid);
+			waitpid(curr->pid, &status, 0);
+		}
+		curr = curr->next;
+	}
 	return (status);
 }
 
