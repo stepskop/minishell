@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 21:10:05 by username          #+#    #+#             */
-/*   Updated: 2024/12/20 12:32:56 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/20 23:58:15 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,10 @@ void		pwd(void);
 void		cd(char **argv);
 char		*cd_home(char **argv);
 
-// env01.c
+// env.c
 char		*sh_getenv(char *name, char **envp);
 void		env(char **argv, char **envp);
+
 // env01.c
 void		env_print(char **envp);
 int			env_prsng(char **argv, char ***penvp);
@@ -40,5 +41,8 @@ int			env_check_var(char *var);
 // env02.c
 char		**envp_copy(char **envp1, char **envp2);
 int			envp_set_var(char ***envp, char *sv);
+
+// export.c
+void		export(char **argv, char **envp);
 
 #endif
