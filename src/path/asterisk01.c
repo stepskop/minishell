@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:43:38 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/19 21:50:26 by username         ###   ########.fr       */
+/*   Updated: 2024/12/22 18:35:14 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,10 @@ void	aster_recursion(t_list *dir, t_list *pttrns, t_list **result)
 	{
 		dirs_init (dirs, pathes, dir);
 		if (get_lst_dirs (&dirs[0], pttrns->content, pathes) == 2)
+		{
+			sh_del_arr ((void **) pathes, 2);
 			return (aster_recursion (dir, pttrns->next, result));
+		}
 		dirs[1] = dirs[0];
 		while (dirs[1])
 		{
