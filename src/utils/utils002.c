@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/21 11:51:16 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/22 19:37:35 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*sh_strjoin(char *s1, char *s2)
 	len = len_s1 + len_s2 + 1;
 	result = (char *) malloc (len * sizeof (char));
 	if (!result)
-		return (NULL);
+		return (perror("malloc"), NULL);
 	ft_memcpy (result, s1, len_s1);
 	ft_memcpy (&result[len_s1], s2, len_s2);
 	result[len - 1] = '\0';
@@ -86,12 +86,21 @@ char	*get_env_name(char *dollar)
 	size_t	idx;
 	char	*env_name;
 
-	idx = 0;
-	while (dollar[idx] && dollar[idx] != '=')
+	env_name = (char *) ft_calloc (2, sizeof (char));
+	if (!env_name)
+		return (perror("malloc"), NULL);
+	if (ft_isdigit (dollar[0]) || dollar[0] == '?')
+		return (env_name[0] = dollar[0], env_name);
+	free (env_name);
+	if (!(ft_isalpha (dollar[0]) || dollar[0] == '_'))
+		return (NULL);
+	idx = 1;
+	while (dollar[idx] && (ft_isalpha (dollar[idx])
+			|| ft_isdigit (dollar[idx]) || dollar[idx] == '_'))
 		idx++;
 	env_name = (char *) malloc ((idx + 1) * sizeof (char));
 	if (!env_name)
-		return (NULL);
+		return (perror("malloc"), NULL);
 	ft_memcpy (env_name, dollar, idx);
 	env_name[idx] = '\0';
 	return (env_name);

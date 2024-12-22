@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 15:34:17 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/19 23:32:28 by username         ###   ########.fr       */
+/*   Updated: 2024/12/22 19:49:53 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,11 @@ int	sh_run(char *cmmnd, t_ctx ctx)
 
 void	sp_print_cnf(char *cmmnd)
 {
-	write (2, cmmnd, ft_strlen (cmmnd));
-	write (2, ": command not found\n", 20);
+	char	*str;
+
+	str = sh_strjoin (cmmnd, ": No such file or directory\n");
+	sh_err (str);
+	free (str);
 }
 
 int	ex_get_exitcode(t_prompt *lst)
