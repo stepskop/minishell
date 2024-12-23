@@ -42,6 +42,7 @@ static void	_loop_(char ***envp)
 	char		*cmmnd[2];
 	t_prompt	*lst;
 	char		**splitted;
+	char		*tmp;
 
 	while (1)
 	{
@@ -53,7 +54,9 @@ static void	_loop_(char ***envp)
 		else if (!cmmnd[0][0])
 			continue ;
 		add_history (cmmnd[1]);
-		splitted = sh_split_q(cmmnd[0], ' ');
+		tmp = put_env(cmmnd[0], *envp);
+		splitted = sh_split_q(tmp, ' ');
+		free(tmp);
 		if (splitted && splitted[0])
 			lst = lexer(splitted);
 		free (cmmnd[1]);
