@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 13:41:06 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/21 16:17:55 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/23 12:20:58 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,11 @@ void	env_print(char **envp)
 	pstr = envp;
 	while (*pstr)
 	{
-		write (1, *pstr, ft_strlen (*pstr));
-		write (1, "\n", 1);
+		if (!(*pstr[0] == '?' && *pstr[1] == '='))
+		{
+			write (1, *pstr, ft_strlen (*pstr));
+			write (1, "\n", 1);
+		}
 		pstr++;
 	}
 }
@@ -69,8 +72,8 @@ int	env_prsng(char **argv, char ***penvp)
 			free_prompt(lst);
 			return (sh_ppfree (*penvp), idx[3]);
 		}
-		if (!idx[2])
-			return (sh_ppfree (*penvp), EXIT_SUCCESS);
+		if (idx[2])
+			return (sh_ppfree (*penvp), EXIT_FAILURE);
 	}
 	pstr[1] = sh_split_q ("env", ' ');
 	idx[3] = env (pstr[1], *penvp);

@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:13:57 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/21 13:51:37 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/23 12:24:59 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,20 @@ int	envp_set_var(char ***envp, char *sv, int e_code)
 	int		size;
 	char	**new_envp;
 
-	if (!env_check_var (sv, e_code))
-		return (0);
-	if (env_replace_var (*envp, sv))
+	if (env_check_var (sv, e_code))
 		return (1);
+	if (env_replace_var (*envp, sv))
+		return (0);
 	size = sh_pstr_size (*envp);
 	new_envp = (char **) malloc ((size + 2) * sizeof (char *));
 	if (!new_envp)
-		return (sh_err ("envp_set_var - malloc error"), 0);
+		return (sh_err ("envp_set_var - malloc error"), 1);
 	envp_copy (*envp, new_envp);
 	new_envp[size] = ft_strdup (sv);
 	new_envp[size + 1] = NULL;
 	free(*envp);
 	*envp = new_envp;
-	return (1);
+	return (0);
 }
 
 static int	env_replace_var(char **envp, char *sv)
@@ -75,19 +75,20 @@ static int	env_replace_var(char **envp, char *sv)
 }
 
 // https://pubs.opengroup.org/onlinepubs/9699919799.2018edition/
+// Env var's name: [a-zA-Z_]{1,}[a-zA-Z0-9_]*
 int	env_check_var(char *var, int e_code)
 {
 	size_t	idx;
 
 	if (!(ft_isalpha (var[0]) || var[0] == '_' || (var[0] == '?' && e_code)))
-		return (sh_err ("Env var's name: [a-zA-Z_]{1,}[a-zA-Z0-9_]*\n"), 0);
+		return (sh_err ("not a valid identifier\n"), 1);
 	idx = 1;
 	while (var[idx] && var[idx] != '=')
 	{
 		if (!(ft_isalpha (var[idx]) || var[idx] == '_'
 				|| ft_isdigit (var[idx])))
-			return (sh_err ("Env var's name: [a-zA-Z_]{1,}[a-zA-Z0-9_]*\n"), 0);
+			return (sh_err ("not a valid identifier\n"), 1);
 		idx++;
 	}
-	return (1);
+	return (0);
 }

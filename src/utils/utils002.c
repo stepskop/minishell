@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/22 19:37:35 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/23 12:00:43 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,13 @@ char	*str_join_env(char *str, char *part1, size_t idx[], char **envp)
 	char	*result;
 
 	env_name = get_env_name (&str[idx[1] + 1]);
-	env_var = sh_getenv(env_name, envp);
+	if (!env_name)
+	{
+		env_var = ft_strdup ("$");
+		env_name = ft_strdup ("");
+	}
+	else
+		env_var = sh_getenv(env_name, envp);
 	if (!env_var)
 		env_var = ft_strdup ("");
 	len[0] = ft_strlen (env_name);
