@@ -6,15 +6,16 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 15:11:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/23 12:34:38 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/23 15:31:26 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 
+static int	dir_check(char *path);
+
 int	cd(char **argv)
 {
-	DIR		*dir;
 	char	*path;
 
 	if (argv[1] && argv[2])
@@ -27,16 +28,10 @@ int	cd(char **argv)
 		path = ft_strdup (argv[1]);
 	else
 		path = cd_home (argv);
-	dir = opendir (path);
-	if (dir == NULL)
-	{
-		path = sh_strjoin_free (path, ": No such file or directory\n", 1);
-		sh_err (path);
+	if (!dir_check (path))
 		return (free (path), EXIT_FAILURE);
-	}
 	else
 		chdir (path);
-	closedir (dir);
 	free (path);
 	return (EXIT_SUCCESS);
 }
@@ -52,4 +47,25 @@ char	*cd_home(char **argv)
 		return (ft_strdup (home));
 	else
 		return (ft_strjoin (home, &argv[1][1]));
+}
+
+static int	dir_check(char *path)
+{
+	DIR		*dir;
+	char	*str;
+
+	dir = opendir (path);
+	if (dir == NULL)
+	{
+		str = sh_strjoin ("cd: ", path);
+		if (access (path, F_OK) == 0)
+			str = sh_strjoin_free (str, ": Not a directory\n", 1);
+		else
+			str = sh_strjoin_free (str, ": No such file or directory\n", 1);
+		sh_err (str);
+		free (str);
+		return (0);
+	}
+	closedir (dir);
+	return (1);
 }

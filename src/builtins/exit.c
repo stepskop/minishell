@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 12:43:38 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/23 14:31:46 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/23 15:34:17 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,10 @@ int	_exit_(char **argv, t_ctx ctx, int std_backup[2])
 	int		i[2];
 
 	i[0] = sh_pstr_size (argv);
-	i[1] = sh_isnumber (argv[1]);
+	if (i[0] > 1)
+		i[1] = sh_isnumber (argv[1]);
+	else
+		i[1] = EXIT_SUCCESS;
 	if (i[0] > 2 && i[1])
 		return (sh_err ("exit: too many arguments\n"), 1);
 	write (1, "exit\n", 5);

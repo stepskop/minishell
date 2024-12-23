@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: username <your@email.com>                  +#+  +:+       +#+        */
+/*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 21:23:15 by username          #+#    #+#             */
-/*   Updated: 2024/12/19 21:42:52 by username         ###   ########.fr       */
+/*   Updated: 2024/12/23 15:49:01 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,9 @@ void		a_split_clear(void *elem);
 // path.c
 char		*get_sh_path(int absolute_path);
 char		*get_sh_pps(void);
-char		*get_cmd(char *cmd);
+// char		*get_cmd(char *cmd);
 char		*sh_replace_tilde(char *path);
 char		*sh_replace_dot(char *path);
+int			sh_checkcmd(char *cmmnd);
 
 #endif
