@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:43:38 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/19 21:50:42 by username         ###   ########.fr       */
+/*   Updated: 2024/12/23 20:05:29 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,4 +84,37 @@ t_list	*aster_start(t_list *dirs)
 	if (!dirs_[1])
 		return (dirs);
 	return (dirs_[1]);
+}
+
+int	patern_prefix(const char *str, const char *prefix)
+{
+	size_t	len[2];
+	int		result;
+	char	*prefix_;
+
+	if (!str || !prefix)
+		return (0);
+	prefix_ = sh_remove_last_c (ft_strdup (prefix), '*');
+	len[0] = sh_strlen(str);
+	len[1] = sh_strlen(prefix_);
+	if (len[1] > len[0])
+		return (1);
+	result = ft_strncmp(str, prefix, len[1]);
+	free (prefix_);
+	return (result);
+}
+
+int	patern_suffix(const char *str, const char *suffix)
+{
+	size_t	len[2];
+	int		result;
+
+	if (!str || !suffix)
+		return (0);
+	len[0] = sh_strlen(str);
+	len[1] = sh_strlen(suffix);
+	if (len[1] > len[0])
+		return (1);
+	result = ft_strncmp(str + len[0] - len[1], suffix, len[1]);
+	return (result);
 }
