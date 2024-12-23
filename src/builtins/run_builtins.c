@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 23:53:25 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/23 14:32:54 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/23 17:26:30 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	run_builtins(char **argv, t_ctx ctx)
 	if (pid == 0)
 	{
 		ex_subprocess_pipes(ctx.pipefd);
-		exit(exec_builtin(argv, ctx, NULL));
+		run_exit (argv, ctx, exec_builtin(argv, ctx, NULL), NULL);
 	}
 	else if (!sub_proc)
 	{
@@ -98,7 +98,7 @@ int	run_builtins(char **argv, t_ctx ctx)
 	return (pid);
 }
 
-int	run_exit(char **argv, t_ctx ctx, int exit_code)
+int	run_exit(char **argv, t_ctx ctx, int exit_code, char *str2free)
 {
 	t_prompt	*curr;
 
@@ -110,5 +110,6 @@ int	run_exit(char **argv, t_ctx ctx, int exit_code)
 	sh_ppfree (ctx.to_free);
 	sh_ppfree (*ctx.penvp);
 	rl_clear_history ();
+	free (str2free);
 	exit (exit_code);
 }

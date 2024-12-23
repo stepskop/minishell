@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 15:34:17 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/23 16:06:51 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/23 16:57:04 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,12 +88,12 @@ int	sh_execve(char **argv, t_ctx ctx)
 		{
 			exit_code = sh_checkcmd (cmmnd);
 			if (exit_code)
-				run_exit (argv, ctx, exit_code);
+				run_exit (argv, ctx, exit_code, cmmnd);
 			execve (cmmnd, argv, *ctx.penvp);
 		}
 		else
 			sp_print_cnf(argv[0]);
-		run_exit (argv, ctx, 127);
+		run_exit (argv, ctx, 127, NULL);
 	}
 	ctx.node->pid = pid;
 	return (pid);

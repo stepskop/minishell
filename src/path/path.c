@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 12:24:25 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/23 16:33:25 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/23 16:59:27 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,5 +109,6 @@ int	sh_checkcmd(char *cmmnd)
 		return (0);
 	sh_err (str);
 	free (str);
+	closedir (dir);
 	return (err_code);
 }

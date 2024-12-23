@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 13:41:06 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/23 12:20:58 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/23 17:16:35 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	env_print(char **envp)
 	pstr = envp;
 	while (*pstr)
 	{
-		if (!(*pstr[0] == '?' && *pstr[1] == '='))
+		if (ft_strncmp (*pstr, "?=", 2))
 		{
 			write (1, *pstr, ft_strlen (*pstr));
 			write (1, "\n", 1);

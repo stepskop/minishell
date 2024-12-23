@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/23 12:43:38 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/23 15:34:17 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/23 16:57:04 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,13 @@ int	_exit_(char **argv, t_ctx ctx, int std_backup[2])
 	if (std_backup)
 		close_pipe(std_backup);
 	if (i[0] == 1)
-		run_exit (argv, ctx, EXIT_SUCCESS);
+		run_exit (argv, ctx, EXIT_SUCCESS, NULL);
 	else if (i[0] == 2 && i[1])
-		run_exit (argv, ctx, ft_atoi (argv[1]));
+		run_exit (argv, ctx, ft_atoi (argv[1]), NULL);
 	str = sh_strjoin ("exit: ", argv[1]);
 	str = sh_strjoin_free (str, ": numeric argument required", 1);
 	sh_err(str);
-	free (str);
-	run_exit (argv, ctx, 2);
+	run_exit (argv, ctx, 2, str);
 	return (0);
 }
 
