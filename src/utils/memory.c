@@ -50,3 +50,9 @@ void	free_ast(t_ast *ast)
 		free_ast(ast->right);
 	free(ast);
 }
+
+void	free_ast_node(t_ast *node)
+{
+	free(node->value);
+	free(node);
+}

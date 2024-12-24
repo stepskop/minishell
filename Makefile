@@ -23,7 +23,7 @@ LEXER_DIR = lexer/
 LEXER_SRC = lexer.c utils.c list_utils.c
 
 AST_DIR = ast/
-AST_SRC = ast.c
+AST_SRC = ast.c utils.c ast_debug.c
 
 # Error
 ERROR_DIR = error/

@@ -91,7 +91,6 @@ typedef struct s_ast
 	struct s_ast	*left;
 	struct s_ast	*right;
 	struct s_ast	*parent;
-	struct s_ast	*sibling;
 }	t_ast;
 
 #endif

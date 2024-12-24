@@ -6,80 +6,11 @@
 /*   By: username <your@email.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 00:06:52 by username          #+#    #+#             */
-/*   Updated: 2024/12/24 02:40:57 by username         ###   ########.fr       */
+/*   Updated: 2024/12/24 15:03:26 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ast.h"
-#include "lexer.h"
-#include "exec.h"
-
-t_ast	*ast_new(char *value, t_ast_token token, t_ast *parent)
-{
-	t_ast	*new_node;
-
-	new_node = malloc(sizeof(t_ast));
-	if (!new_node)
-		return (perror("malloc"), NULL);
-	new_node->res = -1;
-	new_node->type = token;
-	new_node->value = value;
-	new_node->parent = parent;
-	new_node->left = NULL;
-	new_node->right = NULL;
-	new_node->sibling = NULL;
-	return (new_node);
-}
-
-void	ast_setchild(t_ast *node, t_ast *left, t_ast *right)
-{
-	if (!node)
-		return ;
-	if (left)
-		node->left = left;
-	if (right)
-		node->right = right;
-}
-
-int	ast_initchild(t_ast **curr)
-{
-	t_ast	*new_node;
-
-	new_node = ast_new(NULL, AST_EMPTY, *curr);
-	if (!new_node)
-		return (-1);
-	if (!(*curr)->left)
-		(*curr)->left = new_node;
-	else
-		(*curr)->right = new_node;
-	*curr = new_node;
-	return (1);
-}
-
-int	ast_setop(t_ast **curr, t_ast_token op)
-{
-	(*curr)->parent->type = op;
-	if (!ast_initchild(curr))
-		return (-1);
-	return (2);
-}
-
-int	ast_execute(t_ast *node, char ***envp)
-{
-	char		*tmp;
-	char		**splitted;
-	t_prompt	*lst;
-
-	tmp = put_env(node->value, *envp);
-	splitted = sh_split_q(tmp, ' ');
-	free(tmp);
-	if (splitted && splitted[0])
-		return (-1);
-	lst = lexer(splitted);
-	node->res = executor(lst, envp);
-	free_prompt(lst);
-	return (node->res);
-}
 
 int	ast_eval(t_ast **curr, char ***penvp)
 {
@@ -101,6 +32,34 @@ int	ast_eval(t_ast **curr, char ***penvp)
 	return (1);
 }
 
+int	ast_setop(t_ast **curr, t_ast_token op, char ***penvp)
+{
+	(*curr) = (*curr)->parent;
+	if ((*curr)->right)
+	{
+		if ((*curr)->left->res == -1)
+		{
+			(*curr)->left->res = ast_execute((*curr)->left, penvp);
+			if ((*curr)->left->res)
+				return (-1);
+			(*curr)->res = (*curr)->left->res;
+		}
+		if (((*curr)->left->res == 0 && (*curr)->type == AST_AND) || \
+			((*curr)->left->res == 1 && (*curr)->type == AST_OR))
+		{
+			(*curr)->right->res = ast_execute((*curr)->right, penvp);
+			(*curr)->res = (*curr)->right->res;
+		}
+		free_ast_node((*curr)->left);
+		(*curr)->left = (*curr)->right;
+		(*curr)->right = NULL;
+	}
+	(*curr)->type = op;
+	if (!ast_initchild(curr) || (*curr)->left->res == -1)
+		return (-1);
+	return (2);
+}
+
 int	ast_fill(t_ast *node, char *str)
 {
 	int	i;
@@ -110,16 +69,24 @@ int	ast_fill(t_ast *node, char *str)
 	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
 		i++;
 	start = i;
-	while (str[i] && (str[i] != '&' && str[i] != '|' && \
-		str[i] != '(' && str[i] != ')'))
+	while (str[i])
 	{
-		if (str[i++] == '\'')
+		if (str[i] == '\'')
+		{
+			i++;
 			while (str[i] && str[i] != '\'')
-				;
-		if (str[i++] == '\"')
+				i++;
+		}
+		if (str[i] == '\"')
+		{
+			i++;
 			while (str[i] && str[i] != '\"')
-				;
-		if (str[i])
+				i++;
+		}
+		if (!str[i] || str[i] == '&' || (str[i] == '|' && str[i + 1] == '|') || \
+			str[i] == '(' || str[i] == ')')
+			break ;
+		else
 			i++;
 	}
 	node->type = AST_VAL;
@@ -129,16 +96,42 @@ int	ast_fill(t_ast *node, char *str)
 	return (i);
 }
 
+int	ast_errproof_setop(char *str, int i, t_ast **node, char ***penvp)
+{
+	if (str[i] == '|')
+	{
+		if (ast_setop(node, AST_OR, penvp) == -1)
+			return (-1);
+	}
+	else if (str[i] == '&')
+		if (ast_setop(node, AST_AND, penvp) == -1)
+			return (-1);
+	return (i + 2);
+}
+
 int	ast_parse(char *pos, t_ast **curr, char ***penvp)
 {
+	int	i;
+
 	if (pos[0] == '(')
 		return (ast_initchild(curr));
 	else if (pos[0] == '&' && (pos[1] == '&'))
-		return (ast_setop(curr, AST_AND));
+		return (ast_setop(curr, AST_AND, penvp));
 	else if (pos[0] == '|' && (pos[1] == '|'))
-		return (ast_setop(curr, AST_OR));
+		return (ast_setop(curr, AST_OR, penvp));
 	else if (pos[0] == ')')
-		return (ast_eval(curr, penvp));
+	{
+		i = ast_eval(curr, penvp);
+		if (i == -1)
+			return (-1);
+		while ((pos[i] >= 9 && pos[i] <= 13) || pos[i] == 32)
+			i++;
+		if ((pos[i] == '&' && pos[i + 1] == '&') || \
+			(pos[i] == '|' && pos[i + 1] == '|'))
+			return (ast_errproof_setop(pos, i, curr, penvp));
+		else
+			return (-1);
+	}
 	else
 		return (ast_fill(*curr, pos));
 }
@@ -151,12 +144,11 @@ t_ast	*ast(char *str, char ***penvp)
 	t_ast	*curr;
 	t_ast	*ast;
 
-	ast = ast_new(NULL, AST_EMPTY, NULL);
+	i = 0;
+	ast = ast_init(&curr);
 	if (!ast)
 		return (NULL);
-	i = 0;
 	prompt_len = ft_strlen(str);
-	curr = ast;
 	while (prompt_len > i)
 	{
 		curr_len = ast_parse(&str[i], &curr, penvp);
@@ -164,7 +156,10 @@ t_ast	*ast(char *str, char ***penvp)
 			return (free_ast(ast), NULL);
 		i += curr_len;
 	}
-	if (curr->res == -1)
-		ast_execute(curr, penvp);
-	return (ast);
+	if (curr->res == -1 && (!curr->parent || curr->parent->res == -1 || \
+		(curr->parent->res == 1 && curr->parent->type == AST_OR) || \
+		(curr->parent->res == 0 && curr->parent->type == AST_AND)))
+		ast_eval(&curr, penvp);
+	free_ast_node(ast);
+	return (NULL);
 }
