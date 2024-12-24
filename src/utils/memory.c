@@ -6,7 +6,7 @@
 /*   By: username <your@email.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:34:46 by username          #+#    #+#             */
-/*   Updated: 2024/12/19 21:58:06 by username         ###   ########.fr       */
+/*   Updated: 2024/12/24 02:31:03 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,14 @@ void	free_prompt(t_prompt *lst)
 		free(curr);
 		curr = tmp;
 	}
+}
+
+void	free_ast(t_ast *ast)
+{
+	free(ast->value);
+	if (ast->left)
+		free_ast(ast->left);
+	if (ast->right)
+		free_ast(ast->right);
+	free(ast);
 }

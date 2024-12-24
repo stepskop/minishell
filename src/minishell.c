@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/21 17:22:41 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/24 02:32:57 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "exec.h"
 #include "signals.h"
 #include "path.h"
+#include "ast.h"
 
 static void	_loop_(char ***envp);
 static char	*get_command(char **cmmnd, char *pps);
@@ -40,9 +41,6 @@ int	main(int argc, char **argv, char **envp)
 static void	_loop_(char ***envp)
 {
 	char		*cmmnd[2];
-	t_prompt	*lst;
-	char		**splitted;
-	char		*tmp;
 
 	while (1)
 	{
@@ -54,14 +52,8 @@ static void	_loop_(char ***envp)
 		else if (!cmmnd[0][0])
 			continue ;
 		add_history (cmmnd[1]);
-		tmp = put_env(cmmnd[0], *envp);
-		splitted = sh_split_q(tmp, ' ');
-		free(tmp);
-		if (splitted && splitted[0])
-			lst = lexer(splitted);
+		ast(cmmnd[0], envp);
 		free (cmmnd[1]);
-		executor(lst, envp);
-		free_prompt(lst);
 	}
 }
 

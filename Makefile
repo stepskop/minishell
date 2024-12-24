@@ -22,6 +22,9 @@ UTILS_SRC = sh_split_q.c utils001.c utils002.c utils003.c utils004.c utils005.c 
 LEXER_DIR = lexer/
 LEXER_SRC = lexer.c utils.c list_utils.c
 
+AST_DIR = ast/
+AST_SRC = ast.c
+
 # Error
 ERROR_DIR = error/
 ERROR_SRC = error.c
@@ -34,13 +37,14 @@ SRCS = 	$(addprefix $(BUILTINS_DIR), $(BUILTINS_SRC)) \
 		$(addprefix $(PATH_DIR), $(PATH_SRC)) \
 		$(addprefix $(LEXER_DIR), $(LEXER_SRC)) \
 		$(addprefix $(ERROR_DIR), $(ERROR_SRC)) \
+		$(addprefix $(AST_DIR), $(AST_SRC)) \
 		$(MAIN)
 
 MAIN = minishell.c
 
 # Included headers
 INCLUDE_DIR = ./include/
-INCLUDE_SRC = minishell.h asterisk.h asterisk.h builtins.h exec.h lexer.h path.h utils.h signals.h
+INCLUDE_SRC = minishell.h asterisk.h asterisk.h builtins.h exec.h lexer.h path.h utils.h signals.h ast.h
 
 INCLUDES = $(addprefix $(INCLUDE_DIR), $(INCLUDE_SRC))
 
@@ -76,6 +80,7 @@ $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)$(PATH_DIR)
 	mkdir -p $(OBJ_DIR)$(LEXER_DIR)
 	mkdir -p $(OBJ_DIR)$(ERROR_DIR)
+	mkdir -p $(OBJ_DIR)$(AST_DIR)
 
 $(OBJ_DIR)%o: $(SRC_DIR)%c $(INCLUDES)
 	$(CC) $(CCFLAGS) $(HEADERS) $(LIB_HEADERS) -c $< -o $@

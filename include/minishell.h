@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/19 22:16:34 by username         ###   ########.fr       */
+/*   Updated: 2024/12/24 00:51:04 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,25 @@ typedef struct s_prompt
 	struct s_prompt	*next;
 	struct s_prompt	*prev;
 }	t_prompt;
+
+typedef enum e_ast_token
+{
+	AST_AND,
+	AST_OR,
+	AST_VAL,
+	AST_EMPTY,
+}	t_ast_token;
+
+typedef struct s_ast
+{
+	int				res;
+	char			*value;
+	t_ast_token		type;
+	struct s_ast	*left;
+	struct s_ast	*right;
+	struct s_ast	*parent;
+	struct s_ast	*sibling;
+}	t_ast;
 
 #endif
 
