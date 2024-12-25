@@ -41,6 +41,8 @@ int	ast_setop(t_ast **curr, t_ast_token op, char *str, char ***penvp)
 
 	i = 2;
 	(*curr) = (*curr)->parent;
+	if (!*curr)
+		return (sh_err("Syntax error\n"), -1);
 	if ((*curr)->type != AST_EMPTY)
 	{
 		(*curr)->res = ast_eval((*curr)->left, penvp);
@@ -52,6 +54,8 @@ int	ast_setop(t_ast **curr, t_ast_token op, char *str, char ***penvp)
 	(*curr)->type = op;
 	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
 		i++;
+	if (str[i] && (str[i] == '&' || str[i] == '|'))
+		return (sh_err("Syntax error\n"), -1);
 	return (i);
 }
 
@@ -67,6 +71,8 @@ int	ast_parse(char *pos, t_ast **curr, char ***penvp)
 		return (ast_setop(curr, AST_OR, &pos[0], penvp));
 	else if (pos[0] == ')')
 	{
+		if (!(*curr)->parent)
+			return (sh_err("Unexpected token around ')'\n"), -1);
 		i = 1;
 		while ((pos[i] >= 9 && pos[i] <= 13) || pos[i] == 32)
 			i++;

@@ -58,7 +58,6 @@ static void	_loop_(char ***envp)
 			continue ;
 		add_history (cmmnd[1]);
 		ast(cmmnd[0], envp);
-		//free (cmmnd[1]);
 	}
 }
 

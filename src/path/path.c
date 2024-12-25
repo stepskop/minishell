@@ -44,7 +44,8 @@ char	*get_sh_pps(void)
 	char	*str[2];
 	size_t	len;
 
-	str[1] = get_sh_path (0);
+	str[1] = sh_strjoin_free(CWD_COLOR, get_sh_path (0), 2);
+	str[1] = sh_strjoin_free(str[1], RESET_COLOR, 1);
 	len = ft_strlen (str[1]) + ft_strlen (PPS) + 3;
 	str[0] = (char *) malloc (len * sizeof (char));
 	if (!str[0])
