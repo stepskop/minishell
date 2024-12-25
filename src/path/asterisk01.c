@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:43:38 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/23 19:54:09 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/25 12:11:39 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,43 +151,3 @@ void	aster_recursion(t_list *dir, t_list *pttrns, t_list **result)
 // 	ft_lstclear (&parts[0], &a_split_clear);
 // 	return (1);
 // }
-
-int	wildcard_check(char *wildcard, char *str)
-{
-	t_list	*parts[2];
-	char	*part[3];
-
-	part[1] = str;
-	parts[0] = a_split (wildcard, '*');
-	if (patern_prefix (part[1], (char *)(parts[0]->content)))
-		return (ft_lstclear (&parts[0], &a_split_clear), 0);
-	else
-		part[1] += ft_strlen (parts[0]->content) - 1;
-	parts[1] = parts[0]->next;
-	while (parts[1])
-	{
-		part[0] = ft_strdup(parts[1]->content);
-		if (part[0][ft_strlen (part[0]) - 1] != '*')
-		{
-			if (patern_suffix (part[1], part[0]))
-				return (ft_lstclear (&parts[0], &a_split_clear), free (part[0]), 0);
-			else
-			{
-				part[1] += ft_strlen (part[1]);
-				break ;
-			}
-		}
-		part[0] = sh_remove_last_c (part[0], '*');
-		part[2] = ft_strnstr (part[1], part[0], ft_strlen (part[1]));
-		if (!part[2])
-			return (ft_lstclear (&parts[0], &a_split_clear), free (part[0]), 0);
-		part[1] += ft_strlen (part[0]);
-		free (part[0]);
-		parts[1] = parts[1]->next;
-	}
-	if (ft_strlen (part[1]) > 0
-		&& wildcard[ft_strlen (wildcard) - 1] != '*')
-		return (ft_lstclear (&parts[0], &a_split_clear), 0);
-	ft_lstclear (&parts[0], &a_split_clear);
-	return (1);
-}

@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:43:38 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/23 20:05:29 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/25 12:11:03 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,35 +86,61 @@ t_list	*aster_start(t_list *dirs)
 	return (dirs_[1]);
 }
 
-int	patern_prefix(const char *str, const char *prefix)
+/*
+*	aster_order is sorting linked list of pathes by ASCII ...
+*/
+void	aster_order(t_list *result)
 {
-	size_t	len[2];
-	int		result;
-	char	*prefix_;
+	t_list	*lst[3];
+	void	*buffer;
+	int		i[2];
 
-	if (!str || !prefix)
-		return (0);
-	prefix_ = sh_remove_last_c (ft_strdup (prefix), '*');
-	len[0] = sh_strlen(str);
-	len[1] = sh_strlen(prefix_);
-	if (len[1] > len[0])
-		return (1);
-	result = ft_strncmp(str, prefix, len[1]);
-	free (prefix_);
-	return (result);
+	i[0] = ft_lstsize (result);
+	lst[1] = ft_lstlast (result);
+	while (i[0] > 0)
+	{
+		lst[0] = result;
+		while (lst[0] != lst[1])
+		{
+			i[1] = aster_pathcmp (lst[0]->content, lst[0]->next->content);
+			if (i[1] > 0)
+			{
+				buffer = lst[0]->next->content;
+				lst[0]->next->content = lst[0]->content;
+				lst[0]->content = buffer;
+			}
+			lst[2] = lst[0];
+			lst[0] = lst[0]->next;
+		}
+		lst[1] = lst[2];
+		i[0]--;
+	}
 }
 
-int	patern_suffix(const char *str, const char *suffix)
+/*
+*	aster_pathcmp compares each dir in a pathes one by one
+*/
+int	aster_pathcmp(char *path1, char *path2)
 {
-	size_t	len[2];
-	int		result;
+	t_list	*path[4];
+	int		i;
 
-	if (!str || !suffix)
-		return (0);
-	len[0] = sh_strlen(str);
-	len[1] = sh_strlen(suffix);
-	if (len[1] > len[0])
-		return (1);
-	result = ft_strncmp(str + len[0] - len[1], suffix, len[1]);
-	return (result);
+	path[0] = a_split (path1, '/');
+	path[1] = a_split (path2, '/');
+	path[2] = path[0];
+	path[3] = path[1];
+	while (path[0] && path[1])
+	{
+		i = ft_strcmp (path[0]->content, path[1]->content);
+		if (i != 0)
+		{
+			return (ft_lstclear (&path[2], &a_split_clear),
+				ft_lstclear (&path[3], &a_split_clear), i);
+		}
+		path[0] = path[0]->next;
+		path[1] = path[1]->next;
+	}
+	ft_lstclear (&path[2], &a_split_clear);
+	ft_lstclear (&path[3], &a_split_clear);
+	return (0);
 }

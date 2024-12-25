@@ -6,68 +6,72 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:43:38 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/19 21:50:48 by username         ###   ########.fr       */
+/*   Updated: 2024/12/25 13:10:17 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "path.h"
 #include "asterisk.h"
 
-/*
-*	aster_order is sorting linked list of pathes by ASCII ...
-*/
-void	aster_order(t_list *result)
+int	wildcard_check(char *wildcard, char *str)
 {
-	t_list	*lst[3];
-	void	*buffer;
-	int		i[2];
+	t_list	*parts[2];
+	int		fisrt;
 
-	i[0] = ft_lstsize (result);
-	lst[1] = ft_lstlast (result);
-	while (i[0] > 0)
+	parts[0] = a_split (wildcard, '*');
+	parts[1] = parts[0];
+	fisrt = 1;
+	while (parts[1] && ft_strchr (parts[1]->content, '*'))
 	{
-		lst[0] = result;
-		while (lst[0] != lst[1])
-		{
-			i[1] = aster_pathcmp (lst[0]->content, lst[0]->next->content);
-			if (i[1] > 0)
-			{
-				buffer = lst[0]->next->content;
-				lst[0]->next->content = lst[0]->content;
-				lst[0]->content = buffer;
-			}
-			lst[2] = lst[0];
-			lst[0] = lst[0]->next;
-		}
-		lst[1] = lst[2];
-		i[0]--;
+		str = patern_prefix (str, (char *)(parts[1]->content), fisrt);
+		if (!str)
+			return (ft_lstclear (&parts[0], &a_split_clear), 0);
+		parts[1] = parts[1]->next;
+		fisrt = 0;
 	}
+	if (parts[1] && patern_suffix (str, parts[1]->content))
+		return (ft_lstclear (&parts[0], &a_split_clear), 0);
+	ft_lstclear (&parts[0], &a_split_clear);
+	return (1);
 }
 
-/*
-*	aster_pathcmp compares each dir in a pathes one by one
-*/
-int	aster_pathcmp(char *path1, char *path2)
+char	*patern_prefix(char *str, char *prefix, int first)
 {
-	t_list	*path[4];
-	int		i;
+	size_t	len[2];
+	char	*str_;
+	char	*prefix_;
 
-	path[0] = a_split (path1, '/');
-	path[1] = a_split (path2, '/');
-	path[2] = path[0];
-	path[3] = path[1];
-	while (path[0] && path[1])
+	if (!str || !prefix)
+		return (0);
+	prefix_ = sh_remove_last_c (ft_strdup (prefix), '*');
+	len[0] = sh_strlen(str);
+	len[1] = sh_strlen(prefix_);
+	if (len[1] > len[0])
+		return (free (prefix_), NULL);
+	if (first)
 	{
-		i = ft_strcmp (path[0]->content, path[1]->content);
-		if (i != 0)
-		{
-			return (ft_lstclear (&path[2], &a_split_clear),
-				ft_lstclear (&path[3], &a_split_clear), i);
-		}
-		path[0] = path[0]->next;
-		path[1] = path[1]->next;
+		if (ft_strncmp(str, prefix_, len[1]))
+			return (free (prefix_), NULL);
+		else
+			return (free (prefix_), str + len[1]);
 	}
-	ft_lstclear (&path[2], &a_split_clear);
-	ft_lstclear (&path[3], &a_split_clear);
-	return (0);
+	str_ = ft_strnstr (str, prefix_, len[0]);
+	if (!str_)
+		return (free (prefix_), NULL);
+	return (free (prefix_), str_ + len[1]);
+}
+
+int	patern_suffix(const char *str, const char *suffix)
+{
+	size_t	len[2];
+	int		result;
+
+	if (!str || !suffix)
+		return (0);
+	len[0] = sh_strlen(str);
+	len[1] = sh_strlen(suffix);
+	if (len[1] > len[0])
+		return (1);
+	result = ft_strncmp(str + len[0] - len[1], suffix, len[1]);
+	return (result);
 }

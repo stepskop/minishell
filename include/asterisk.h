@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 18:23:25 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/23 19:39:04 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/25 12:42:10 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ typedef struct s_dir_element
 t_list		*get_dirs(char *pattern);
 int			get_lst_dirs(t_list **lst, char *pattern, char *path[]);
 void		aster_recursion(t_list *dir, t_list *dirs, t_list **result);
-int			wildcard_check(char *wildcard, char *str);
 
 // asterisk02.c
 char		*sh_remove_last_c(char *str, char c);
@@ -36,21 +35,14 @@ void		dirs_clean(void *content);
 int			dirs_check(char *d_name, char *pttrn);
 void		dirs_init(t_list *dirs[], char *pathes[], t_list *dir);
 
-// void	dirs_print(void *content);	//
-// void	list_print(void *content);	//
-
 // asterisk03.c
-// t_list		*aster_slash(char *pattern);
-// t_list		*aster_tilde(char *pattern);
-// t_list		*aster_dot(char *pattern);
 t_list		*aster_start(t_list *dirs);
-//int		check_d_type(t_list *dir);
-int			patern_prefix(const char *patern, const char *prefix);
-int			patern_suffix(const char *patern, const char *suffix);
-
-// asterisk04.c
 void		aster_order(t_list *result);
 int			aster_pathcmp(char *path1, char *path2);
-int			aster_strcmp(char *s1, char *s2);
+
+// asterisk04.c
+int			wildcard_check(char *wildcard, char *str);
+char		*patern_prefix(char *patern, char *prefix, int first);
+int			patern_suffix(const char *patern, const char *suffix);
 
 #endif
