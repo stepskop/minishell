@@ -6,12 +6,13 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 23:53:25 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/23 17:26:30 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/25 19:02:48 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
 #include "exec.h"
+#include "signals.h"
 
 static int	exec_builtin(char **argv, t_ctx ctx, int std_backup[2])
 {
@@ -82,6 +83,7 @@ int	run_builtins(char **argv, t_ctx ctx)
 		pid = fork();
 	if (pid == 0)
 	{
+		sig_reset ();
 		ex_subprocess_pipes(ctx.pipefd);
 		run_exit (argv, ctx, exec_builtin(argv, ctx, NULL), NULL);
 	}
@@ -94,8 +96,7 @@ int	run_builtins(char **argv, t_ctx ctx)
 		restore_stdfd(std_backup);
 		return (status);
 	}
-	ctx.node->pid = pid;
-	return (pid);
+	return (ctx.node->pid = pid, pid);
 }
 
 int	run_exit(char **argv, t_ctx ctx, int exit_code, char *str2free)

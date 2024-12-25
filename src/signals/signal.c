@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 16:51:45 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/25 18:36:15 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/25 19:04:03 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,20 @@ static void	sigact(int sig, siginfo_t *info, void *context)
 			rl_redisplay ();
 		}
 	}
+}
+
+void	sig_reset(void)
+{
+	struct sigaction	sig;
+	sigset_t			block_mask;
+	int					checker;
+
+	sigemptyset (&block_mask);
+	sig.sa_mask = block_mask;
+	sig.sa_flags = 0;
+	sig.sa_handler = SIG_DFL;
+	checker = sigaction(SIGINT, &sig, 0);
+	checker += sigaction(SIGQUIT, &sig, 0);
+	if (checker != 0)
+		sh_err ("reset sigactions ERROR!");
 }

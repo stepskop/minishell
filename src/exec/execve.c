@@ -6,13 +6,14 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 15:34:17 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/23 16:57:04 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/25 19:03:03 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 #include "builtins.h"
 #include "path.h"
+#include "signals.h"
 
 int	sh_run(char *cmmnd, t_ctx ctx)
 {
@@ -81,6 +82,7 @@ int	sh_execve(char **argv, t_ctx ctx)
 	pid = fork();
 	if (pid == 0)
 	{
+		sig_reset ();
 		rl_clear_history ();
 		cmmnd = path_resolve(argv[0]);
 		ex_subprocess_pipes(ctx.pipefd);
