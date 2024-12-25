@@ -102,11 +102,16 @@ int	run_builtins(char **argv, t_ctx ctx)
 int	run_exit(char **argv, t_ctx ctx, int exit_code, char *str2free)
 {
 	t_prompt	*curr;
+	t_ast		*ast_curr;
 
 	curr = ctx.node;
 	while (curr && curr->prev)
 		curr = curr->prev;
 	free_prompt(curr);
+	ast_curr = ctx.ast;
+	while (ast_curr && ast_curr->parent)
+		ast_curr = ast_curr->parent;
+	free_ast(ast_curr);
 	sh_ppfree (argv);
 	sh_ppfree (ctx.to_free);
 	sh_ppfree (*ctx.penvp);

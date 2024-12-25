@@ -43,6 +43,8 @@ void	free_prompt(t_prompt *lst)
 
 void	free_ast(t_ast *ast)
 {
+	if (!ast)
+		return ;
 	free(ast->value);
 	if (ast->left)
 		free_ast(ast->left);

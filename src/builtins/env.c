@@ -67,7 +67,7 @@ int	env_prsng(char **argv, char ***penvp)
 		else if (idx[2] == -1)
 		{
 			lst = lexer (sh_pstrdup (&argv[idx[0]]));
-			executor (lst, penvp);
+			executor (lst, NULL, penvp);
 			wait (&idx[3]);
 			free_prompt(lst);
 			return (sh_ppfree (*penvp), idx[3]);

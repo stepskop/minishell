@@ -87,7 +87,7 @@ static char	*ex_cmdprep(t_prompt *node, char ***penvp)
 	return (res);
 }
 
-static t_prompt	*ex_execute(t_prompt *node, char ***penvp)
+static t_prompt	*ex_execute(t_prompt *node, t_ast *ast, char ***penvp)
 {
 	int		pipefd[2];
 	int		c_pipe[2];
@@ -108,12 +108,12 @@ static t_prompt	*ex_execute(t_prompt *node, char ***penvp)
 	if (node->in_fd > 0)
 		c_pipe[0] = node->in_fd;
 	cmd = ex_cmdprep(node, penvp);
-	sh_run(cmd, (t_ctx){c_pipe, node, NULL, penvp});
+	sh_run(cmd, (t_ctx){c_pipe, node, ast, NULL, penvp});
 	clean_pipes(node, pipefd);
 	return (node);
 }
 
-int	executor(t_prompt *lst, char ***penvp)
+int	executor(t_prompt *lst, t_ast *ast, char ***penvp)
 {
 	t_prompt	*curr;
 	int			stat;
@@ -125,7 +125,7 @@ int	executor(t_prompt *lst, char ***penvp)
 	while (curr)
 	{
 		if (curr->token == CMD)
-			ex_execute(curr, penvp);
+			ex_execute(curr, ast, penvp);
 		curr = curr->next;
 	}
 	stat = ex_get_exitcode(lst);

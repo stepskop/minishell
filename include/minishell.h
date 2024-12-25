@@ -50,6 +50,7 @@ typedef struct s_ctx
 {
 	int				*pipefd;
 	struct s_prompt	*node;
+	struct s_ast	*ast;
 	char			**to_free;
 	char			***penvp;
 }	t_ctx;

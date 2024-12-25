@@ -67,7 +67,7 @@ int	ast_execute(t_ast *node, char ***envp)
 	if (!splitted || !splitted[0])
 		return (-1);
 	lst = lexer(splitted);
-	node->res = executor(lst, envp);
+	node->res = executor(lst, node, envp);
 	free_prompt(lst);
 	return (node->res);
 }

@@ -101,7 +101,8 @@ t_ast	*ast(char *str, char ***penvp)
 			return (free_ast(ast), NULL);
 		i += curr_len;
 	}
+	free(str);
 	ast_eval(ast, penvp);
-	free_ast_node(ast);
+	free_ast(ast);
 	return (NULL);
 }

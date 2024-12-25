@@ -17,7 +17,7 @@
 # include "utils.h"
 
 // Executor
-int			executor(t_prompt *lst, char ***penvp);
+int			executor(t_prompt *lst, t_ast *ast, char ***penvp);
 int			ex_get_heredoc(t_args *args);
 int			ex_open_file(t_args *args, int oflag);
 size_t		ex_cmdlen(t_args *args);
