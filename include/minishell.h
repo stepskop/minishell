@@ -30,10 +30,10 @@
 # include <fcntl.h>
 
 // Colors & Styles
-# define CWD_COLOR "\033[0m\033[32m"
+# define CWD_COLOR "\033[0m\033[34m"
 # define RESET_COLOR "\033[0m "
 
-# define PPS "\033[1m\033[97m\033[104m SKSH \033[0m "
+# define PPS "\033[1m\033[44m\033[97m SKSH \033[0m "
 # define SET 0
 # define GET 1
 
