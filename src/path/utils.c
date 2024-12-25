@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: username <your@email.com>                  +#+  +:+       +#+        */
+/*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 21:22:45 by username          #+#    #+#             */
-/*   Updated: 2024/12/19 21:52:29 by username         ###   ########.fr       */
+/*   Updated: 2024/12/23 16:41:52 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,18 +55,18 @@ static char	*cmd_from_home(char *cmd)
 	return (res);
 }
 
-static char	*cmd_from_curr(char *cmd)
-{
-	char	curr_dir[PATH_MAX];
-	char	*res;
+// static char	*cmd_from_curr(char *cmd)
+// {
+// 	char	curr_dir[PATH_MAX];
+// 	char	*res;
 
-	if (!getcwd(curr_dir, PATH_MAX))
-		return (perror("getcwd"), NULL);
-	res = ft_strjoin(curr_dir, cmd + 1);
-	if (!res)
-		return (perror("malloc"), NULL);
-	return (res);
-}
+// 	if (!getcwd(curr_dir, PATH_MAX))
+// 		return (perror("getcwd"), NULL);
+// 	res = ft_strjoin(curr_dir, cmd + 1);
+// 	if (!res)
+// 		return (perror("malloc"), NULL);
+// 	return (res);
+// }
 
 static char	*cmd_from_root(char *cmd)
 {
@@ -87,15 +87,12 @@ char	*path_resolve(char *cmd)
 	if (cmd[0] == '~')
 		res = cmd_from_home(cmd);
 	else if (cmd[0] == '.')
-		res = cmd_from_curr(cmd);
+		res = cmd_from_root(cmd);
 	else if (cmd[0] == '/')
 		res = cmd_from_root(cmd);
 	else
 		res = cmd_from_path(cmd);
 	if (!res)
 		return (NULL);
-	if (access(res, F_OK | X_OK) == 0)
-		return (res);
-	free (res);
-	return (NULL);
+	return (res);
 }

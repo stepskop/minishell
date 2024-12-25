@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 15:34:17 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/22 19:49:53 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/23 16:57:04 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,10 @@ void	sp_print_cnf(char *cmmnd)
 {
 	char	*str;
 
-	str = sh_strjoin (cmmnd, ": No such file or directory\n");
+	if (ft_strchr (cmmnd, '/'))
+		str = sh_strjoin (cmmnd, ": No such file or directory\n");
+	else
+		str = sh_strjoin (cmmnd, ": command not found\n");
 	sh_err (str);
 	free (str);
 }
@@ -73,6 +76,7 @@ int	sh_execve(char **argv, t_ctx ctx)
 {
 	char	*cmmnd;
 	int		pid;
+	int		exit_code;
 
 	pid = fork();
 	if (pid == 0)
@@ -81,10 +85,15 @@ int	sh_execve(char **argv, t_ctx ctx)
 		cmmnd = path_resolve(argv[0]);
 		ex_subprocess_pipes(ctx.pipefd);
 		if (cmmnd)
+		{
+			exit_code = sh_checkcmd (cmmnd);
+			if (exit_code)
+				run_exit (argv, ctx, exit_code, cmmnd);
 			execve (cmmnd, argv, *ctx.penvp);
+		}
 		else
 			sp_print_cnf(argv[0]);
-		run_exit (argv, ctx, NULL, EXIT_FAILURE);
+		run_exit (argv, ctx, 127, NULL);
 	}
 	ctx.node->pid = pid;
 	return (pid);

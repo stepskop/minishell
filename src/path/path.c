@@ -6,11 +6,12 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 12:24:25 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/19 21:49:55 by username         ###   ########.fr       */
+/*   Updated: 2024/12/23 16:59:27 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "path.h"
+#include <errno.h>
 
 char	*get_sh_path(int absolute_path)
 {
@@ -82,4 +83,32 @@ char	*sh_replace_dot(char *path)
 		return (result);
 	}
 	return (ft_strdup (path));
+}
+
+int	sh_checkcmd(char *cmmnd)
+{
+	DIR		*dir;
+	char	*str;
+	int		err_code;
+
+	err_code = 126;
+	dir = opendir (cmmnd);
+	if (dir)
+		str = sh_strjoin (cmmnd, ": Is a directory\n");
+	else if (access (cmmnd, F_OK | X_OK) == -1)
+	{
+		if (errno == EACCES)
+			str = sh_strjoin (cmmnd, ": Permission denied\n");
+		else
+		{
+			str = sh_strjoin (cmmnd, ": No such file or directory\n");
+			err_code = 127;
+		}
+	}
+	else
+		return (0);
+	sh_err (str);
+	free (str);
+	closedir (dir);
+	return (err_code);
 }

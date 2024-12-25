@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/24 02:32:57 by username         ###   ########.fr       */
+/*   Updated: 2024/12/23 12:06:08 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "signals.h"
 #include "path.h"
 #include "ast.h"
+#include "builtins.h"
 
 static void	_loop_(char ***envp);
 static char	*get_command(char **cmmnd, char *pps);
@@ -27,6 +28,7 @@ int	main(int argc, char **argv, char **envp)
 	char	**envp_;
 
 	envp_ = sh_pstrdup (envp);
+	envp_set_var (&envp_, "?=0", 1);
 	if (!envp_)
 		return (perror("malloc"), EXIT_FAILURE);
 	(void)argc;
@@ -48,7 +50,10 @@ static void	_loop_(char ***envp)
 		rl_on_new_line ();
 		cmmnd[0] = get_command (&cmmnd[1], get_sh_pps ());
 		if (!cmmnd[0])
+		{
 			ctrl_d (cmmnd[1], *envp);
+			continue ;
+		}
 		else if (!cmmnd[0][0])
 			continue ;
 		add_history (cmmnd[1]);
@@ -88,7 +93,12 @@ static char	*get_command(char **cmmnd, char *pps)
 static void	ctrl_d(char *cmmnd, char **envp)
 {
 	if (cmmnd)
+	{
+		sh_err ("unexpected EOF while looking for matching \"\'\n");
+		sh_err ("syntax error: unexpected end of file\n");
 		free (cmmnd);
+		return ;
+	}
 	else
 		write (1, "exit\n", 5);
 	sh_ppfree (envp);

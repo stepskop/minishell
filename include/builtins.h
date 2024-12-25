@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 21:10:05 by username          #+#    #+#             */
-/*   Updated: 2024/12/19 22:53:51 by username         ###   ########.fr       */
+/*   Updated: 2024/12/23 16:57:04 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 // run_builtins.c
 int			is_builtin(char *cmmnd);
 int			run_builtins(char **argv, t_ctx ctx);
-int			run_exit(char **argv, t_ctx ctx, char *str, int exit_code);
+int			run_exit(char **argv, t_ctx ctx, int exit_code, char *str2free);
 // echo.c
 int			echo(char **argv);
 
@@ -48,5 +48,8 @@ int			export(char **argv, char ***envp);
 
 // unset.c
 int			unset(char **argv, char ***envp);
+
+// exit.c
+int			_exit_(char **argv, t_ctx ctx, int std_backup[2]);
 
 #endif
