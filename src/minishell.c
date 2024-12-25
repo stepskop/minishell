@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "utils.h"
-#include "lexer.h"
-#include "exec.h"
 #include "signals.h"
 #include "path.h"
 #include "ast.h"
