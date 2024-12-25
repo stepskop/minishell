@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 21:16:25 by username          #+#    #+#             */
-/*   Updated: 2024/12/21 17:03:37 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/24 02:27:04 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,5 +67,7 @@ void		sh_err(char *str);
 // Memory
 void		free_args(t_args *args);
 void		free_prompt(t_prompt *lst);
+void		free_ast(t_ast *ast);
+void		free_ast_node(t_ast *node);
 
 #endif

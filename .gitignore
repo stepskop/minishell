@@ -1,4 +1,5 @@
 minishell
+src/ast/ast_temp.c
 *.log
 
 # Prerequisites

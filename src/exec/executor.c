@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:00:57 by username          #+#    #+#             */
-/*   Updated: 2024/12/19 23:31:26 by username         ###   ########.fr       */
+/*   Updated: 2024/12/24 15:23:11 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,15 +126,6 @@ int	executor(t_prompt *lst, char ***penvp)
 	{
 		if (curr->token == CMD)
 			ex_execute(curr, penvp);
-		/*
-		if (curr->token == AND || curr->token == OR)
-		{
-			stat = ex_get_exitcode(last_cmd);
-			if ((curr->token == AND && stat != 0) || \
-				(curr->token == OR && stat == 0))
-				break ;
-		}
-		*/
 		curr = curr->next;
 	}
 	stat = ex_get_exitcode(lst);
