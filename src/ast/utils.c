@@ -6,7 +6,7 @@
 /*   By: username <your@email.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 14:48:27 by username          #+#    #+#             */
-/*   Updated: 2024/12/24 14:50:56 by username         ###   ########.fr       */
+/*   Updated: 2024/12/25 03:52:25 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,14 +72,12 @@ int	ast_execute(t_ast *node, char ***envp)
 	return (node->res);
 }
 
-t_ast	*ast_init(t_ast **curr)
+t_ast	*ast_init(void)
 {
 	t_ast	*new_ast;
 
 	new_ast = ast_new(NULL, AST_EMPTY, NULL);
 	if (!new_ast)
 		return (NULL);
-	if (ast_initchild(curr) == -1)
-		return (free_ast(new_ast), NULL);
 	return (new_ast);
 }
