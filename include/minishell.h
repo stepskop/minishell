@@ -32,6 +32,8 @@
 // Colors & Styles
 # define CWD_COLOR "\033[0m\033[34m"
 # define RESET_COLOR "\033[0m "
+# define KSOROKOL "\033[35m\033[1m\033[4mksorokol"
+# define SSKOPEK "\033[35m\033[1m\033[4msskopek"
 
 # define PPS "\033[1m\033[44m\033[97m SKSH \033[0m "
 # define SET 0

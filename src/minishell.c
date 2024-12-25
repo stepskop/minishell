@@ -23,6 +23,25 @@ static char	*get_command(char **cmmnd, char *pps);
 static void	ctrl_d(char *cmmnd, char **envp);
 // int		check_eol(char *str, t_counters_quotes	*cq);
 
+static void	print_banner(void)
+{
+	int		fd;
+	char	*line;
+
+	fd = open("banner.txt", O_RDONLY, 0600);
+	if (fd == -1)
+		return ;
+	line = get_next_line(fd);
+	while (line)
+	{
+		printf("%s", line);
+		free(line);
+		line = get_next_line(fd);
+	}
+	close(fd);
+	printf("\n");
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char	**envp_;
@@ -34,6 +53,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	sig_init ();
+	print_banner();
 	_loop_ (&envp_);
 	sh_ppfree (envp_);
 	rl_clear_history ();
