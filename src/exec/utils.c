@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 16:25:32 by username          #+#    #+#             */
-/*   Updated: 2024/12/19 21:49:13 by username         ###   ########.fr       */
+/*   Updated: 2024/12/26 15:21:15 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,23 +61,29 @@ size_t	ex_cmdlen(t_args *args)
 int	ex_get_heredoc(t_args *args)
 {
 	int	pipefd[2];
+	char	*filename;
 
 	if (!args)
 		return (sh_err("delimiter not specified\n"), -1);
 	if (pipe(pipefd) == -1)
 		return (perror("heredoc"), -1);
+	filename = sh_unquotes (args->data);
 	read_stdin(pipefd, args->data);
+	free (filename);
 	close(pipefd[1]);
 	return (pipefd[0]);
 }
 
 int	ex_open_file(t_args *args, int oflag)
 {
-	int	fd;
+	int		fd;
+	char	*filename;
 
 	if (!args)
 		return (sh_err("path not specified\n"), -1);
-	fd = open(args->data, oflag, 0666);
+	filename = sh_unquotes (args->data);
+	fd = open(filename, oflag, 0666);
+	free (filename);
 	if (fd == -1)
 		return (perror("open"), -1);
 	return (fd);
