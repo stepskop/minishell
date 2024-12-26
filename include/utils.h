@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 21:16:25 by username          #+#    #+#             */
-/*   Updated: 2024/12/24 02:27:04 by username         ###   ########.fr       */
+/*   Updated: 2024/12/26 12:40:22 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,13 @@ char		**sh_rmbs_args(char **args);
 char		**sh_ud_rmbs(char **args);
 int			sh_insq(char *arg, size_t pos);
 size_t		sh_setchstr(char *str_d, size_t idx_d, char *str_s, size_t idx_s);
+
+// utils006.c
+char		*sh_addspace(char **str, char *symbols, int after);
+char		sh_inquates(char *str, size_t idx);
+size_t		sh_addspace_b(char **str, size_t idx);
+size_t		sh_addspace_a(char **str, size_t idx, size_t len);
+char		*sh_addspace_all(char **str);
 
 // sh_split_q.c
 char		**sh_split_q(char *str, char c);

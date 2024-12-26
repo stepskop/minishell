@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/23 12:06:08 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/26 12:40:26 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,9 @@ static void	_loop_(char ***envp)
 		}
 		else if (!cmmnd[0][0])
 			continue ;
+
 		add_history (cmmnd[1]);
+		sh_addspace_all (&cmmnd[0]);
 		ast(cmmnd[0], envp);
 	}
 }
