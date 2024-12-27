@@ -43,8 +43,24 @@ t_prompt	*lx_parent(t_prompt *curr, t_prompt *parent)
 	return (curr);
 }
 
-void	lx_setlastcmd(t_prompt **last_cmd)
+int	lx_setlastcmd(t_prompt **last_par, t_prompt **last_cmd,
+	t_prompt **curr, char *str)
 {
-	while (*last_cmd && (*last_cmd)->token != CMD)
-		*last_cmd = (*last_cmd)->prev;
+	while (*last_par && (*last_par)->token != CMD)
+	{
+		*last_par = (*last_par)->prev;
+		if (*last_par && (*last_par)->token == PIPE)
+			*last_par = NULL;
+	}
+	if (*last_par)
+		return (1);
+	(*curr)->next = lx_add(WORD, *curr, str);
+	if (!(*curr)->next)
+		return (0);
+	*last_par = (*curr)->next;
+	if (*last_cmd)
+		(*last_cmd)->next_cmd = (*curr)->next;
+	*last_cmd = (*curr)->next;
+	*curr = (*curr)->next;
+	return (0);
 }

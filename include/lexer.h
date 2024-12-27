@@ -29,6 +29,7 @@ int			lx_parse(char *str, t_prompt **curr,
 				t_prompt **last_par, t_prompt **last_cmd);
 t_prompt	*lx_add(t_token token, t_prompt *prev, char *val);
 t_token		lx_get_token(char *str);
-void		lx_setlastcmd(t_prompt **last_cmd);
+int			lx_setlastcmd(t_prompt **last_par, t_prompt **last_cmd,
+				t_prompt **curr, char *str);
 
 #endif

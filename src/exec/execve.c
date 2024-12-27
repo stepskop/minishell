@@ -57,6 +57,7 @@ int	ex_get_exitcode(t_prompt *lst)
 	t_prompt	*last;
 
 	curr = lst;
+	status = 0;
 	while (curr)
 	{
 		last = curr;

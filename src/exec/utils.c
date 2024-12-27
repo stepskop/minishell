@@ -74,13 +74,22 @@ int	ex_get_heredoc(t_args *args)
 	return (pipefd[0]);
 }
 
-int	ex_open_file(t_args *args, int oflag)
+int	ex_open_file(t_args *args, int oflag, char **envp)
 {
 	int		fd;
 	char	*filename;
+	char	**splitted;
 
-	if (!args)
+	if (!args || !args->data)
 		return (sh_err("path not specified\n"), -1);
+	if (!ex_expand(args, envp))
+		return (-1);
+	splitted = sh_split_q(args->data, ' ');
+	if (!splitted)
+		return (-1);
+	if (splitted[1])
+		return (sh_err("ambiguous redirect\n"), sh_ppfree(splitted), -1);
+	sh_ppfree(splitted);
 	filename = sh_unquotes (args->data);
 	fd = open(filename, oflag, 0666);
 	free (filename);

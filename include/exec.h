@@ -19,7 +19,7 @@
 // Executor
 int			executor(t_prompt *lst, t_ast *ast, char ***penvp);
 int			ex_get_heredoc(t_args *args);
-int			ex_open_file(t_args *args, int oflag);
+int			ex_open_file(t_args *args, int oflag, char **envp);
 size_t		ex_cmdlen(t_args *args);
 int			ex_expand(t_args *args, char **envp);
 void		clean_pipes(t_prompt *node, int pipefd[2]);

@@ -38,11 +38,15 @@ static t_prompt	*lx_create(char **cmd_raw, t_prompt *lst)
 
 	i = 0;
 	curr = lst;
-	last_cmd = curr;
-	last_par = last_cmd;
+	last_cmd = NULL;
+	last_par = curr;
+	if (last_par->token == CMD)
+		last_cmd = last_par;
 	while (cmd_raw[++i])
 	{
 		if (!lx_parse(cmd_raw[i], &curr, &last_par, &last_cmd))
+			return (free_prompt(lst), NULL);
+		if (!curr)
 			return (free_prompt(lst), NULL);
 	}
 	return (lst);

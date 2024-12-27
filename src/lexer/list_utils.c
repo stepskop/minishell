@@ -79,7 +79,8 @@ int	lx_parse(char *str, t_prompt **curr, t_prompt **l_par, t_prompt **l_cmd)
 	if (lx_get_token(str) == WORD && !lx_cmdend(**curr))
 	{
 		if (!lx_argcheck(**l_par))
-			lx_setlastcmd(l_par);
+			if (!lx_setlastcmd(l_par, l_cmd, curr, str))
+				return (1);
 		if (!lx_add_arg(str, &(*l_par)->args))
 			return (0);
 	}
@@ -92,7 +93,8 @@ int	lx_parse(char *str, t_prompt **curr, t_prompt **l_par, t_prompt **l_cmd)
 			*l_par = (*curr)->next;
 		if ((*curr)->next->token == CMD)
 		{
-			(*l_cmd)->next_cmd = (*curr)->next;
+			if (*l_cmd)
+				(*l_cmd)->next_cmd = (*curr)->next;
 			*l_cmd = (*curr)->next;
 		}
 		*curr = (*curr)->next;

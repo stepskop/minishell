@@ -14,7 +14,7 @@
 #include "lexer.h"
 #include "builtins.h"
 
-static int	ex_handle_ionode(t_prompt *curr, int (*last_io)[2])
+static int	ex_handle_ionode(t_prompt *curr, int (*last_io)[2], char **envp)
 {
 	if ((curr->token == LESSLESS || curr->token == LESS) && (*last_io)[0] > 0)
 		close((*last_io)[0]);
@@ -24,11 +24,13 @@ static int	ex_handle_ionode(t_prompt *curr, int (*last_io)[2])
 	if (curr->token == LESSLESS)
 		(*last_io)[0] = ex_get_heredoc(curr->args);
 	else if (curr->token == LESS)
-		(*last_io)[0] = ex_open_file(curr->args, O_RDONLY);
+		(*last_io)[0] = ex_open_file(curr->args, O_RDONLY, envp);
 	else if (curr->token == GREATGREAT)
-		(*last_io)[1] = ex_open_file(curr->args, O_WRONLY | O_CREAT | O_APPEND);
+		(*last_io)[1] = ex_open_file(curr->args,
+				O_WRONLY | O_CREAT | O_APPEND, envp);
 	else if (curr->token == GREAT)
-		(*last_io)[1] = ex_open_file(curr->args, O_WRONLY | O_CREAT | O_TRUNC);
+		(*last_io)[1] = ex_open_file(curr->args,
+				O_WRONLY | O_CREAT | O_TRUNC, envp);
 	if (curr->token == GREATGREAT || curr->token == GREAT)
 		curr->in_fd = (*last_io)[1];
 	else if (curr->token == LESSLESS || curr->token == LESS)
@@ -38,7 +40,7 @@ static int	ex_handle_ionode(t_prompt *curr, int (*last_io)[2])
 	return (1);
 }
 
-static void	ex_ioprep(t_prompt *lst)
+static void	ex_ioprep(t_prompt *lst, char **envp)
 {
 	t_prompt	*curr;
 	t_prompt	*last_cmd;
@@ -50,7 +52,7 @@ static void	ex_ioprep(t_prompt *lst)
 	{
 		if (curr->token == CMD)
 			last_cmd = curr;
-		if (!ex_handle_ionode(curr, &last_io))
+		if (!ex_handle_ionode(curr, &last_io, envp))
 		{
 			last_cmd->io_err = 1;
 			std_pipe(last_io);
@@ -129,7 +131,7 @@ int	executor(t_prompt *lst, t_ast *ast, char ***penvp)
 	int			stat;
 	char		*status_var;
 
-	ex_ioprep(lst);
+	ex_ioprep(lst, *penvp);
 	curr = lst;
 	stat = EXIT_SUCCESS;
 	while (curr)

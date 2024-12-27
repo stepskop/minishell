@@ -35,7 +35,7 @@ int	_exit_(char **argv, t_ctx ctx, int std_backup[2])
 	else if (i[0] == 2 && i[1])
 		run_exit (argv, ctx, ft_atoi (argv[1]), NULL);
 	str = sh_strjoin ("exit: ", argv[1]);
-	str = sh_strjoin_free (str, ": numeric argument required", 1);
+	str = sh_strjoin_free (str, ": numeric argument required\n", 1);
 	sh_err(str);
 	run_exit (argv, ctx, 2, str);
 	return (0);
