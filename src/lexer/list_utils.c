@@ -6,7 +6,7 @@
 /*   By: username <your@email.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 00:26:09 by username          #+#    #+#             */
-/*   Updated: 2024/12/19 22:32:24 by username         ###   ########.fr       */
+/*   Updated: 2024/12/27 04:47:55 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ t_prompt	*lx_add(t_token token, t_prompt *prev, char *val)
 	new->in_fd = 0;
 	new->out_fd = 1;
 	new->proc_less = 0;
+	new->io_err = 0;
 	return (new);
 }
 
@@ -75,10 +76,10 @@ t_token	lx_get_token(char *str)
 
 int	lx_parse(char *str, t_prompt **curr, t_prompt **l_par, t_prompt **l_cmd)
 {
-	if (lx_get_token(str) == AND || lx_get_token(str) == OR)
-		*l_cmd = NULL;
-	if (lx_get_token(str) == WORD && !lx_cmdend(**curr) && lx_argcheck(**l_par))
+	if (lx_get_token(str) == WORD && !lx_cmdend(**curr))
 	{
+		if (!lx_argcheck(**l_par))
+			lx_setlastcmd(l_par);
 		if (!lx_add_arg(str, &(*l_par)->args))
 			return (0);
 	}
@@ -91,8 +92,7 @@ int	lx_parse(char *str, t_prompt **curr, t_prompt **l_par, t_prompt **l_cmd)
 			*l_par = (*curr)->next;
 		if ((*curr)->next->token == CMD)
 		{
-			if (*l_cmd)
-				(*l_cmd)->next_cmd = (*curr)->next;
+			(*l_cmd)->next_cmd = (*curr)->next;
 			*l_cmd = (*curr)->next;
 		}
 		*curr = (*curr)->next;

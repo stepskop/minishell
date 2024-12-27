@@ -6,7 +6,7 @@
 /*   By: username <your@email.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 20:49:59 by username          #+#    #+#             */
-/*   Updated: 2024/12/19 21:59:17 by username         ###   ########.fr       */
+/*   Updated: 2024/12/27 04:47:47 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,6 @@ int			lx_parse(char *str, t_prompt **curr,
 				t_prompt **last_par, t_prompt **last_cmd);
 t_prompt	*lx_add(t_token token, t_prompt *prev, char *val);
 t_token		lx_get_token(char *str);
+void		lx_setlastcmd(t_prompt **last_cmd);
 
 #endif

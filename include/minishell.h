@@ -55,6 +55,7 @@ typedef enum e_token
 typedef struct s_ctx
 {
 	int				*pipefd;
+	int				next_readpipe;
 	struct s_prompt	*node;
 	struct s_ast	*ast;
 	char			**to_free;
@@ -71,6 +72,7 @@ typedef struct s_prompt
 {
 	int				in_fd;
 	int				out_fd;
+	int				io_err;
 	char			*str_val;
 	t_token			token;
 	t_ctx			*cmd;

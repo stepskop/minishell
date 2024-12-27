@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 16:25:32 by username          #+#    #+#             */
-/*   Updated: 2024/12/26 15:21:15 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/27 04:23:30 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ size_t	ex_cmdlen(t_args *args)
 
 int	ex_get_heredoc(t_args *args)
 {
-	int	pipefd[2];
+	int		pipefd[2];
 	char	*filename;
 
 	if (!args)

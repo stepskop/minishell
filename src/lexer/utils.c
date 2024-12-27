@@ -6,7 +6,7 @@
 /*   By: username <your@email.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 18:15:35 by username          #+#    #+#             */
-/*   Updated: 2024/12/19 21:57:45 by username         ###   ########.fr       */
+/*   Updated: 2024/12/27 04:47:31 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,10 @@ t_prompt	*lx_parent(t_prompt *curr, t_prompt *parent)
 	if (!lx_argcheck(*curr))
 		return (parent);
 	return (curr);
+}
+
+void	lx_setlastcmd(t_prompt **last_cmd)
+{
+	while (*last_cmd && (*last_cmd)->token != CMD)
+		*last_cmd = (*last_cmd)->prev;
 }

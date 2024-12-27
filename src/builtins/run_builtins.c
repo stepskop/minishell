@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 23:53:25 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/25 19:02:48 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/27 03:54:22 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	run_builtins(char **argv, t_ctx ctx)
 	}
 	else if (!sub_proc)
 	{
-		ex_processless_pipes(ctx.pipefd, std_backup);
+		processless_pipes(ctx.pipefd, std_backup);
 		status = exec_builtin(argv, ctx, std_backup);
 		ctx.node->proc_less = 1;
 		ctx.node->pid = status;

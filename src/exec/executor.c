@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:00:57 by username          #+#    #+#             */
-/*   Updated: 2024/12/24 15:23:11 by username         ###   ########.fr       */
+/*   Updated: 2024/12/27 04:24:43 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "lexer.h"
 #include "builtins.h"
 
-static void	ex_handle_ionode(t_prompt *curr, int (*last_io)[2])
+static int	ex_handle_ionode(t_prompt *curr, int (*last_io)[2])
 {
 	if ((curr->token == LESSLESS || curr->token == LESS) && (*last_io)[0] > 0)
 		close((*last_io)[0]);
@@ -33,6 +33,9 @@ static void	ex_handle_ionode(t_prompt *curr, int (*last_io)[2])
 		curr->in_fd = (*last_io)[1];
 	else if (curr->token == LESSLESS || curr->token == LESS)
 		curr->out_fd = (*last_io)[0];
+	if ((*last_io)[1] < 0 || (*last_io)[0] < 0)
+		return (0);
+	return (1);
 }
 
 static void	ex_ioprep(t_prompt *lst)
@@ -42,19 +45,23 @@ static void	ex_ioprep(t_prompt *lst)
 	int			last_io[2];
 
 	curr = lst;
-	last_io[0] = STDIN_FILENO;
-	last_io[1] = STDOUT_FILENO;
+	std_pipe(last_io);
 	while (curr)
 	{
 		if (curr->token == CMD)
 			last_cmd = curr;
-		ex_handle_ionode(curr, &last_io);
+		if (!ex_handle_ionode(curr, &last_io))
+		{
+			last_cmd->io_err = 1;
+			std_pipe(last_io);
+			curr = last_cmd->next_cmd;
+			continue ;
+		}
 		if (!curr->next || (curr->next && lx_cmdend(*(curr->next))))
 		{
 			last_cmd->in_fd = last_io[0];
 			last_cmd->out_fd = last_io[1];
-			last_io[0] = STDIN_FILENO;
-			last_io[1] = STDOUT_FILENO;
+			std_pipe(last_io);
 		}
 		curr = curr->next;
 	}
@@ -93,8 +100,8 @@ static t_prompt	*ex_execute(t_prompt *node, t_ast *ast, char ***penvp)
 	int		c_pipe[2];
 	char	*cmd;
 
-	c_pipe[0] = 0;
-	c_pipe[1] = 1;
+	std_pipe(c_pipe);
+	std_pipe(pipefd);
 	if (node->next_cmd)
 	{
 		if (pipe(pipefd) == -1)
@@ -107,8 +114,11 @@ static t_prompt	*ex_execute(t_prompt *node, t_ast *ast, char ***penvp)
 		c_pipe[1] = node->out_fd;
 	if (node->in_fd > 0)
 		c_pipe[0] = node->in_fd;
+	if (node->io_err)
+		return (clean_pipes(node, pipefd),
+			node->proc_less = 1, node->pid = 1, node);
 	cmd = ex_cmdprep(node, penvp);
-	sh_run(cmd, (t_ctx){c_pipe, node, ast, NULL, penvp});
+	sh_run(cmd, (t_ctx){c_pipe, pipefd[0], node, ast, NULL, penvp});
 	clean_pipes(node, pipefd);
 	return (node);
 }

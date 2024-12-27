@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 15:34:17 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/25 19:03:03 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/27 04:22:53 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,18 +54,21 @@ int	ex_get_exitcode(t_prompt *lst)
 {
 	int			status;
 	t_prompt	*curr;
+	t_prompt	*last;
 
 	curr = lst;
 	while (curr)
 	{
+		last = curr;
 		if (curr->token == CMD)
 		{
-			if (curr->proc_less)
-				return (curr->pid);
-			waitpid(curr->pid, &status, 0);
+			if (!curr->proc_less)
+				waitpid(curr->pid, &status, 0);
 		}
-		curr = curr->next;
+		curr = curr->next_cmd;
 	}
+	if (last->proc_less)
+		return (last->pid);
 	if (WIFEXITED(status))
 		status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
@@ -86,6 +89,7 @@ int	sh_execve(char **argv, t_ctx ctx)
 		rl_clear_history ();
 		cmmnd = path_resolve(argv[0]);
 		ex_subprocess_pipes(ctx.pipefd);
+		close_unused_fd(ctx);
 		if (cmmnd)
 		{
 			exit_code = sh_checkcmd (cmmnd);
