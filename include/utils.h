@@ -74,7 +74,7 @@ void		sh_err(char *str);
 // Memory
 void		free_args(t_args *args);
 void		free_prompt(t_prompt *lst);
-void		free_ast(t_ast *ast);
+void		*free_ast(t_ast *ast);
 void		free_ast_node(t_ast *node);
 
 #endif

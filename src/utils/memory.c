@@ -41,16 +41,17 @@ void	free_prompt(t_prompt *lst)
 	}
 }
 
-void	free_ast(t_ast *ast)
+void	*free_ast(t_ast *ast)
 {
 	if (!ast)
-		return ;
+		return (NULL);
 	free(ast->value);
 	if (ast->left)
 		free_ast(ast->left);
 	if (ast->right)
 		free_ast(ast->right);
 	free(ast);
+	return (NULL);
 }
 
 void	free_ast_node(t_ast *node)

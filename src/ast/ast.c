@@ -46,12 +46,14 @@ int	ast_setop(t_ast **curr, t_ast_token op, char *str, char ***penvp)
 	if ((*curr)->type != AST_EMPTY)
 	{
 		(*curr)->res = ast_eval((*curr)->left, penvp);
+		if ((*curr)->right && (((*curr)->res == 0 && \
+			(*curr)->type == AST_AND) || \
+			((*curr)->res != 0 && (*curr)->type == AST_OR)))
+			(*curr)->res = ast_eval((*curr)->right, penvp);
 		if ((*curr)->left)
-			free_ast((*curr)->left);
+			(*curr)->left = free_ast((*curr)->left);
 		if ((*curr)->right)
-			free_ast((*curr)->right);
-		(*curr)->left = NULL;
-		(*curr)->right = NULL;
+			(*curr)->right = free_ast((*curr)->right);
 	}
 	(*curr)->type = op;
 	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
