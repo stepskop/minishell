@@ -16,7 +16,7 @@ int	ast_eval(t_ast *ast, char ***penvp)
 {
 	if (ast->type == AST_VAL && (!ast->parent || \
 		(ast->parent->res == 0 && ast->parent->type == AST_AND) || \
-		(ast->parent->res == 1 && ast->parent->type == AST_OR) || \
+		(ast->parent->res != 0 && ast->parent->type == AST_OR) || \
 		ast->parent->res == -1))
 	{
 		ast->res = ast_execute(ast, penvp);
@@ -28,7 +28,7 @@ int	ast_eval(t_ast *ast, char ***penvp)
 	{
 		ast->res = ast_eval(ast->left, penvp);
 		if (ast->right && ((ast->res == 0 && ast->type == AST_AND) || \
-			(ast->res == 1 && ast->type == AST_OR)))
+			(ast->res != 0 && ast->type == AST_OR)))
 			ast->res = ast_eval(ast->right, penvp);
 		return (ast->res);
 	}
@@ -48,7 +48,9 @@ int	ast_setop(t_ast **curr, t_ast_token op, char *str, char ***penvp)
 		(*curr)->res = ast_eval((*curr)->left, penvp);
 		if ((*curr)->left)
 			free_ast((*curr)->left);
-		(*curr)->left = (*curr)->right;
+		if ((*curr)->right)
+			free_ast((*curr)->right);
+		(*curr)->left = NULL;
 		(*curr)->right = NULL;
 	}
 	(*curr)->type = op;
