@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/26 12:43:52 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/27 13:08:25 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,12 +105,8 @@ char	*sh_addspace_all(char **str)
 {
 	sh_addspace (str, "<", 0);
 	sh_addspace (str, "<", 1);
-	// sh_addspace (str, "<<", 0);
-	// sh_addspace (str, "<<", 1);
 	sh_addspace (str, ">", 0);
 	sh_addspace (str, ">", 1);
-	// sh_addspace (str, ">>", 0);
-	// sh_addspace (str, ">>", 1);
 	sh_addspace (str, "|", 0);
 	sh_addspace (str, "|", 1);
 	return (*str);

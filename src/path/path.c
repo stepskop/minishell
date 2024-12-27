@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 12:24:25 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/27 11:42:02 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/27 12:49:31 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,20 @@ char	*get_sh_path(int absolute_path, char **envp)
 	str[1] = (char *) malloc (ul * sizeof (char));
 	if (!getcwd (str[1], ul))
 		sh_err ("Something is wrong! (getcwd)");
-	ul = ft_strlen (str[0]);
-	if (absolute_path || ft_strncmp (str[0], str[1], ul))
+	ul = sh_strlen (str[0]);
+	if (absolute_path || !str[0] || ft_strncmp (str[0], str[1], ul))
 	{
+		free (str[0]);
 		str[0] = ft_strdup (str[1]);
-		free (str[1]);
-		return (str[0]);
+		return (free (str[1]), str[0]);
 	}
 	if (ul > 1)
 	{
+		free (str[0]);
 		str[1][ul - 1] = '~';
 		str[0] = ft_strdup (&str[1][ul - 1]);
 	}
-	free (str[1]);
-	return (str[0]);
+	return (free (str[1]), str[0]);
 }
 
 char	*get_sh_pps(char **envp)

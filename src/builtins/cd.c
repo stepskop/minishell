@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 15:11:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/27 11:29:31 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/27 13:04:18 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ int	cd(char **argv, char **envp)
 		path = ft_strdup (argv[1]);
 	else
 		path = cd_home (argv, envp);
+	if (!path)
+		return (sh_err ("cd: Wrong directory\n"), EXIT_FAILURE);
 	if (!dir_check (path))
 		return (free (path), EXIT_FAILURE);
 	else
@@ -44,9 +46,9 @@ char	*cd_home(char **argv, char **envp)
 	if (!home)
 		return (NULL);
 	if (!argv[1])
-		return (ft_strdup (home));
+		return (home);
 	else
-		return (ft_strjoin (home, &argv[1][1]));
+		return (sh_strjoin_free (home, &argv[1][1], 1));
 }
 
 static int	dir_check(char *path)

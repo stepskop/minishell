@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 21:22:45 by username          #+#    #+#             */
-/*   Updated: 2024/12/27 11:39:40 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/27 12:42:47 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static char	*cmd_from_path(char *cmd, char **envp)
 			return (sh_ppfree(bin_dirs), res);
 		free(res);
 	}
-	return (sh_ppfree(bin_dirs), NULL);
+	return (free (path), sh_ppfree(bin_dirs), NULL);
 }
 
 static char	*cmd_from_home(char *cmd, char **envp)
@@ -49,7 +49,7 @@ static char	*cmd_from_home(char *cmd, char **envp)
 	home_dir = sh_getenv("HOME", envp);
 	if (!home_dir)
 		return (perror("PATH"), NULL);
-	res = ft_strjoin(home_dir, cmd + 1);
+	res = sh_strjoin_free (home_dir, cmd + 1, 1);
 	if (!res)
 		return (perror("malloc"), NULL);
 	return (res);
