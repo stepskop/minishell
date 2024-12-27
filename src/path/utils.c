@@ -6,13 +6,13 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 21:22:45 by username          #+#    #+#             */
-/*   Updated: 2024/12/23 16:41:52 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/27 11:39:40 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "path.h"
 
-static char	*cmd_from_path(char *cmd)
+static char	*cmd_from_path(char *cmd, char **envp)
 {
 	char	*res;
 	char	*path;
@@ -20,7 +20,7 @@ static char	*cmd_from_path(char *cmd)
 	char	*dir_slash;
 	int		i;
 
-	path = getenv("PATH");
+	path = sh_getenv("PATH", envp);
 	if (!path)
 		return (NULL);
 	bin_dirs = ft_split(path, ':');
@@ -41,12 +41,12 @@ static char	*cmd_from_path(char *cmd)
 	return (sh_ppfree(bin_dirs), NULL);
 }
 
-static char	*cmd_from_home(char *cmd)
+static char	*cmd_from_home(char *cmd, char **envp)
 {
 	char	*home_dir;
 	char	*res;
 
-	home_dir = getenv("HOME");
+	home_dir = sh_getenv("HOME", envp);
 	if (!home_dir)
 		return (perror("PATH"), NULL);
 	res = ft_strjoin(home_dir, cmd + 1);
@@ -78,20 +78,20 @@ static char	*cmd_from_root(char *cmd)
 	return (res);
 }
 
-char	*path_resolve(char *cmd)
+char	*path_resolve(char *cmd, char **envp)
 {
 	char	*res;
 
 	if (!cmd || !*cmd)
 		return (NULL);
 	if (cmd[0] == '~')
-		res = cmd_from_home(cmd);
+		res = cmd_from_home(cmd, envp);
 	else if (cmd[0] == '.')
 		res = cmd_from_root(cmd);
 	else if (cmd[0] == '/')
 		res = cmd_from_root(cmd);
 	else
-		res = cmd_from_path(cmd);
+		res = cmd_from_path(cmd, envp);
 	if (!res)
 		return (NULL);
 	return (res);

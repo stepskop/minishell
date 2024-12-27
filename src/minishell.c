@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/27 04:25:14 by username         ###   ########.fr       */
+/*   Updated: 2024/12/27 11:36:50 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static void	_loop_(char ***envp)
 	{
 		cmmnd[1] = NULL;
 		rl_on_new_line ();
-		cmmnd[0] = get_command (&cmmnd[1], get_sh_pps ());
+		cmmnd[0] = get_command (&cmmnd[1], get_sh_pps (*envp));
 		if (!cmmnd[0])
 		{
 			ctrl_d (cmmnd[1], *envp);

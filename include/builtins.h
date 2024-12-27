@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 21:10:05 by username          #+#    #+#             */
-/*   Updated: 2024/12/27 04:23:41 by username         ###   ########.fr       */
+/*   Updated: 2024/12/27 11:32:33 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ void		processless_pipes(int pipefd[2], int std_backup[2]);
 int			echo(char **argv);
 
 // pwd.c
-int			pwd(void);
+int			pwd(char **envp);
 
 // cd.c
-int			cd(char **argv);
-char		*cd_home(char **argv);
+int			cd(char **argv, char **envp);
+char		*cd_home(char **argv, char **envp);
 
 // env.c
 char		*sh_getenv(char *name, char **envp);

@@ -6,14 +6,14 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:43:38 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/25 12:11:39 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/27 11:35:40 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "path.h"
 #include "asterisk.h"
 
-char	*sh_asterisk(char *str)
+char	*sh_asterisk(char *str, char **envp)
 {
 	t_list	*dirs[5];
 	char	*result;
@@ -25,7 +25,7 @@ char	*sh_asterisk(char *str)
 	dirs[0] = a_split (str, '/');
 	dirs[4] = NULL;
 	dirs[3] = aster_start (dirs[0]);
-	dirs[1] = get_dirs (dirs[3]->content);
+	dirs[1] = get_dirs (dirs[3]->content, envp);
 	dirs[2] = dirs[1];
 	while (dirs[2])
 	{
@@ -45,7 +45,7 @@ char	*sh_asterisk(char *str)
 /*
 *	get_dirs returns a start dir or dirs in linked list
 */
-t_list	*get_dirs(char *pattern)
+t_list	*get_dirs(char *pattern, char **envp)
 {
 	t_list	*result;
 	char	*str[2];
@@ -54,7 +54,7 @@ t_list	*get_dirs(char *pattern)
 	str[0] = ft_strdup ("");
 	if (ft_strchr (pattern, '*'))
 	{
-		str[1] = get_sh_path(1);
+		str[1] = get_sh_path(1, envp);
 		get_lst_dirs (&result, pattern, str);
 	}
 	else

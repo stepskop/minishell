@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/24 00:51:04 by username         ###   ########.fr       */
+/*   Updated: 2024/12/27 10:54:25 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,4 +119,11 @@ valgrind --trace-children=yes \
 --leak-check=full \
 --show-leak-kinds=all \
 --suppressions=rl.supp ./minishell
+
+valgrind --trace-children=yes \
+--log-fd=9 9>>/home/ksorokol/GitHub/minishell/vg.log \
+--leak-check=full \
+--show-leak-kinds=all \
+--suppressions=/home/ksorokol/GitHub/minishell/rl.supp \
+./minishell
 */

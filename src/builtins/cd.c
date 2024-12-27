@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 15:11:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/23 15:31:26 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/27 11:29:31 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	dir_check(char *path);
 
-int	cd(char **argv)
+int	cd(char **argv, char **envp)
 {
 	char	*path;
 
@@ -27,7 +27,7 @@ int	cd(char **argv)
 	if (argv[1] && ft_strncmp (argv[1], "~", 1))
 		path = ft_strdup (argv[1]);
 	else
-		path = cd_home (argv);
+		path = cd_home (argv, envp);
 	if (!dir_check (path))
 		return (free (path), EXIT_FAILURE);
 	else
@@ -36,11 +36,11 @@ int	cd(char **argv)
 	return (EXIT_SUCCESS);
 }
 
-char	*cd_home(char **argv)
+char	*cd_home(char **argv, char **envp)
 {
 	char	*home;
 
-	home = getenv ("HOME");
+	home = sh_getenv ("HOME", envp);
 	if (!home)
 		return (NULL);
 	if (!argv[1])

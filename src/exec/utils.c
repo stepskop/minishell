@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 16:25:32 by username          #+#    #+#             */
-/*   Updated: 2024/12/27 04:23:30 by username         ###   ########.fr       */
+/*   Updated: 2024/12/27 11:36:38 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int	ex_expand(t_args *args, char **envp)
 			curr->data = put_env(curr->data, envp);
 			free(tmp);
 			tmp = curr->data;
-			curr->data = sh_asterisk(curr->data);
+			curr->data = sh_asterisk(curr->data, envp);
 			free(tmp);
 			if (!curr->data)
 				return (0);

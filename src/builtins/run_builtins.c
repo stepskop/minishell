@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 23:53:25 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/27 03:54:22 by username         ###   ########.fr       */
+/*   Updated: 2024/12/27 11:33:02 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ static int	exec_builtin(char **argv, t_ctx ctx, int std_backup[2])
 	if (!ft_strcmp (argv[0], "echo"))
 		result = echo (argv);
 	else if (!ft_strcmp (argv[0], "pwd"))
-		result = pwd ();
+		result = pwd (*(ctx.penvp));
 	else if (!ft_strcmp (argv[0], "env"))
 		result = env (argv, sh_pstrdup (*ctx.penvp));
 	else if (!ft_strcmp (argv[0], "cd"))
-		result = cd (argv);
+		result = cd (argv, *(ctx.penvp));
 	else if (!ft_strcmp (argv[0], "export"))
 		result = export (argv, ctx.penvp);
 	else if (!ft_strcmp (argv[0], "unset"))

@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 18:23:25 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/25 12:42:10 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/27 11:35:18 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ typedef struct s_dir_element
 }	t_de;
 
 // asterisk01.c
-t_list		*get_dirs(char *pattern);
+t_list		*get_dirs(char *pattern, char **envp);
 int			get_lst_dirs(t_list **lst, char *pattern, char *path[]);
 void		aster_recursion(t_list *dir, t_list *dirs, t_list **result);
 

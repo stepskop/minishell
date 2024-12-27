@@ -6,19 +6,19 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 12:24:25 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/23 16:59:27 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/27 11:42:02 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "path.h"
 #include <errno.h>
 
-char	*get_sh_path(int absolute_path)
+char	*get_sh_path(int absolute_path, char **envp)
 {
 	char			*str[2];
 	unsigned long	ul;
 
-	str[0] = getenv ("HOME");
+	str[0] = sh_getenv ("HOME", envp);
 	ul = PATH_MAX;
 	str[1] = (char *) malloc (ul * sizeof (char));
 	if (!getcwd (str[1], ul))
@@ -39,12 +39,12 @@ char	*get_sh_path(int absolute_path)
 	return (str[0]);
 }
 
-char	*get_sh_pps(void)
+char	*get_sh_pps(char **envp)
 {
 	char	*str[2];
 	size_t	len;
 
-	str[1] = sh_strjoin_free(CWD_COLOR, get_sh_path (0), 2);
+	str[1] = sh_strjoin_free(CWD_COLOR, get_sh_path (0, envp), 2);
 	str[1] = sh_strjoin_free(str[1], RESET_COLOR, 1);
 	len = ft_strlen (str[1]) + ft_strlen (PPS) + 3;
 	str[0] = (char *) malloc (len * sizeof (char));
@@ -60,26 +60,26 @@ char	*get_sh_pps(void)
 	return (str[0]);
 }
 
-char	*sh_replace_tilde(char *path)
-{
-	char	*result;
+// char	*sh_replace_tilde(char *path, char **envp)
+// {
+// 	char	*result;
 
-	if (path[0] == '~' && (path[1] == '/' || path[1] == '\0'))
-	{
-		result = ft_strdup (getenv ("HOME"));
-		result = sh_strjoin_free (result, &path[1], 1);
-		return (result);
-	}
-	return (ft_strdup (path));
-}
+// 	if (path[0] == '~' && (path[1] == '/' || path[1] == '\0'))
+// 	{
+// 		result = ft_strdup (sh_getenv ("HOME", envp));
+// 		result = sh_strjoin_free (result, &path[1], 1);
+// 		return (result);
+// 	}
+// 	return (ft_strdup (path));
+// }
 
-char	*sh_replace_dot(char *path)
+char	*sh_replace_dot(char *path, char **envp)
 {
 	char	*result;
 
 	if (path[0] == '.' && (path[1] == '/' || path[1] == '\0'))
 	{
-		result = get_sh_path (1);
+		result = get_sh_path (1, envp);
 		result = sh_strjoin_free (result, &path[1], 1);
 		return (result);
 	}
