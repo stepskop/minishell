@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 12:24:25 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/28 23:23:51 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/29 18:13:08 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ char	*get_sh_path(int absolute_path, char **envp)
 	str[0] = sh_getenv ("HOME", envp);
 	ul = PATH_MAX;
 	str[1] = (char *) _malloc_ (ul * sizeof (char));
+	if (!str[1])
+		return (str[0]);
 	if (!getcwd (str[1], ul))
 		sh_err ("Something is wrong! (getcwd)");
 	ul = sh_strlen (str[0]);
@@ -47,13 +49,17 @@ char	*get_sh_pps(char **envp)
 
 	str[1] = sh_strjoin_free(CWD_COLOR, get_sh_path (0, envp), 2);
 	str[1] = sh_strjoin_free(str[1], RESET_COLOR, 1);
-	len = ft_strlen (str[1]) + ft_strlen (PPS) + 3;
+	if (str[1])
+		len = ft_strlen (str[1]) + ft_strlen (PPS) + 3;
+	else
+		len = ft_strlen (PPS) + 3;
 	str[0] = (char *) _malloc_ (len * sizeof (char));
 	if (!str[0])
 		return (free (str[1]), NULL);
 	str[0][0] = '\0';
 	ft_strlcat (str[0], PPS, ft_strlen (str[0]) + ft_strlen (PPS) + 1);
-	ft_strlcat (str[0], str[1], ft_strlen (str[0]) + ft_strlen (str[1]) + 1);
+	if (str[1])
+		ft_strlcat (str[0], str[1], ft_strlen (str[0]) + ft_strlen (str[1]) + 1);
 	free (str[1]);
 	str[0][len - 3] = '$';
 	str[0][len - 2] = ' ';

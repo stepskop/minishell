@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/29 14:34:09 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/29 18:22:10 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	**sh_split_q(char *str, char c)
 	int		idx;
 
 	map = sh_split_map (str, c);
-	if (!map)
+	if (!str || !map)
 		return (NULL);
 	counter = sh_split_couont(map, ft_strlen (str));
 	result = (char **) _malloc_ ((counter + 1) * sizeof (char **));
@@ -48,13 +48,13 @@ static char	*sh_split_map(char *str, char c)
 	size_t	idx;
 	char	qc;
 
-	map = (char *) _malloc_ ((ft_strlen (str) + 1) * sizeof (char));
+	map = (char *) _malloc_ ((sh_strlen (str) + 1) * sizeof (char));
 	if (!map)
 		return (NULL);
 		// return (perror("_malloc_"), NULL);
 	idx = 0;
 	qc = 0;
-	while (str[idx])
+	while (str && str[idx])
 	{
 		if (!qc && !sh_bsq (str, idx))
 			qc = str[idx];

@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/24 23:53:25 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/27 11:33:02 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/29 18:17:13 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ static int	exec_builtin(char **argv, t_ctx ctx, int std_backup[2])
 {
 	int	result;
 
+	if (!argv[0])
+		return 1;
 	result = 0;
 	if (!ft_strcmp (argv[0], "echo"))
 		result = echo (argv);
@@ -59,6 +61,8 @@ static int	is_pipeline(t_prompt *node)
 
 int	is_builtin(char *cmmnd)
 {
+	if (!cmmnd)
+		return (1);
 	if (!ft_strcmp (cmmnd, "echo")
 		|| !ft_strcmp (cmmnd, "env")
 		|| !ft_strcmp (cmmnd, "pwd")

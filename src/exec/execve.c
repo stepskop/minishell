@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 15:34:17 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/27 11:38:53 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/29 18:23:12 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	ex_get_exitcode(t_prompt *lst)
 		}
 		curr = curr->next_cmd;
 	}
-	if (last->proc_less)
+	if (lst && last->proc_less)
 		return (last->pid);
 	if (WIFEXITED(status))
 		status = WEXITSTATUS(status);

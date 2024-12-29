@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/29 14:26:26 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/29 18:03:11 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,10 @@ int	main(int argc, char **argv, char **envp)
 	char	**envp_;
 
 	envp_ = sh_pstrdup (envp);
-	envp_set_var (&envp_, "?=0", 1);
 	if (!envp_)
 		return (EXIT_FAILURE);
 		// return (perror("_malloc_"), EXIT_FAILURE);
+	envp_set_var (&envp_, "?=0", 1);
 	(void)argc;
 	(void)argv;
 	sig_init ();
