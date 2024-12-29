@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: username <your@email.com>                  +#+  +:+       +#+        */
+/*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 18:45:40 by username          #+#    #+#             */
-/*   Updated: 2024/11/27 18:50:18 by username         ###   ########.fr       */
+/*   Updated: 2024/12/28 23:07:54 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	sh_err(char *str)
 	msg = ft_strjoin("sksh: ", str);
 	if (!msg)
 	{
-		perror("malloc");
+		perror("_malloc_");
 		return ;
 	}
 	ft_putstr_fd(msg, 2);

@@ -6,11 +6,12 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/23 12:00:43 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/29 14:41:21 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
+#include "_malloc_.h"
 
 char	*sh_strjoin(char *s1, char *s2)
 {
@@ -26,9 +27,10 @@ char	*sh_strjoin(char *s1, char *s2)
 	if (s2)
 		len_s2 = ft_strlen (s2);
 	len = len_s1 + len_s2 + 1;
-	result = (char *) malloc (len * sizeof (char));
+	result = (char *) _malloc_ (len * sizeof (char));
 	if (!result)
-		return (perror("malloc"), NULL);
+		return (NULL);
+		// return (perror("_malloc_"), NULL);
 	ft_memcpy (result, s1, len_s1);
 	ft_memcpy (&result[len_s1], s2, len_s2);
 	result[len - 1] = '\0';
@@ -94,7 +96,8 @@ char	*get_env_name(char *dollar)
 
 	env_name = (char *) ft_calloc (2, sizeof (char));
 	if (!env_name)
-		return (perror("malloc"), NULL);
+		return (NULL);
+		// return (perror("_malloc_"), NULL);
 	if (ft_isdigit (dollar[0]) || dollar[0] == '?')
 		return (env_name[0] = dollar[0], env_name);
 	free (env_name);
@@ -104,9 +107,10 @@ char	*get_env_name(char *dollar)
 	while (dollar[idx] && (ft_isalpha (dollar[idx])
 			|| ft_isdigit (dollar[idx]) || dollar[idx] == '_'))
 		idx++;
-	env_name = (char *) malloc ((idx + 1) * sizeof (char));
+	env_name = (char *) _malloc_ ((idx + 1) * sizeof (char));
 	if (!env_name)
-		return (perror("malloc"), NULL);
+		return (NULL);
+		// return (perror("_malloc_"), NULL);
 	ft_memcpy (env_name, dollar, idx);
 	env_name[idx] = '\0';
 	return (env_name);
@@ -122,7 +126,7 @@ char	*strs_cat(char *str_a, char *str_b, char *str_c, size_t idx_b[])
 		len[0] = ft_strlen(str_a);
 	len[1] = idx_b[1] - idx_b[0];
 	len[2] = ft_strlen(str_c);
-	result = (char *) malloc ((len[0] + len[1] + len[2] + 1) * sizeof (char));
+	result = (char *) _malloc_ ((len[0] + len[1] + len[2] + 1) * sizeof (char));
 	if (!result)
 		return (NULL);
 	ft_memcpy (result, str_a, len[0]);

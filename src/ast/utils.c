@@ -3,24 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: username <your@email.com>                  +#+  +:+       +#+        */
+/*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 14:48:27 by username          #+#    #+#             */
-/*   Updated: 2024/12/25 03:52:25 by username         ###   ########.fr       */
+/*   Updated: 2024/12/29 14:26:24 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ast.h"
 #include "lexer.h"
 #include "exec.h"
+#include "_malloc_.h"
 
 t_ast	*ast_new(char *value, t_ast_token token, t_ast *parent)
 {
 	t_ast	*new_node;
 
-	new_node = malloc(sizeof(t_ast));
+	new_node = _malloc_(sizeof(t_ast));
 	if (!new_node)
-		return (perror("malloc"), NULL);
+		return (NULL);
+		// return (perror("_malloc_"), NULL);
 	new_node->res = -1;
 	new_node->type = token;
 	new_node->value = value;

@@ -6,12 +6,13 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:43:38 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/19 21:50:37 by username         ###   ########.fr       */
+/*   Updated: 2024/12/28 23:24:06 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "path.h"
 #include "asterisk.h"
+#include "_malloc_.h"
 
 /*
 *	sh_remove_last_c creates new string
@@ -38,7 +39,7 @@ t_de	*sh_new_de(unsigned char d_type, char *d_name, char *pathes[])
 {
 	t_de	*de;
 
-	de = (t_de *) malloc (sizeof (t_de));
+	de = (t_de *) _malloc_ (sizeof (t_de));
 	if (!de)
 		return (NULL);
 	de->d_name = ft_strdup (d_name);

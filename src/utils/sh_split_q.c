@@ -6,11 +6,12 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/19 21:35:55 by username         ###   ########.fr       */
+/*   Updated: 2024/12/29 14:34:09 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
+#include "_malloc_.h"
 
 static char	*sh_split_map(char *str, char c);
 static int	sh_split_couont(char *map, size_t len);
@@ -27,7 +28,7 @@ char	**sh_split_q(char *str, char c)
 	if (!map)
 		return (NULL);
 	counter = sh_split_couont(map, ft_strlen (str));
-	result = (char **) malloc ((counter + 1) * sizeof (char **));
+	result = (char **) _malloc_ ((counter + 1) * sizeof (char **));
 	if (!result)
 		return (free (map), NULL);
 	idx = 0;
@@ -47,9 +48,10 @@ static char	*sh_split_map(char *str, char c)
 	size_t	idx;
 	char	qc;
 
-	map = (char *) malloc ((ft_strlen (str) + 1) * sizeof (char));
+	map = (char *) _malloc_ ((ft_strlen (str) + 1) * sizeof (char));
 	if (!map)
-		return (perror("malloc"), NULL);
+		return (NULL);
+		// return (perror("_malloc_"), NULL);
 	idx = 0;
 	qc = 0;
 	while (str[idx])

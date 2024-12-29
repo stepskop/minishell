@@ -6,11 +6,12 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/19 21:35:45 by username         ###   ########.fr       */
+/*   Updated: 2024/12/28 23:23:01 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
+#include "_malloc_.h"
 
 char	*sh_strjoin_free(char *s1, char *s2, int opt)
 {
@@ -54,7 +55,7 @@ char	*sh_lst2str(t_list *lst, char c)
 		result = sh_strjoin_free (result, l->content, 1);
 		if (l->next)
 		{
-			str = (char *) malloc(2 * sizeof (char));
+			str = (char *) _malloc_(2 * sizeof (char));
 			str[0] = c;
 			str[1] = '\0';
 			result = sh_strjoin_free (result, str, 3);
@@ -77,7 +78,7 @@ char	*sh_pstr2str(char **pstr, char c)
 		result = sh_strjoin_free (result, *pp, 1);
 		if (c && *(pp + 1))
 		{
-			str = (char *) malloc(2 * sizeof (char));
+			str = (char *) _malloc_(2 * sizeof (char));
 			str[0] = c;
 			str[1] = '\0';
 			result = sh_strjoin_free (result, str, 3);
@@ -99,7 +100,7 @@ char	**sh_pstrdup(char **pstr)
 	idx[1] = sh_pstr_size (pstr);
 	if (idx[1] > 0)
 	{
-		new_envp = (char **) malloc ((idx[1] + 1) * sizeof (char *));
+		new_envp = (char **) _malloc_ ((idx[1] + 1) * sizeof (char *));
 		if (!new_envp)
 			return (NULL);
 	}

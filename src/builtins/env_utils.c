@@ -6,11 +6,12 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:13:57 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/23 12:24:59 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/28 23:21:48 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtins.h"
+#include "_malloc_.h"
 
 static int	env_replace_var(char **envp, char *sv);
 
@@ -39,9 +40,9 @@ int	envp_set_var(char ***envp, char *sv, int e_code)
 	if (env_replace_var (*envp, sv))
 		return (0);
 	size = sh_pstr_size (*envp);
-	new_envp = (char **) malloc ((size + 2) * sizeof (char *));
+	new_envp = (char **) _malloc_ ((size + 2) * sizeof (char *));
 	if (!new_envp)
-		return (sh_err ("envp_set_var - malloc error"), 1);
+		return (sh_err ("envp_set_var - _malloc_ error"), 1);
 	envp_copy (*envp, new_envp);
 	new_envp[size] = ft_strdup (sv);
 	new_envp[size + 1] = NULL;

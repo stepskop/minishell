@@ -6,11 +6,12 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/20 16:03:00 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/28 23:22:19 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
+#include "_malloc_.h"
 
 size_t	sh_strlen(const char *s)
 {
@@ -56,7 +57,7 @@ int	sh_backslash(char **line)
 	size_t	idx[2];
 	int		result;
 
-	str = (char *) malloc (sh_strlen (*line) + 1);
+	str = (char *) _malloc_ (sh_strlen (*line) + 1);
 	if (!str)
 		return (0);
 	idx[0] = 0;

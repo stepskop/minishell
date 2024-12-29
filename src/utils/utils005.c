@@ -6,11 +6,12 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/19 21:35:34 by username         ###   ########.fr       */
+/*   Updated: 2024/12/29 14:43:09 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
+#include "_malloc_.h"
 
 /*
 *	remove backslashes
@@ -23,9 +24,10 @@ char	*sh_rmbs(char *arg)
 
 	if (!arg)
 		return (NULL);
-	str[0] = (char *) malloc ((ft_strlen (arg) + 1) * sizeof (char));
+	str[0] = (char *) _malloc_ ((ft_strlen (arg) + 1) * sizeof (char));
 	if (!str[0])
-		return (perror("malloc"), NULL);
+		return (NULL);
+		// return (perror("_malloc_"), NULL);
 	idx[0] = 0;
 	idx[1] = 0;
 	while (arg[idx[0]])

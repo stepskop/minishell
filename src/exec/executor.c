@@ -6,13 +6,14 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 17:00:57 by username          #+#    #+#             */
-/*   Updated: 2024/12/27 04:24:43 by username         ###   ########.fr       */
+/*   Updated: 2024/12/29 14:32:55 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exec.h"
 #include "lexer.h"
 #include "builtins.h"
+#include "_malloc_.h"
 
 static int	ex_handle_ionode(t_prompt *curr, int (*last_io)[2], char **envp)
 {
@@ -79,9 +80,10 @@ static char	*ex_cmdprep(t_prompt *node, char ***penvp)
 	if (!ex_expand(node->args, *penvp))
 		return (NULL);
 	len = ex_cmdlen(node->args) + ft_strlen(node->str_val);
-	res = malloc(sizeof(char) * (len + 1));
+	res = _malloc_(sizeof(char) * (len + 1));
 	if (!res)
-		return (perror("malloc"), NULL);
+		return (NULL);
+		// return (perror("_malloc_"), NULL);
 	i = ft_strlcpy(res, node->str_val, ft_strlen(node->str_val) + 1);
 	curr = node->args;
 	while (curr)

@@ -41,11 +41,11 @@ SRCS = 	$(addprefix $(BUILTINS_DIR), $(BUILTINS_SRC)) \
 		$(addprefix $(AST_DIR), $(AST_SRC)) \
 		$(MAIN)
 
-MAIN = minishell.c
+MAIN = minishell.c _malloc_.c
 
 # Included headers
 INCLUDE_DIR = ./include/
-INCLUDE_SRC = minishell.h asterisk.h asterisk.h builtins.h exec.h lexer.h path.h utils.h signals.h ast.h
+INCLUDE_SRC = minishell.h asterisk.h asterisk.h builtins.h exec.h lexer.h path.h utils.h signals.h ast.h _malloc_.h
 
 INCLUDES = $(addprefix $(INCLUDE_DIR), $(INCLUDE_SRC))
 

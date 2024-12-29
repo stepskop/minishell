@@ -6,11 +6,12 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 16:06:47 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/19 21:35:59 by username         ###   ########.fr       */
+/*   Updated: 2024/12/28 23:23:26 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
+#include "_malloc_.h"
 
 /*
 *	check_quot checks for quotation at begin and end of string
@@ -44,7 +45,7 @@ char	*del_quot(char *str)
 	if (!check_quot (str))
 		return (ft_strdup (str));
 	len = ft_strlen (str) - 2;
-	new_str = (char *) malloc ((len + 1) * sizeof (char));
+	new_str = (char *) _malloc_ ((len + 1) * sizeof (char));
 	new_str[len] = '\0';
 	ft_memcpy (new_str, &str[1], len);
 	return (new_str);

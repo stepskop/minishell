@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 21:22:45 by username          #+#    #+#             */
-/*   Updated: 2024/12/27 12:42:47 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/28 23:07:54 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static char	*cmd_from_home(char *cmd, char **envp)
 		return (perror("PATH"), NULL);
 	res = sh_strjoin_free (home_dir, cmd + 1, 1);
 	if (!res)
-		return (perror("malloc"), NULL);
+		return (perror("_malloc_"), NULL);
 	return (res);
 }
 
@@ -64,7 +64,7 @@ static char	*cmd_from_home(char *cmd, char **envp)
 // 		return (perror("getcwd"), NULL);
 // 	res = ft_strjoin(curr_dir, cmd + 1);
 // 	if (!res)
-// 		return (perror("malloc"), NULL);
+// 		return (perror("_malloc_"), NULL);
 // 	return (res);
 // }
 
@@ -74,7 +74,7 @@ static char	*cmd_from_root(char *cmd)
 
 	res = ft_strdup(cmd);
 	if (!res)
-		return (perror("malloc"), NULL);
+		return (perror("_malloc_"), NULL);
 	return (res);
 }
 

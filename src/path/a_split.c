@@ -6,11 +6,12 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/28 15:43:38 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/19 21:50:09 by username         ###   ########.fr       */
+/*   Updated: 2024/12/28 23:23:59 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "path.h"
+#include "_malloc_.h"
 
 t_list	*a_split(char *str, char c)
 {
@@ -45,7 +46,7 @@ t_list	*a_split_elem(char *str, size_t idx[])
 {
 	char	*elem;
 
-	elem = (char *) malloc ((idx[1] - idx[0] + 2) * sizeof (char));
+	elem = (char *) _malloc_ ((idx[1] - idx[0] + 2) * sizeof (char));
 	if (!elem)
 		return (NULL);
 	ft_memcpy (elem, &str[idx[0]], idx[1] - idx[0] + 1);

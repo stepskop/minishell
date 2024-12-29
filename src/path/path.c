@@ -6,12 +6,13 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 12:24:25 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/27 12:49:31 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/28 23:23:51 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "path.h"
 #include <errno.h>
+#include "_malloc_.h"
 
 char	*get_sh_path(int absolute_path, char **envp)
 {
@@ -20,7 +21,7 @@ char	*get_sh_path(int absolute_path, char **envp)
 
 	str[0] = sh_getenv ("HOME", envp);
 	ul = PATH_MAX;
-	str[1] = (char *) malloc (ul * sizeof (char));
+	str[1] = (char *) _malloc_ (ul * sizeof (char));
 	if (!getcwd (str[1], ul))
 		sh_err ("Something is wrong! (getcwd)");
 	ul = sh_strlen (str[0]);
@@ -47,7 +48,7 @@ char	*get_sh_pps(char **envp)
 	str[1] = sh_strjoin_free(CWD_COLOR, get_sh_path (0, envp), 2);
 	str[1] = sh_strjoin_free(str[1], RESET_COLOR, 1);
 	len = ft_strlen (str[1]) + ft_strlen (PPS) + 3;
-	str[0] = (char *) malloc (len * sizeof (char));
+	str[0] = (char *) _malloc_ (len * sizeof (char));
 	if (!str[0])
 		return (free (str[1]), NULL);
 	str[0][0] = '\0';

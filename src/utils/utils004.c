@@ -6,11 +6,12 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/21 17:03:49 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/28 23:23:10 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
+#include "_malloc_.h"
 
 int	sh_pstr_size(char **pstr)
 {
@@ -35,7 +36,7 @@ char	*sh_unquotes(char *arg)
 
 	if (!arg)
 		return (NULL);
-	str = (void *) malloc ((ft_strlen (arg) + 1) * sizeof (char));
+	str = (void *) _malloc_ ((ft_strlen (arg) + 1) * sizeof (char));
 	if (!str)
 		return (NULL);
 	idx[0] = 0;

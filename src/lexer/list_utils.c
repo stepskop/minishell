@@ -3,20 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   list_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: username <your@email.com>                  +#+  +:+       +#+        */
+/*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 00:26:09 by username          #+#    #+#             */
-/*   Updated: 2024/12/27 04:47:55 by username         ###   ########.fr       */
+/*   Updated: 2024/12/29 14:33:14 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
+#include "_malloc_.h"
 
 t_prompt	*lx_add(t_token token, t_prompt *prev, char *val)
 {
 	t_prompt	*new;
 
-	new = malloc(sizeof(t_prompt));
+	new = _malloc_(sizeof(t_prompt));
 	if (!new)
 		return (perror(NULL), NULL);
 	new->token = token;
@@ -40,9 +41,10 @@ static int	lx_add_arg(char *str, t_args **args)
 	t_args	*new;
 	t_args	*curr;
 
-	new = malloc(sizeof(t_args));
+	new = _malloc_(sizeof(t_args));
 	if (!new)
-		return (perror("malloc"), 0);
+		return (0);
+		// return (perror("_malloc_"), 0);
 	new->data = str;
 	new->next = NULL;
 	if (!*args)
