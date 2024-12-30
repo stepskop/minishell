@@ -53,6 +53,8 @@ char	**sh_rmbs_args(char **args)
 	char	*tmp;
 
 	arg = args;
+	if (!arg)
+		return (NULL);
 	while (*arg)
 	{
 		tmp = *arg;
@@ -65,6 +67,8 @@ char	**sh_rmbs_args(char **args)
 
 char	**sh_ud_rmbs(char **args)
 {
+	if (!args)
+		return (NULL);
 	return (sh_rmbs_args (sh_uq_args (args)));
 }
 

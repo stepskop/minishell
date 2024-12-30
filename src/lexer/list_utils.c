@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/06 00:26:09 by username          #+#    #+#             */
-/*   Updated: 2024/12/29 14:33:14 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/30 01:05:04 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int	lx_add_arg(char *str, t_args **args)
 	new = _malloc_(sizeof(t_args));
 	if (!new)
 		return (0);
-		// return (perror("_malloc_"), 0);
+		//return (perror("_malloc_"), 0);
 	new->data = str;
 	new->next = NULL;
 	if (!*args)

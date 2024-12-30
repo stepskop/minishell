@@ -95,6 +95,8 @@ char	**sh_uq_args(char **args)
 	char	*tmp;
 
 	arg = args;
+	if (!arg)
+		return (NULL);
 	while (*arg)
 	{
 		tmp = *arg;

@@ -6,7 +6,7 @@
 /*   By: username <your@email.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 15:00:19 by username          #+#    #+#             */
-/*   Updated: 2024/12/19 21:59:55 by username         ###   ########.fr       */
+/*   Updated: 2024/12/30 01:00:11 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ t_prompt	*lexer(char **cmd_raw)
 	i = 0;
 	lst = lx_init(cmd_raw[i]);
 	if (!lst)
-		return (NULL);
+		return (sh_ppfree(cmd_raw), NULL);
 	lst = lx_create(cmd_raw, lst);
 	free(cmd_raw);
 	return (lst);

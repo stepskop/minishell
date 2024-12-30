@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 12:24:25 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/29 18:13:08 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/30 00:47:19 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ char	*get_sh_pps(char **envp)
 	str[0][0] = '\0';
 	ft_strlcat (str[0], PPS, ft_strlen (str[0]) + ft_strlen (PPS) + 1);
 	if (str[1])
-		ft_strlcat (str[0], str[1], ft_strlen (str[0]) + ft_strlen (str[1]) + 1);
+		ft_strlcat (str[0], str[1],
+			ft_strlen (str[0]) + ft_strlen (str[1]) + 1);
 	free (str[1]);
 	str[0][len - 3] = '$';
 	str[0][len - 2] = ' ';

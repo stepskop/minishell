@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/29 18:03:11 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/30 01:27:20 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,30 +15,12 @@
 #include "path.h"
 #include "ast.h"
 #include "builtins.h"
+#include "banner.h"
 
 static void	_loop_(char ***envp);
 static char	*get_command(char **cmmnd, char *pps);
 static void	ctrl_d(char *cmmnd, char **envp);
 // int		check_eol(char *str, t_counters_quotes	*cq);
-
-static void	print_banner(void)
-{
-	int		fd;
-	char	*line;
-
-	fd = open("banner.txt", O_RDONLY, 0600);
-	if (fd == -1)
-		return ;
-	line = get_next_line(fd);
-	while (line)
-	{
-		printf("%s", line);
-		free(line);
-		line = get_next_line(fd);
-	}
-	close(fd);
-	printf("\n");
-}
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -81,32 +63,47 @@ static void	_loop_(char ***envp)
 	}
 }
 
+static char	*process_line(char **cmmnd, char *line, char **pps)
+{
+	int	i;
+
+	if (!line[0] && !(*cmmnd))
+		return (free(*pps), free(line), "");
+	i = sh_backslash(&line);
+	*cmmnd = sh_strjoin_free(*cmmnd, line, 3);
+	if (!*cmmnd)
+		return (free(*pps), "");
+	if (!i)
+	{
+		if (sh_check_eol(*cmmnd))
+			return (free(*pps), *cmmnd);
+		*cmmnd = sh_strjoin_free(*cmmnd, ft_strdup("\n"), 3);
+		if (!*cmmnd)
+			return (NULL);
+		free(*pps);
+		*pps = ft_strdup(">");
+	}
+	return (NULL);
+}
+
 static char	*get_command(char **cmmnd, char *pps)
 {
 	char	*line;
-	int		i;
+	char	*result;
 
 	while (1)
 	{
 		wait(NULL);
 		line = readline(pps);
 		if (!line)
-			return (free (pps), NULL);
-		line = sh_strtrim (line, " ");
-		if (!line[0] && !(*cmmnd))
-			return (free (pps), free (line), "");
-		i = sh_backslash (&line);
-		*cmmnd = sh_strjoin_free(*cmmnd, line, 3);
-		if (!i)
-		{
-			if (sh_check_eol (*cmmnd))
-				return (free (pps), *cmmnd);
-			*cmmnd = sh_strjoin_free (*cmmnd, ft_strdup ("\n"), 3);
-		}
-		free (pps);
-		pps = ft_strdup (">");
+			return (free(pps), NULL);
+		line = sh_strtrim(line, " ");
+		result = process_line(cmmnd, line, &pps);
+		if (result)
+			return (result);
+		free(line);
 	}
-	return (free (pps), *cmmnd);
+	return (free(pps), *cmmnd);
 }
 
 static void	ctrl_d(char *cmmnd, char **envp)
@@ -119,7 +116,7 @@ static void	ctrl_d(char *cmmnd, char **envp)
 		return ;
 	}
 	else
-		write (1, "exit\n", 5);
+		write (1, "exitrn", 5);
 	sh_ppfree (envp);
 	exit (EXIT_SUCCESS);
 }

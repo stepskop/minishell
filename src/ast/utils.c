@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 14:48:27 by username          #+#    #+#             */
-/*   Updated: 2024/12/29 14:26:24 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/30 01:31:56 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	ast_execute(t_ast *node, char ***envp)
 	splitted = sh_split_q(tmp, ' ');
 	free(tmp);
 	if (!splitted || !splitted[0])
-		return (-1);
+		return (sh_ppfree(splitted), -1);
 	lst = lexer(splitted);
 	node->res = executor(lst, node, envp);
 	free_prompt(lst);

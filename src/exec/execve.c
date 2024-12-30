@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 15:34:17 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/29 18:23:12 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/30 01:47:06 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,14 @@ int	sh_run(char *cmmnd, t_ctx ctx)
 	free(cmmnd);
 	cmmnds_args[1] = cmmnds_args[0];
 	pid = 0;
+	if (!cmmnds_args[1])
+		return (ctx.node->proc_less = 1, ctx.node->pid = 1, 1);
 	while (*cmmnds_args[1])
 	{
 		cmmnds_args[2] = sh_ud_rmbs (sh_split_q (*cmmnds_args[1], ' '));
+		if (!cmmnds_args[2])
+			return (ctx.node->proc_less = 1,
+				ctx.node->pid = 1, sh_ppfree(cmmnds_args[0]), 1);
 		if (is_builtin(cmmnds_args[2][0]))
 			pid = run_builtins(cmmnds_args[2], ctx);
 		else
@@ -63,8 +68,10 @@ int	ex_get_exitcode(t_prompt *lst)
 		last = curr;
 		if (curr->token == CMD)
 		{
-			if (!curr->proc_less)
+			if (!curr->proc_less && curr->pid > 0)
 				waitpid(curr->pid, &status, 0);
+			else if (!curr->proc_less && curr->pid < 0)
+				status = 1;
 		}
 		curr = curr->next_cmd;
 	}

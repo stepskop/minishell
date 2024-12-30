@@ -6,7 +6,7 @@
 /*   By: username <your@email.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/24 00:06:52 by username          #+#    #+#             */
-/*   Updated: 2024/12/25 03:56:07 by username         ###   ########.fr       */
+/*   Updated: 2024/12/30 00:51:10 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,14 +101,14 @@ t_ast	*ast(char *str, char ***penvp)
 	i = 0;
 	ast = ast_init();
 	if (!ast)
-		return (NULL);
+		return (free(str), NULL);
 	curr = ast;
 	prompt_len = ft_strlen(str);
 	while (prompt_len > i)
 	{
 		curr_len = ast_parse(&str[i], &curr, penvp);
 		if (curr_len == -1)
-			return (free_ast(ast), NULL);
+			return (free_ast(ast), free(str), NULL);
 		i += curr_len;
 	}
 	free(str);

@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/29 18:22:10 by ksorokol         ###   ########.fr       */
+/*   Updated: 2024/12/30 01:05:43 by username         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,22 @@ char	**sh_split_q(char *str, char c)
 	int		counter;
 	int		idx;
 
+	if (!str)
+		return (NULL);
 	map = sh_split_map (str, c);
-	if (!str || !map)
+	if (!map)
 		return (NULL);
 	counter = sh_split_couont(map, ft_strlen (str));
 	result = (char **) _malloc_ ((counter + 1) * sizeof (char **));
 	if (!result)
 		return (free (map), NULL);
+		//return (perror("_malloc_"), free (map), NULL);
 	idx = 0;
 	while (idx < counter)
 	{
 		result[idx] = sh_split_element (map, ft_strlen (str), idx + 1);
+		if (!result[idx])
+			return (free(map), sh_ppfree(result), NULL);
 		idx++;
 	}
 	result[counter] = NULL;
@@ -51,7 +56,7 @@ static char	*sh_split_map(char *str, char c)
 	map = (char *) _malloc_ ((sh_strlen (str) + 1) * sizeof (char));
 	if (!map)
 		return (NULL);
-		// return (perror("_malloc_"), NULL);
+		//return (perror("_malloc_"), NULL);
 	idx = 0;
 	qc = 0;
 	while (str && str[idx])
@@ -117,5 +122,7 @@ static char	*sh_split_element(char *map, size_t len, int elem)
 		idx++;
 	}
 	result = ft_strdup (&map[idx]);
+	if (!result)
+		perror("_malloc_");
 	return (result);
 }

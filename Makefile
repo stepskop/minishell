@@ -30,6 +30,9 @@ AST_SRC = ast.c utils.c ast_fill.c
 ERROR_DIR = error/
 ERROR_SRC = error.c
 
+BANNER_DIR = banner/
+BANNER_SRC = banner.c
+
 SRC_DIR = ./src/
 SRCS = 	$(addprefix $(BUILTINS_DIR), $(BUILTINS_SRC)) \
 		$(addprefix $(UTILS_DIR), $(UTILS_SRC)) \
@@ -39,13 +42,14 @@ SRCS = 	$(addprefix $(BUILTINS_DIR), $(BUILTINS_SRC)) \
 		$(addprefix $(LEXER_DIR), $(LEXER_SRC)) \
 		$(addprefix $(ERROR_DIR), $(ERROR_SRC)) \
 		$(addprefix $(AST_DIR), $(AST_SRC)) \
+		$(addprefix $(BANNER_DIR), $(BANNER_SRC)) \
 		$(MAIN)
 
 MAIN = minishell.c _malloc_.c
 
 # Included headers
 INCLUDE_DIR = ./include/
-INCLUDE_SRC = minishell.h asterisk.h asterisk.h builtins.h exec.h lexer.h path.h utils.h signals.h ast.h _malloc_.h
+INCLUDE_SRC = minishell.h asterisk.h asterisk.h builtins.h exec.h lexer.h path.h utils.h signals.h ast.h banner.h _malloc_.h
 
 INCLUDES = $(addprefix $(INCLUDE_DIR), $(INCLUDE_SRC))
 
@@ -82,6 +86,7 @@ $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)$(LEXER_DIR)
 	mkdir -p $(OBJ_DIR)$(ERROR_DIR)
 	mkdir -p $(OBJ_DIR)$(AST_DIR)
+	mkdir -p $(OBJ_DIR)$(BANNER_DIR)
 
 $(OBJ_DIR)%o: $(SRC_DIR)%c $(INCLUDES)
 	$(CC) $(CCFLAGS) $(HEADERS) $(LIB_HEADERS) -c $< -o $@
