@@ -13,16 +13,14 @@
 #include "ast.h"
 #include "lexer.h"
 #include "exec.h"
-#include "_malloc_.h"
 
 t_ast	*ast_new(char *value, t_ast_token token, t_ast *parent)
 {
 	t_ast	*new_node;
 
-	new_node = _malloc_(sizeof(t_ast));
+	new_node = malloc(sizeof(t_ast));
 	if (!new_node)
-		return (NULL);
-		// return (perror("_malloc_"), NULL);
+		return (perror("malloc"), NULL);
 	new_node->res = -1;
 	new_node->type = token;
 	new_node->value = value;

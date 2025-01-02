@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "utils.h"
-#include "_malloc_.h"
 
 /*
 *	check_quot checks for quotation at begin and end of string
@@ -45,7 +44,9 @@ char	*del_quot(char *str)
 	if (!check_quot (str))
 		return (ft_strdup (str));
 	len = ft_strlen (str) - 2;
-	new_str = (char *) _malloc_ ((len + 1) * sizeof (char));
+	new_str = (char *)malloc((len + 1) * sizeof (char));
+	if (!new_str)
+		return (perror("malloc"), NULL);
 	new_str[len] = '\0';
 	ft_memcpy (new_str, &str[1], len);
 	return (new_str);

@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "builtins.h"
-#include "_malloc_.h"
 
 static int	env_replace_var(char **envp, char *sv);
 
@@ -40,9 +39,9 @@ int	envp_set_var(char ***envp, char *sv, int e_code)
 	if (env_replace_var (*envp, sv))
 		return (0);
 	size = sh_pstr_size (*envp);
-	new_envp = (char **) _malloc_ ((size + 2) * sizeof (char *));
+	new_envp = (char **)malloc((size + 2) * sizeof (char *));
 	if (!new_envp)
-		return (sh_err ("envp_set_var - _malloc_ error"), 1);
+		return (perror("malloc"), 1);
 	envp_copy (*envp, new_envp);
 	new_envp[size] = ft_strdup (sv);
 	new_envp[size + 1] = NULL;

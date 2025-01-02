@@ -29,7 +29,6 @@ int	main(int argc, char **argv, char **envp)
 	envp_ = sh_pstrdup (envp);
 	if (!envp_)
 		return (EXIT_FAILURE);
-		// return (perror("_malloc_"), EXIT_FAILURE);
 	envp_set_var (&envp_, "?=0", 1);
 	(void)argc;
 	(void)argv;

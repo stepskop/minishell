@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "path.h"
-#include "_malloc_.h"
 
 t_list	*a_split(char *str, char c)
 {
@@ -46,9 +45,9 @@ t_list	*a_split_elem(char *str, size_t idx[])
 {
 	char	*elem;
 
-	elem = (char *) _malloc_ ((idx[1] - idx[0] + 2) * sizeof (char));
+	elem = (char *)malloc((idx[1] - idx[0] + 2) * sizeof (char));
 	if (!elem)
-		return (NULL);
+		return (perror("malloc"), NULL);
 	ft_memcpy (elem, &str[idx[0]], idx[1] - idx[0] + 1);
 	elem[idx[1] - idx[0] + 1] = '\0';
 	return (ft_lstnew (elem));

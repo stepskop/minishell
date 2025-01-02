@@ -72,7 +72,7 @@ size_t	sh_addspace_b(char **str, size_t idx)
 		return (0);
 	str_ = ft_calloc (ft_strlen (*str) + 2, sizeof (char));
 	if (!str_)
-		return (0);
+		return (perror("malloc"), 0);
 	ft_memcpy (str_, *str, idx);
 	str_[idx] = ' ';
 	ft_memcpy (&str_[idx + 1], &(*str)[idx], ft_strlen (*str) - idx);
@@ -90,7 +90,7 @@ size_t	sh_addspace_a(char **str, size_t idx, size_t len)
 		return (0);
 	str_ = ft_calloc (ft_strlen (*str) + 2, sizeof (char));
 	if (!str_)
-		return (0);
+		return (perror("malloc"), 0);
 	ft_memcpy (str_, *str, idx + len);
 	str_[idx + len] = ' ';
 	ft_memcpy (&str_[idx + len + 1], &(*str)[idx + len],

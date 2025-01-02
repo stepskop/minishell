@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "utils.h"
-#include "_malloc_.h"
 
 char	*sh_strjoin_free(char *s1, char *s2, int opt)
 {
@@ -53,12 +52,18 @@ char	*sh_lst2str(t_list *lst, char c)
 	while (l)
 	{
 		result = sh_strjoin_free (result, l->content, 1);
+		if (!result)
+			return (NULL);
 		if (l->next)
 		{
-			str = (char *) _malloc_(2 * sizeof (char));
+			str = (char *)malloc(2 * sizeof (char));
+			if (!str)
+				return (perror("malloc"), free(result), NULL);
 			str[0] = c;
 			str[1] = '\0';
 			result = sh_strjoin_free (result, str, 3);
+			if (!result)
+				return (NULL);
 		}
 		l = l->next;
 	}
@@ -76,12 +81,18 @@ char	*sh_pstr2str(char **pstr, char c)
 	while (*pp)
 	{
 		result = sh_strjoin_free (result, *pp, 1);
+		if (!result)
+			return (NULL);
 		if (c && *(pp + 1))
 		{
-			str = (char *) _malloc_(2 * sizeof (char));
+			str = (char *)malloc(2 * sizeof (char));
+			if (!str)
+				return (perror("malloc"), free(result), NULL);
 			str[0] = c;
 			str[1] = '\0';
 			result = sh_strjoin_free (result, str, 3);
+			if (!result)
+				return (NULL);
 		}
 		pp++;
 	}
@@ -100,13 +111,15 @@ char	**sh_pstrdup(char **pstr)
 	idx[1] = sh_pstr_size (pstr);
 	if (idx[1] > 0)
 	{
-		new_envp = (char **) _malloc_ ((idx[1] + 1) * sizeof (char *));
+		new_envp = (char **)malloc((idx[1] + 1) * sizeof (char *));
 		if (!new_envp)
-			return (NULL);
+			return (perror("malloc"), NULL);
 	}
 	while (idx[0] < idx[1])
 	{
 		new_envp[idx[0]] = ft_strdup (pstr[idx[0]]);
+		if (!new_envp[idx[0]])
+			return (sh_ppfree(new_envp), NULL);
 		idx[0]++;
 	}
 	new_envp[idx[0]] = NULL;

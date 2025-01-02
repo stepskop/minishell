@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "builtins.h"
-#include "_malloc_.h"
 
 static char	**unset_var(char ***envp, char *uv);
 
@@ -51,9 +50,9 @@ static char	**unset_var(char ***envp, char *uv)
 	uv_ = ft_strjoin(uv, "=");
 	envp_[0] = *envp;
 	len = sh_strlen (uv_);
-	envp_[1] = (char **) _malloc_ ((sh_pstr_size (*envp)) * sizeof (char *));
+	envp_[1] = (char **)malloc((sh_pstr_size (*envp)) * sizeof (char *));
 	if (!envp_[1])
-		return (sh_err ("unset_var - _malloc_ error"), NULL);
+		return (perror("malloc"), NULL);
 	envp_[2] = envp_[1];
 	while (*envp_[0])
 	{

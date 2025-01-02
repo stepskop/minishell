@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "utils.h"
-#include "_malloc_.h"
 
 /*
 *	remove backslashes
@@ -24,10 +23,9 @@ char	*sh_rmbs(char *arg)
 
 	if (!arg)
 		return (NULL);
-	str[0] = (char *) _malloc_ ((ft_strlen (arg) + 1) * sizeof (char));
+	str[0] = (char *)malloc((ft_strlen (arg) + 1) * sizeof (char));
 	if (!str[0])
-		return (NULL);
-		// return (perror("_malloc_"), NULL);
+		return (perror("malloc"), NULL);
 	idx[0] = 0;
 	idx[1] = 0;
 	while (arg[idx[0]])
@@ -60,6 +58,8 @@ char	**sh_rmbs_args(char **args)
 		tmp = *arg;
 		*arg = sh_rmbs (tmp);
 		free (tmp);
+		if (!*arg)
+			return (sh_ppfree(args), NULL);
 		arg++;
 	}
 	return (args);

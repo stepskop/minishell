@@ -12,7 +12,6 @@
 
 #include "path.h"
 #include "asterisk.h"
-#include "_malloc_.h"
 
 /*
 *	sh_remove_last_c creates new string
@@ -39,9 +38,9 @@ t_de	*sh_new_de(unsigned char d_type, char *d_name, char *pathes[])
 {
 	t_de	*de;
 
-	de = (t_de *) _malloc_ (sizeof (t_de));
+	de = (t_de *)malloc(sizeof (t_de));
 	if (!de)
-		return (NULL);
+		return (perror("malloc"), NULL);
 	de->d_name = ft_strdup (d_name);
 	if ((ft_strlen (pathes[0]) > 0
 			&& pathes[0][ft_strlen (pathes[0]) - 1] == '/')

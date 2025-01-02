@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "utils.h"
-#include "_malloc_.h"
 
 static char	*sh_split_map(char *str, char c);
 static int	sh_split_couont(char *map, size_t len);
@@ -30,10 +29,9 @@ char	**sh_split_q(char *str, char c)
 	if (!map)
 		return (NULL);
 	counter = sh_split_couont(map, ft_strlen (str));
-	result = (char **) _malloc_ ((counter + 1) * sizeof (char **));
+	result = (char **)malloc((counter + 1) * sizeof (char **));
 	if (!result)
-		return (free (map), NULL);
-		//return (perror("_malloc_"), free (map), NULL);
+		return (perror("malloc"), free (map), NULL);
 	idx = 0;
 	while (idx < counter)
 	{
@@ -53,10 +51,9 @@ static char	*sh_split_map(char *str, char c)
 	size_t	idx;
 	char	qc;
 
-	map = (char *) _malloc_ ((sh_strlen (str) + 1) * sizeof (char));
+	map = (char *)malloc((sh_strlen (str) + 1) * sizeof (char));
 	if (!map)
-		return (NULL);
-		//return (perror("_malloc_"), NULL);
+		return (perror("malloc"), NULL);
 	idx = 0;
 	qc = 0;
 	while (str && str[idx])

@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "utils.h"
-#include "_malloc_.h"
 
 int	sh_pstr_size(char **pstr)
 {
@@ -36,9 +35,9 @@ char	*sh_unquotes(char *arg)
 
 	if (!arg)
 		return (NULL);
-	str = (void *) _malloc_ ((ft_strlen (arg) + 1) * sizeof (char));
+	str = (void *)malloc((ft_strlen (arg) + 1) * sizeof (char));
 	if (!str)
-		return (NULL);
+		return (perror("malloc"), NULL);
 	idx[0] = 0;
 	idx[1] = 0;
 	c[0] = '\0';
@@ -113,5 +112,7 @@ char	*sh_strtrim(char *s1, char *set)
 
 	str = ft_strtrim (s1, set);
 	free (s1);
+	if (!str)
+		return (perror("malloc"), NULL);
 	return (str);
 }

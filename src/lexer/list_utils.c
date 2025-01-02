@@ -11,15 +11,14 @@
 /* ************************************************************************** */
 
 #include "lexer.h"
-#include "_malloc_.h"
 
 t_prompt	*lx_add(t_token token, t_prompt *prev, char *val)
 {
 	t_prompt	*new;
 
-	new = _malloc_(sizeof(t_prompt));
+	new = malloc(sizeof(t_prompt));
 	if (!new)
-		return (perror(NULL), NULL);
+		return (perror("malloc"), NULL);
 	new->token = token;
 	if (token == WORD)
 		new->token = CMD;
@@ -41,10 +40,9 @@ static int	lx_add_arg(char *str, t_args **args)
 	t_args	*new;
 	t_args	*curr;
 
-	new = _malloc_(sizeof(t_args));
+	new = malloc(sizeof(t_args));
 	if (!new)
-		return (0);
-		//return (perror("_malloc_"), 0);
+		return (perror("malloc"), 0);
 	new->data = str;
 	new->next = NULL;
 	if (!*args)

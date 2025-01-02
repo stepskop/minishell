@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "path.h"
-#include <errno.h>
-#include "_malloc_.h"
 
 char	*get_sh_path(int absolute_path, char **envp)
 {
@@ -21,9 +19,9 @@ char	*get_sh_path(int absolute_path, char **envp)
 
 	str[0] = sh_getenv ("HOME", envp);
 	ul = PATH_MAX;
-	str[1] = (char *) _malloc_ (ul * sizeof (char));
+	str[1] = (char *)malloc(ul * sizeof (char));
 	if (!str[1])
-		return (str[0]);
+		return (perror("malloc"), str[0]);
 	if (!getcwd (str[1], ul))
 		sh_err ("Something is wrong! (getcwd)");
 	ul = sh_strlen (str[0]);
@@ -53,9 +51,9 @@ char	*get_sh_pps(char **envp)
 		len = ft_strlen (str[1]) + ft_strlen (PPS) + 3;
 	else
 		len = ft_strlen (PPS) + 3;
-	str[0] = (char *) _malloc_ (len * sizeof (char));
+	str[0] = (char *)malloc(len * sizeof (char));
 	if (!str[0])
-		return (free (str[1]), NULL);
+		return (perror("malloc"), free (str[1]), NULL);
 	str[0][0] = '\0';
 	ft_strlcat (str[0], PPS, ft_strlen (str[0]) + ft_strlen (PPS) + 1);
 	if (str[1])

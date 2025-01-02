@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "utils.h"
-#include "_malloc_.h"
 
 size_t	sh_strlen(const char *s)
 {
@@ -57,9 +56,9 @@ int	sh_backslash(char **line)
 	size_t	idx[2];
 	int		result;
 
-	str = (char *) _malloc_ (sh_strlen (*line) + 1);
+	str = (char *)malloc(sh_strlen (*line) + 1);
 	if (!str)
-		return (0);
+		return (perror("malloc"), 0);
 	idx[0] = 0;
 	idx[1] = 0;
 	result = 0;

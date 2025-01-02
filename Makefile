@@ -22,14 +22,15 @@ UTILS_SRC = sh_split_q.c utils001.c utils002.c utils003.c utils004.c utils005.c 
 LEXER_DIR = lexer/
 LEXER_SRC = lexer.c utils.c list_utils.c
 
+# Abstract syntax tree
 AST_DIR = ast/
 AST_SRC = ast.c utils.c ast_fill.c 
-#ast_temp.c
 
 # Error
 ERROR_DIR = error/
 ERROR_SRC = error.c
 
+# Banner
 BANNER_DIR = banner/
 BANNER_SRC = banner.c
 
@@ -45,18 +46,17 @@ SRCS = 	$(addprefix $(BUILTINS_DIR), $(BUILTINS_SRC)) \
 		$(addprefix $(BANNER_DIR), $(BANNER_SRC)) \
 		$(MAIN)
 
-MAIN = minishell.c _malloc_.c
+MAIN = minishell.c
 
 # Included headers
 INCLUDE_DIR = ./include/
-INCLUDE_SRC = minishell.h asterisk.h asterisk.h builtins.h exec.h lexer.h path.h utils.h signals.h ast.h banner.h _malloc_.h
+INCLUDE_SRC = minishell.h asterisk.h asterisk.h builtins.h exec.h lexer.h path.h utils.h signals.h ast.h banner.h
 
 INCLUDES = $(addprefix $(INCLUDE_DIR), $(INCLUDE_SRC))
 
 HEADERS = $(addprefix -I, $(INCLUDE_DIR))
 
 NAME = minishell
-# NAME = sksh
 
 CCFLAGS = -g -Wall -Werror -Wextra
 
