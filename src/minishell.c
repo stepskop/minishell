@@ -29,7 +29,8 @@ int	main(int argc, char **argv, char **envp)
 	envp_ = sh_pstrdup (envp);
 	if (!envp_)
 		return (EXIT_FAILURE);
-	envp_set_var (&envp_, "?=0", 1);
+	if (envp_set_var (&envp_, "?=0", 1))
+		return (sh_ppfree(envp_), EXIT_FAILURE);
 	(void)argc;
 	(void)argv;
 	sig_init ();

@@ -21,6 +21,8 @@ char	*sh_getenv(char *name, char **envp)
 	if (!name)
 		return (NULL);
 	str[0] = ft_strjoin (name, "=");
+	if (!str[0])
+		return (NULL);
 	len = ft_strlen (str[0]);
 	envp_ = envp;
 	while (*envp_)
@@ -29,6 +31,8 @@ char	*sh_getenv(char *name, char **envp)
 		{
 			str[1] = ft_strchr (*envp_, '=');
 			str[2] = ft_strdup (str[1] + 1);
+			if (!str[2])
+				perror("malloc");
 			return (free (str[0]), str[2]);
 		}
 		envp_++;
