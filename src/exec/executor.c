@@ -44,28 +44,26 @@ static int	ex_handle_ionode(t_prompt *curr, int (*last_io)[2], char **envp)
 static void	ex_ioprep(t_prompt *lst, char **envp)
 {
 	t_prompt	*curr;
-	t_prompt	*last_cmd;
+	t_prompt	*l_cmd;
 	int			last_io[2];
 
 	curr = lst;
-	std_pipe(last_io);
+	l_cmd = NULL;
+	std_pipe(NULL, last_io);
 	while (curr)
 	{
 		if (curr->token == CMD)
-			last_cmd = curr;
+			l_cmd = curr;
 		if (!ex_handle_ionode(curr, &last_io, envp))
 		{
-			last_cmd->io_err = 1;
-			std_pipe(last_io);
-			curr = last_cmd->next_cmd;
+			std_pipe(NULL, last_io);
+			curr = curr->next;
+			if (l_cmd)
+				l_cmd->io_err = 1;
 			continue ;
 		}
-		if (!curr->next || (curr->next && lx_cmdend(*(curr->next))))
-		{
-			last_cmd->in_fd = last_io[0];
-			last_cmd->out_fd = last_io[1];
-			std_pipe(last_io);
-		}
+		if (!curr->next || lx_cmdend(*(curr->next)))
+			std_pipe(&l_cmd, last_io);
 		curr = curr->next;
 	}
 }
@@ -104,8 +102,8 @@ static t_prompt	*ex_execute(t_prompt *node, t_ast *ast, char ***penvp)
 	int		c_pipe[2];
 	char	*cmd;
 
-	std_pipe(c_pipe);
-	std_pipe(pipefd);
+	std_pipe(NULL, c_pipe);
+	std_pipe(NULL, pipefd);
 	if (node->next_cmd)
 	{
 		if (pipe(pipefd) == -1)

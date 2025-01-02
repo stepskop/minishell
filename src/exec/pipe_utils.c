@@ -38,8 +38,20 @@ void	ex_subprocess_pipes(int pipefd[2])
 		close(pipefd[0]);
 }
 
-void	std_pipe(int pipefd[2])
+void	std_pipe(t_prompt **node, int pipefd[2])
 {
+	if (node && *node)
+	{
+		(*node)->in_fd = pipefd[0];
+		(*node)->out_fd = pipefd[1];
+	}
+	else if (node && !*node)
+	{
+		if (pipefd[0] > 0)
+			close(pipefd[0]);
+		if (pipefd[1] > 1)
+			close(pipefd[1]);
+	}
 	pipefd[0] = STDIN_FILENO;
 	pipefd[1] = STDOUT_FILENO;
 }

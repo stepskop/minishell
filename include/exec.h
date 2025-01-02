@@ -31,7 +31,7 @@ void		ex_subprocess_pipes(int pipefd[2]);
 void		close_pipe(int pipefd[2]);
 void		sp_print_cnf(char *cmmnd);
 int			ex_get_exitcode(t_prompt *node);
-void		std_pipe(int pipefd[2]);
+void		std_pipe(t_prompt **node, int pipefd[2]);
 void		close_unused_fd(t_ctx ctx);
 
 #endif

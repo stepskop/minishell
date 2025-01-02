@@ -21,11 +21,11 @@ void	*_malloc_(size_t __size)
 {
 	void	*mem;
 
-	if (rand() % 10 < 2)
-	{
-		write (2, "_malloc_ returned NULL\n", 23);
-		return (NULL);
-	}
+	// if (rand() % 10 < 2)
+	// {
+	// 	write (2, "_malloc_ returned NULL\n", 23);
+	// 	return (NULL);
+	// }
 	mem = malloc (__size);
 	if (!mem)
 		perror("malloc");

@@ -19,7 +19,7 @@ static t_prompt	*lx_init(char *first)
 
 	token = lx_get_token(first);
 	if (token == AND || token == OR || token == PIPE)
-		return (sh_err("syntax error near unexpected token"), NULL);
+		return (sh_err("syntax error near unexpected token\n"), NULL);
 	lst = lx_add(token, NULL, first);
 	if (!lst)
 		return (NULL);

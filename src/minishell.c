@@ -115,7 +115,7 @@ static void	ctrl_d(char *cmmnd, char **envp)
 		return ;
 	}
 	else
-		write (1, "exitrn", 5);
+		write (1, "exit\n", 5);
 	sh_ppfree (envp);
 	exit (EXIT_SUCCESS);
 }

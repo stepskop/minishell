@@ -80,6 +80,8 @@ int	ast_parse(char *pos, t_ast **curr, char ***penvp)
 		i = 1;
 		while ((pos[i] >= 9 && pos[i] <= 13) || pos[i] == 32)
 			i++;
+		if (pos[i] != '|' && pos[i] != '&' && pos[i] != ')' && pos[i] != '\0')
+			return (sh_err("Syntax error\n"), -1);
 		return ((*curr) = (*curr)->parent, i);
 	}
 	else
