@@ -52,7 +52,6 @@ static char	*cmd_from_home(char *cmd, char **envp)
 	res = sh_strjoin_free (home_dir, cmd + 1, 1);
 	if (!res)
 		return (NULL);
-		// return (perror("_malloc_"), NULL);
 	return (res);
 }
 

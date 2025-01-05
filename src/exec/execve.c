@@ -58,29 +58,27 @@ void	sp_print_cnf(char *cmmnd)
 int	ex_get_exitcode(t_prompt *lst)
 {
 	int			status;
+	int			curr_status;
+	int			waited_pid;
 	t_prompt	*curr;
-	t_prompt	*last;
 
 	curr = lst;
 	status = 0;
-	while (curr)
-	{
-		last = curr;
-		if (curr->token == CMD)
-		{
-			if (!curr->proc_less && curr->pid > 0)
-				waitpid(curr->pid, &status, 0);
-			else if (!curr->proc_less && curr->pid < 0)
-				status = 1;
-		}
+	waited_pid = 0;
+	while (curr && curr->next_cmd)
 		curr = curr->next_cmd;
+	while (waited_pid != -1 || errno != ECHILD)
+	{
+		waited_pid = waitpid(-1, &curr_status, 0);
+		if (waited_pid == curr->pid)
+			status = curr_status;
 	}
-	if (lst && last->proc_less)
-		return (last->pid);
-	if (WIFEXITED(status))
-		status = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
+	if (lst && curr->proc_less)
+		return (curr->pid);
+	if (WIFSIGNALED(status))
 		status = 128 + WTERMSIG(status);
+	else if (WIFEXITED(status))
+		status = WEXITSTATUS(status);
 	return (status);
 }
 
