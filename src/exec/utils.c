@@ -12,6 +12,7 @@
 
 #include "exec.h"
 #include "path.h"
+#include "signals.h"
 
 static void	read_stdin(int *pipefd, char *limiter)
 {
@@ -25,6 +26,8 @@ static void	read_stdin(int *pipefd, char *limiter)
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
 		{
+			ft_putchar_fd('\n', 2);
+			sh_err("here-document delimited by end-of-file\n");
 			free(delimiter);
 			return ;
 		}
@@ -61,17 +64,30 @@ size_t	ex_cmdlen(t_args *args)
 int	ex_get_heredoc(t_args *args)
 {
 	int		pipefd[2];
-	char	*filename;
+	int		s;
+	char	*lim;
 
+	s = EXIT_FAILURE;
 	if (!args)
 		return (sh_err("delimiter not specified\n"), -1);
 	if (pipe(pipefd) == -1)
 		return (perror("heredoc"), -1);
-	filename = sh_unquotes (args->data);
-	read_stdin(pipefd, args->data);
-	free (filename);
-	close(pipefd[1]);
-	return (pipefd[0]);
+	lim = sh_unquotes (args->data);
+	if (fork() == 0)
+	{
+		signal(SIGINT, heredoc_sigint);
+		read_stdin(pipefd, lim);
+		close_pipe(pipefd);
+		exit(EXIT_SUCCESS);
+	}
+	else
+	{
+		signal(SIGINT, SIG_IGN);
+		wait(&s);
+		if (WEXITSTATUS(s) != 0)
+			return (free(lim), sig_init(), close_pipe(pipefd), -WEXITSTATUS(s));
+	}
+	return (sig_init(), free(lim), close(pipefd[1]), pipefd[0]);
 }
 
 int	ex_open_file(t_args *args, int oflag, char **envp)

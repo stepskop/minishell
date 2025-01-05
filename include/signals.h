@@ -18,4 +18,6 @@
 
 void	sig_init(void);
 void	sig_reset(void);
+void	heredoc_sigint(int signal);
+
 #endif

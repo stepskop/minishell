@@ -55,26 +55,22 @@ void	sp_print_cnf(char *cmmnd)
 	free (str);
 }
 
-int	ex_get_exitcode(t_prompt *lst)
+int	ex_get_exitcode(t_prompt *last)
 {
 	int			status;
-	int			curr_status;
+	int			last_status;
 	int			waited_pid;
-	t_prompt	*curr;
 
-	curr = lst;
 	status = 0;
 	waited_pid = 0;
-	while (curr && curr->next_cmd)
-		curr = curr->next_cmd;
 	while (waited_pid != -1 || errno != ECHILD)
 	{
-		waited_pid = waitpid(-1, &curr_status, 0);
-		if (waited_pid == curr->pid)
-			status = curr_status;
+		waited_pid = waitpid(-1, &last_status, 0);
+		if (waited_pid == last->pid)
+			status = last_status;
 	}
-	if (lst && curr->proc_less)
-		return (curr->pid);
+	if (last && last->proc_less)
+		return (last->pid);
 	if (WIFSIGNALED(status))
 		status = 128 + WTERMSIG(status);
 	else if (WIFEXITED(status))

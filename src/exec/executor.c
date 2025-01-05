@@ -40,7 +40,7 @@ static int	ex_handle_ionode(t_prompt *curr, int (*last_io)[2], char **envp)
 	return (1);
 }
 
-static void	ex_ioprep(t_prompt *lst, char **envp)
+static void	ex_ioprep(t_prompt *lst, char **envp, int *stat)
 {
 	t_prompt	*curr;
 	t_prompt	*l_cmd;
@@ -49,12 +49,14 @@ static void	ex_ioprep(t_prompt *lst, char **envp)
 	curr = lst;
 	l_cmd = NULL;
 	std_pipe(NULL, last_io);
-	while (curr)
+	while (curr && *stat != 130)
 	{
 		if (curr->token == CMD)
 			l_cmd = curr;
 		if (!ex_handle_ionode(curr, &last_io, envp))
 		{
+			if (curr->token == LESSLESS)
+				*stat = -last_io[0];
 			std_pipe(NULL, last_io);
 			curr = curr->next;
 			if (l_cmd)
@@ -105,7 +107,7 @@ static t_prompt	*ex_execute(t_prompt *node, t_ast *ast, char ***penvp)
 	if (node->next_cmd)
 	{
 		if (pipe(pipefd) == -1)
-			return (perror("pipe"), NULL);
+			return (perror("pipe"), node);
 		c_pipe[1] = pipefd[1];
 		if (node->next_cmd->in_fd == 0)
 			node->next_cmd->in_fd = pipefd[0];
@@ -126,19 +128,22 @@ static t_prompt	*ex_execute(t_prompt *node, t_ast *ast, char ***penvp)
 int	executor(t_prompt *lst, t_ast *ast, char ***penvp)
 {
 	t_prompt	*curr;
+	t_prompt	*last_cmd;
 	int			stat;
 	char		*status_var;
 
-	ex_ioprep(lst, *penvp);
 	curr = lst;
+	last_cmd = lst;
 	stat = EXIT_SUCCESS;
-	while (curr)
+	ex_ioprep(lst, *penvp, &stat);
+	while (curr && !stat)
 	{
 		if (curr->token == CMD)
-			ex_execute(curr, ast, penvp);
+			last_cmd = ex_execute(curr, ast, penvp);
 		curr = curr->next;
 	}
-	stat = ex_get_exitcode(lst);
+	if (!stat)
+		stat = ex_get_exitcode(last_cmd);
 	status_var = sh_strjoin_free("?=", ft_itoa(stat), 2);
 	if (!status_var)
 		return (sh_err("Couldn't set last status env var\n"), stat);

@@ -95,3 +95,9 @@ void	sig_reset(void)
 	if (checker != 0)
 		sh_err ("reset sigactions ERROR!");
 }
+
+void	heredoc_sigint(int signal)
+{
+	(void)signal;
+	exit(130);
+}
