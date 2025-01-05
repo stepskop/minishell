@@ -70,9 +70,9 @@ static void	sigact(int sig, siginfo_t *info, void *context)
 	(void)context;
 	if (sig == SIGINT)
 	{
+		write (1, "\n", 1);
 		if (info->si_pid)
 		{
-			write (1, "\n", 1);
 			rl_replace_line("", 0);
 			rl_on_new_line ();
 			rl_redisplay ();
