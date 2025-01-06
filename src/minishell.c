@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:59 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/30 02:01:58 by username         ###   ########.fr       */
+/*   Updated: 2025/01/06 18:45:15 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,9 @@ static char	*process_line(char **cmmnd, char *line, char **pps)
 		*cmmnd = sh_strjoin_free(*cmmnd, ft_strdup("\n"), 3);
 		if (!*cmmnd)
 			return (NULL);
-		free(*pps);
-		*pps = ft_strdup(">");
 	}
+	free(*pps);
+	*pps = ft_strdup(">");
 	return (NULL);
 }
 
