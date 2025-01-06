@@ -6,7 +6,7 @@
 /*   By: ksorokol <ksorokol@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 13:27:51 by ksorokol          #+#    #+#             */
-/*   Updated: 2024/12/27 10:54:25 by ksorokol         ###   ########.fr       */
+/*   Updated: 2025/01/06 19:52:22 by ksorokol         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,15 @@
 # include <fcntl.h>
 
 // Colors & Styles
-# define CWD_COLOR "\033[0m\033[34m"
-# define RESET_COLOR "\033[0m "
+// # define CWD_COLOR "\033[0m\033[34m"
+// # define RESET_COLOR "\033[0m "
+# define CWD_COLOR ""
+# define RESET_COLOR ""
 # define KSOROKOL "\033[35m\033[1m\033[4mksorokol"
 # define SSKOPEK "\033[35m\033[1m\033[4msskopek"
 
-# define PPS "\033[1m\033[44m\033[97m SKSH \033[0m "
+// # define PPS "\033[1m\033[44m\033[97m SKSH \033[0m "
+# define PPS "SKSH "
 # define SET 0
 # define GET 1
 
