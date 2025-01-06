@@ -14,7 +14,8 @@
 #include "lexer.h"
 #include "builtins.h"
 
-static int	ex_handle_ionode(t_prompt *curr, int (*last_io)[2], char **envp)
+static int	ex_handle_ionode(t_prompt *curr, int (*last_io)[2],
+	char **envp, int *stat)
 {
 	if ((curr->token == LESSLESS || curr->token == LESS) && (*last_io)[0] > 0)
 		close((*last_io)[0]);
@@ -35,6 +36,8 @@ static int	ex_handle_ionode(t_prompt *curr, int (*last_io)[2], char **envp)
 		curr->in_fd = (*last_io)[1];
 	else if (curr->token == LESSLESS || curr->token == LESS)
 		curr->out_fd = (*last_io)[0];
+	if (curr->token == LESSLESS && (*last_io)[0] < 0)
+		*stat = -(*last_io)[0];
 	if ((*last_io)[1] < 0 || (*last_io)[0] < 0)
 		return (0);
 	return (1);
@@ -53,14 +56,13 @@ static void	ex_ioprep(t_prompt *lst, char **envp, int *stat)
 	{
 		if (curr->token == CMD)
 			l_cmd = curr;
-		if (!ex_handle_ionode(curr, &last_io, envp))
+		if (!ex_handle_ionode(curr, &last_io, envp, stat))
 		{
-			if (curr->token == LESSLESS)
-				*stat = -last_io[0];
 			std_pipe(NULL, last_io);
-			curr = curr->next;
 			if (l_cmd)
 				l_cmd->io_err = 1;
+			while (curr && curr->token != PIPE)
+				curr = curr->next;
 			continue ;
 		}
 		if (!curr->next || lx_cmdend(*(curr->next)))
