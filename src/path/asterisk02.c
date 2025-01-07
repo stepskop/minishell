@@ -25,6 +25,8 @@ char	*sh_remove_last_c(char *str, char c)
 		return (NULL);
 	result = ft_strdup (str);
 	free (str);
+	if (!result)
+		return (NULL);
 	if (result[ft_strlen (result) - 1] == c)
 		result[ft_strlen (result) - 1] = '\0';
 	return (result);

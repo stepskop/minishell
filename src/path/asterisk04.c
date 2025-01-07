@@ -44,6 +44,8 @@ char	*patern_prefix(char *str, char *prefix, int first)
 	if (!str || !prefix)
 		return (0);
 	prefix_ = sh_remove_last_c (ft_strdup (prefix), '*');
+	if (!prefix_)
+		return (NULL);
 	len[0] = sh_strlen(str);
 	len[1] = sh_strlen(prefix_);
 	if (len[1] > len[0])

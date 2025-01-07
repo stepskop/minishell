@@ -78,7 +78,7 @@ char	*str_join_env(char *str, char *part1, size_t idx[], char **envp)
 		env_var = sh_getenv(env_name, envp);
 	if (!env_var)
 		env_var = ft_strdup ("");
-	len[0] = ft_strlen (env_name);
+	len[0] = sh_strlen (env_name);
 	len[1] = 0;
 	result = strs_cat (part1, str, env_var, idx);
 	idx[1] += len[0];
