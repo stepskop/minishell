@@ -62,7 +62,7 @@ static int	env_replace_var(char **envp, char *sv)
 	len = sh_strlen (sv_);
 	while (len && *envp_)
 	{
-		if (ft_strlen (*envp_) > len && !ft_strncmp (*envp_, sv_, len))
+		if (ft_strlen (*envp_) >= len && !ft_strncmp (*envp_, sv_, len))
 		{
 			free (*envp_);
 			*envp_ = ft_strdup (sv);
