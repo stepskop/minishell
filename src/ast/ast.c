@@ -32,6 +32,8 @@ int	ast_eval(t_ast *ast, char ***penvp)
 			ast->res = ast_eval(ast->right, penvp);
 		return (ast->res);
 	}
+	if (!ast->parent)
+		return (ast->res);
 	return (ast->parent->res);
 }
 
