@@ -1,5 +1,5 @@
 # Minishell
-Limited implementation of UNIX shell, inspired by Bash
+Minimal implementation of the UNIX shell, inspired by Bash
 
 ![Showcase](./preview.png)
 
@@ -20,6 +20,6 @@ Execute the binary
 
 ## Features
 - set of builtins like `echo`, `export`, `unset`, `pwd`, `cd`, `env` (without options besides `-n` for `echo`)
-- pipes and redirections including here-document
-- `&&` and `||` with `()` for priorities (Only - pipes and redirection wont work for whole groups)
+- pipes and redirections, including here-document
+- `&&` and `||` with `()` for priorities (Only pipes and redirection won't work for whole groups)
 - `*` wildcard expansion
